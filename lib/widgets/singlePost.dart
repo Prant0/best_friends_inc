@@ -51,11 +51,21 @@ class SinglePost extends StatelessWidget {
                         children: [
                           Expanded(
                             flex: 8,
-                            child: TextField(),
+                            child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Add a comment',
+                                ),
+                              ),
                           ),
                           Expanded(
                             flex: 2,
-                            child: Icon(Icons.send)
+                            child: Center(child:
+                            IconButton(
+                              icon: Icon(Icons.send),
+                              color: Theme.of(context).primaryColor,
+                              onPressed: (){},
+                            ),
+                            ),
                           ),
                         ],
                       ),

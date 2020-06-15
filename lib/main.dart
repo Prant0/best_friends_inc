@@ -1,3 +1,5 @@
+import 'package:bestfriends/screens/postStatus.dart';
+
 import './providers/comment.dart';
 import './providers/post.dart';
 import './screens/singlePostDetails.dart';
@@ -29,6 +31,7 @@ class _MyAppState extends State<MyApp> {
           '/login':(BuildContext context)=>Login_Page(),
           '/register':(BuildContext context)=>Registation_Page(),
           SinglePostDetails.routeName: (BuildContext context)=>SinglePostDetails(),
+          PostStatus.routeName: (BuildContext context)=>PostStatus(),
         },
         theme: ThemeData(
             primaryColor: Colors.teal,

@@ -1,4 +1,5 @@
 
+import 'package:bestfriends/screens/postStatus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../providers/post.dart';
@@ -25,22 +26,33 @@ class _HomePageState extends State<HomePage>{
       ),
       drawer: CustomDrawer(),
       endDrawer: CustomDrawer(),
-      body: ListView.builder(
-        itemCount: allPosts.length,
-        itemBuilder: (BuildContext context, int i){
-        return SinglePost(
-          posterImage: allPosts[i].posterImage,
-          posterName: allPosts[i].posterName,
-          posterIsVerified: allPosts[i].posterIsVerified,
-          desc: allPosts[i].desc,
-          postImage: allPosts[i].image,
-          likesCount: allPosts[i].likesCount,
-          commentsCount: allPosts[i].commentsCount,
-          sharesCount: allPosts[i].sharesCount,
-          postId: allPosts[i].id,
-          posterId: allPosts[i].posterId,
-        );
-      })
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: (){
+          Navigator.pushNamed(context, PostStatus.routeName);
+        },
+        isExtended: true,
+        icon: Icon(Icons.add),
+        label: Text('Post'),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      body: Container(
+        child: ListView.builder(
+          itemCount: allPosts.length,
+          itemBuilder: (BuildContext context, int i){
+          return SinglePost(
+            posterImage: allPosts[i].posterImage,
+            posterName: allPosts[i].posterName,
+            posterIsVerified: allPosts[i].posterIsVerified,
+            desc: allPosts[i].desc,
+            postImage: allPosts[i].image,
+            likesCount: allPosts[i].likesCount,
+            commentsCount: allPosts[i].commentsCount,
+            sharesCount: allPosts[i].sharesCount,
+            postId: allPosts[i].id,
+            posterId: allPosts[i].posterId,
+          );
+        }),
+      )
     );
   }
 }

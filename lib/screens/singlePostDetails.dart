@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SinglePostDetails extends StatelessWidget {
-  static String routeName = '/SinglePostDetails';
+  static const String routeName = '/SinglePostDetails';
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context).settings.arguments;
