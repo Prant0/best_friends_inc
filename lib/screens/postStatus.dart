@@ -13,13 +13,16 @@ class PostStatus extends StatefulWidget {
 class _PostStatusState extends State<PostStatus> {
   List<Asset> images = List<Asset>();
   Future<void> loadAssets() async {
-    print('Fired');
     List<Asset> resultList = List<Asset>();
     try {
       resultList = await MultiImagePicker.pickImages(
         maxImages: 5,
         enableCamera: true,
         selectedAssets: images,
+        materialOptions: MaterialOptions(
+          autoCloseOnSelectionLimit: true,
+          startInAllView: true,
+        ),
       );
     } on Exception catch (e) {
       print(e);
@@ -72,17 +75,18 @@ class _PostStatusState extends State<PostStatus> {
                 ),
               ),
               Expanded(
-                flex: 2,
+                flex: 1,
                 child: images==null?Container():ListView.builder(
                   scrollDirection: Axis.horizontal,
-                    itemExtent: 150,
+                    shrinkWrap: true,
+                    itemExtent: 100,
                     itemBuilder: (context, item){
                       return Card(
                         child: Padding(
                           padding: EdgeInsets.all(5),
                           child: AssetThumb(
                             asset: images[item],
-                            height: 300,
+                            height: 100,
                             width: 100,
                           ),
                         ),

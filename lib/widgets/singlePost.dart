@@ -139,29 +139,36 @@ class SinglePost extends StatelessWidget {
             Expanded(
               flex:3,
               child: Row(
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Image(
-                      image: AssetImage(
-                      posterImage,
+                  children: <Widget>[
+                    InkWell(
+                      onTap: (){},
+                      child: Row(
+                        children: <Widget>[
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Image(
+                              image: AssetImage(
+                              posterImage,
+                            ),
+                            fit: BoxFit.cover,
+                            width: 35,
+                            height: 35,
+                            ),
+                          ),
+                          SizedBox(width: 15.0,),
+                          Text(
+                            posterName,
+                          style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w800),
+                          ),
+                        ],
+                      ),
                     ),
-                    fit: BoxFit.cover,
-                    width: 35,
-                    height: 35,
-                    ),
-                  ),
-                  SizedBox(width: 15.0,),
-                  Text(
-                    posterName,
-                  style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w800),
-                  ),
-                  SizedBox(width: 15.0,),
-                  posterIsVerified == 1 ? Icon(Icons.check_circle,color: Colors.teal,size: 20.0,) : Container(),
-                ],
-              ),
-
-
+                    posterIsVerified == 1 ? IconButton(
+                      icon: Icon(Icons.check_circle,color: Colors.teal,size: 20.0,),
+                      tooltip: 'Verified User',
+                    ) : Container(),
+                  ],
+                ),
             ),
             Expanded(
               flex: 8,

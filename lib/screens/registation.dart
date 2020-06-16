@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Registation_Page extends StatefulWidget {
   @override
@@ -10,18 +13,53 @@ class _Registation_PageState extends State<Registation_Page> {
   final _formKey = GlobalKey<FormState>();
   String _username, _password,_number;
   bool _obscureText = true;
+  bool onProgress = false;
+  String errorTxt;
+  var url = "http://192.168.0.108/public/api/register";
 
-  void _submit(){
+  void _submit() async{
     //if (_formKey.currentState.validate()){
-    final form=_formKey.currentState;
+    final form =_formKey.currentState;
     if(form.validate()){
       form.save();
+      var response = await http.post(url,
+      headers: {
+        'Accept':'application/json',
+      },
+      body: {
+        'name': _username,
+        'phone': _number,
+        'password': _password,
+        'verified':'1',
+        'referral_id':'2020616i09',
+      }
+      );
+      if(response.statusCode==200){
+        Navigator.of(context).pushNamed('/login');
+      }
+      else if(response.statusCode==433){
+        setState(() {
+          onProgress = false;
+          errorTxt = "Phone Number Already Exists";
+        });
+        print(response.body);
+      }
+      else{
+        setState(() {
+          onProgress = false;
+        });
+      }
+    }
+    else{
+      setState(() {
+        onProgress = false;
+      });
     }
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: onProgress? Center(child: CircularProgressIndicator()) :SingleChildScrollView(
         child: Column(
            children: <Widget>[
              SizedBox(
@@ -60,7 +98,7 @@ class _Registation_PageState extends State<Registation_Page> {
                     
                       child: TextFormField(
                         onSaved: (val)=>_number=val,
-                        validator: (val)=>val.length<11 ? 'Mobile number Too Short':null,
+                        validator: (val)=>val.length!=11 ? 'Mobile number Invalid!':null,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(40.0),
@@ -149,7 +187,12 @@ class _Registation_PageState extends State<Registation_Page> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)
                   ),
-                  onPressed: _submit,
+                  onPressed: (){
+                    setState(() {
+                      onProgress = true;
+                    });
+                    _submit();
+                  },
                 ),
               ),
               FlatButton(
@@ -165,7 +208,11 @@ class _Registation_PageState extends State<Registation_Page> {
                       ]
                   ),
                 )
-              )
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: errorTxt==null?Container():Text(errorTxt),
+              ),
             ],
           ),
         ),

@@ -1,4 +1,5 @@
 import 'package:bestfriends/screens/postStatus.dart';
+import 'package:bestfriends/screens/profile.dart';
 
 import './providers/comment.dart';
 import './providers/post.dart';
@@ -32,6 +33,7 @@ class _MyAppState extends State<MyApp> {
           '/register':(BuildContext context)=>Registation_Page(),
           SinglePostDetails.routeName: (BuildContext context)=>SinglePostDetails(),
           PostStatus.routeName: (BuildContext context)=>PostStatus(),
+          Profile.routeName: (BuildContext context)=>Profile(),
         },
         theme: ThemeData(
             primaryColor: Colors.teal,
@@ -42,7 +44,7 @@ class _MyAppState extends State<MyApp> {
              // body1: TextStyle(fontSize: 18.0,color: Colors.teal),
             )
         ),
-        home: HomePage(),
+        home: Registation_Page(),
       ),
     );
   }
