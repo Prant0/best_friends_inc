@@ -29,8 +29,8 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: "Find Friendz",
         routes: {
-          '/login':(BuildContext context)=>Login_Page(),
-          '/register':(BuildContext context)=>Registation_Page(),
+          Login_Page.routeName:(BuildContext context)=>Login_Page(),
+          Registation_Page.routeName:(BuildContext context)=>Registation_Page(),
           SinglePostDetails.routeName: (BuildContext context)=>SinglePostDetails(),
           PostStatus.routeName: (BuildContext context)=>PostStatus(),
           Profile.routeName: (BuildContext context)=>Profile(),
@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
              // body1: TextStyle(fontSize: 18.0,color: Colors.teal),
             )
         ),
-        home: Registation_Page(),
+        home: Login_Page(),
       ),
     );
   }
