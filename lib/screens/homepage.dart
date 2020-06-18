@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../widgets/drawer.dart';
 
 class HomePage extends StatefulWidget {
+  static const String routeName = '/HomePage';
   @override
   _HomePageState createState() => _HomePageState();
 }

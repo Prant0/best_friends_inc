@@ -1,6 +1,5 @@
 import 'package:bestfriends/screens/postStatus.dart';
 import 'package:bestfriends/screens/profile.dart';
-
 import './providers/comment.dart';
 import './providers/post.dart';
 import './screens/singlePostDetails.dart';
@@ -29,6 +28,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: "Find Friendz",
         routes: {
+          HomePage.routeName: (BuildContext context)=>HomePage(),
           Login_Page.routeName:(BuildContext context)=>Login_Page(),
           Registation_Page.routeName:(BuildContext context)=>Registation_Page(),
           SinglePostDetails.routeName: (BuildContext context)=>SinglePostDetails(),

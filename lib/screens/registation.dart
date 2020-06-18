@@ -1,9 +1,14 @@
 import 'dart:convert';
 
+import 'package:bestfriends/http/requests.dart';
+import 'package:bestfriends/screens/homepage.dart';
 import 'package:bestfriends/screens/login.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:bestfriends/api/googleApi.dart';
 
 class Registation_Page extends StatefulWidget {
   static const routeName = '/registrationPage';
@@ -14,44 +19,48 @@ class Registation_Page extends StatefulWidget {
 class _Registation_PageState extends State<Registation_Page> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-  String _username, _password, _rePassword, _number;
+  String _username, _password, _rePassword, _number, smsCode, verificationId;
   bool _obscureText = true;
   bool onProgress = false;
   String errorTxt;
   var url = "http://192.168.0.108/public/api/register";
-
+//TODO: OTP ERROR HANDLING
   Future<String> _submit() async {
     //if (_formKey.currentState.validate()){
     final form = _formKey.currentState;
     if (form.validate()) {
+      form.save();
       setState(() {
         onProgress = true;
       });
-      form.save();
-      final checkUser = await checkExistingUser(_number);
+      final checkUser = await CustomHttpRequests.checkExistingUser(_number);
       if (!checkUser) {
-        //TODO: Write OTP functions here
-          var response = await http.post(url,
-              headers: {
-                'Accept':'application/json',
-              },
-              body: {
-                'name': _username,
-                'phone': _number,
-                'password': _password,
-                'verified':'0',
-                'referral_id':'null',
-              }
-          );
-          if(response.statusCode==200){
-            return 'Success';
-          }
-          else{
-            setState(() {
-              onProgress = false;
-            });
-            return 'Something Wrong!';
-          }
+       final sendOtp = await GoogleApi.checkOtpSuccess('+88$_number', context);
+       if(sendOtp){
+         final checkOtp = await GoogleApi.smsCodeDialogue(context);
+         print(checkOtp);
+      }
+//          var response = await http.post(url,
+//              headers: {
+//                'Accept':'application/json',
+//              },
+//              body: {
+//                'name': _username,
+//                'phone': _number,
+//                'password': _password,
+//                'verified':'0',
+//                'referral_id':'null',
+//              }
+//          );
+//          if(response.statusCode==200){
+//            return 'Success';
+//          }
+//          else{
+//            setState(() {
+//              onProgress = false;
+//            });
+//            return 'Something Wrong!';
+//          }
       }
       else {
         setState(() {
@@ -60,16 +69,16 @@ class _Registation_PageState extends State<Registation_Page> {
         return 'Phone number already registered';
       }
     }
-    return 'Invalid Inputs';
-}
+    else{
+      return 'Invalid Inputs';
+    }
+  }
 
-  Future<bool> checkExistingUser(String number) async{
-    var url = "http://192.168.0.108/public/api/check-user-exists/$number";
-    var response = await http.get(url);
-    if(int.parse(response.body)==1)
-    return true;
-    else if(int.parse(response.body)==0)
-    return false;
+
+@override
+  void initState() {
+    FirebaseAuth.instance.signOut();
+    super.initState();
   }
 
   @override
@@ -137,7 +146,7 @@ class _Registation_PageState extends State<Registation_Page> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.0,vertical: 10.0),
                           child: TextFormField(
-                            onSaved: (val)=>_password=val,
+                            onChanged: (val)=>_password=val,
                             obscureText: _obscureText,
                             validator: (val)=> val.length < 6 ? "Password is too short":null,
                             decoration: InputDecoration(
@@ -166,7 +175,7 @@ class _Registation_PageState extends State<Registation_Page> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.0,vertical: 10.0),
                           child: TextFormField(
-                            onSaved: (val)=>_rePassword=val,
+                            onChanged: (val)=>_rePassword=val,
                             obscureText: _obscureText,
                             validator: (val)=> val!=_password ? "Password didn't matched":null,
                             decoration: InputDecoration(
@@ -217,6 +226,9 @@ class _Registation_PageState extends State<Registation_Page> {
                           {
                             Navigator.of(context).pushNamed(Login_Page.routeName);
                           }
+                        else if(subResult==null){
+                          return;
+                        }
                         else
                           {
                             Scaffold.of(context).removeCurrentSnackBar();

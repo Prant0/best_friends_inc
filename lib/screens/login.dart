@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bestfriends/http/requests.dart';
+import 'package:bestfriends/screens/registation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -150,7 +151,7 @@ class _Login_PageState extends State<Login_Page> {
                   ),
                   FlatButton(
                     onPressed: (){
-                      Navigator.pushReplacementNamed(context, '/register');
+                      Navigator.pushReplacementNamed(context, Registation_Page.routeName);
                     },
                     child: RichText(
                       text: TextSpan(
