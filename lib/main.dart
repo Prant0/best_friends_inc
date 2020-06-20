@@ -1,5 +1,6 @@
 import 'package:bestfriends/screens/postStatus.dart';
 import 'package:bestfriends/screens/profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './providers/comment.dart';
 import './providers/post.dart';
 import './screens/singlePostDetails.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: Posts()),
@@ -48,4 +49,5 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+
 }

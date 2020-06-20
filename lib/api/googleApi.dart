@@ -1,3 +1,4 @@
+import 'package:bestfriends/http/requests.dart';
 import 'package:bestfriends/screens/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class GoogleApi {
   static String verificationId, smsCode;
-  static Future<bool> checkOtpSuccess(String number, BuildContext context) async {
+  static Future<bool> checkOtpSuccess(String number, BuildContext context, String username, String password, String referralId) async {
     final PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout = (String verId) {
       verificationId = verId;
     };
@@ -25,7 +26,7 @@ class GoogleApi {
 
     return FirebaseAuth.instance
         .verifyPhoneNumber(
-      phoneNumber: number,
+      phoneNumber: '+88$number',
       timeout: const Duration(seconds: 5),
       verificationCompleted: verifiedSuccess,
       verificationFailed: verificationFailed,
@@ -33,15 +34,15 @@ class GoogleApi {
       codeAutoRetrievalTimeout: autoRetrievalTimeout,
     )
         .then((value) async {
-      final smsResponse = await smsCodeDialogue(context);
+      final smsResponse = await smsCodeDialogue(context, number, username, password, referralId);
       return smsResponse;
     }).catchError((e) {
-      print('Executed Failed');
+      print('Execution Failed');
       return false;
     });
   }
 
-  static Future<bool> smsCodeDialogue(BuildContext context) async {
+  static Future<bool> smsCodeDialogue(BuildContext context, String number, String username, String password, String referralId) async {
     String errorMsg;
     bool onProgress = false;
     return showDialog(
@@ -71,9 +72,20 @@ class GoogleApi {
                       });
                       final codeRes = await signInUser(context);
                       print(codeRes);
-                      if (codeRes == "Done") {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pushReplacementNamed(Login_Page.routeName);
+                      if (codeRes != "Wrong OTP") {
+                        final regRes = await CustomHttpRequests.registerUser(number,username,password,referralId,codeRes);
+                        if(regRes)
+                          {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pushReplacementNamed(Login_Page.routeName);
+                          }
+                        else
+                          {
+                            setState(() {
+                              errorMsg = "Something Wrong";
+                              onProgress = false;
+                            });
+                          }
                       } else {
                         setState(() {
                           errorMsg = codeRes;
@@ -97,7 +109,7 @@ class GoogleApi {
       smsCode: smsCode,
     );
     final matchOTPRes = FirebaseAuth.instance.signInWithCredential(credential).then((user) {
-      return 'Done';
+      return user.user.uid;
     }).catchError((e) {
       return 'Wrong OTP';
     });

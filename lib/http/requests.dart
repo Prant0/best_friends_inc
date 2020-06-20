@@ -1,13 +1,28 @@
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 class CustomHttpRequests{
+  static const String uri = "http://192.168.0.108/public/api";
+  static Future<String> myToken()async{
+    SharedPreferences sharedPreferences;
+    sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString("token");
+  }
+  static const Map<String, String> defaultHeader = {
+  "Accept":"application/json",
+  };
+
+  //TODO: myToken is not waiting for token string. Fix logout.
+  static final Map<String, String> tokenHeader = {
+    "Accept":"application/json",
+    "Authorization":"bearer ${myToken()}",
+  };
 
 
+  //Takes phone number and checks if the user exists
   static Future<bool> checkExistingUser(String number) async{
-    var url = "http://192.168.0.108/public/api/check-user-exists/$number";
+    var url = "$uri/check_user_exists/$number";
     var response = await http.get(url,
-      headers: {
-        "Accept":"application/json",
-      },
+      headers: defaultHeader,
     );
     if(response.body=="found")
       {
@@ -20,13 +35,29 @@ class CustomHttpRequests{
     return false;
   }
 
+  //Takes Referral ID and checks if the Referrer exists
+  static Future<bool> checkReferral(String referralId) async{
+    var url = "$uri/check_valid_ref_id/$referralId";
+    var response = await http.get(url,
+      headers: defaultHeader,
+    );
+    if(response.body=="found")
+    {
+      return true;
+    }
+    else if(response.body=="not-found")
+    {
+      return false;
+    }
+    return false;
+  }
+
+  //Takes phone and password for logging in users
   static Future<String> login (String phone, String password)async{
     try{
-      final url = 'http://192.168.0.108/public/api/login';
+      final url = '$uri/login';
       var response = await http.post(url,
-          headers: {
-            "Accept":"application/json",
-          },
+          headers: defaultHeader,
           body: {
             'phone': phone,
             'password': password,
@@ -46,9 +77,34 @@ class CustomHttpRequests{
     }
   }
 
+  //Logout, and expire token
+  static Future<bool> logout()async{
+    try
+    {
+      final url = '$uri/logout';
+      var response = await http.post(url,
+        headers: tokenHeader,
+      );
+      print(response.body);
+      print(await myToken());
+      if(response.statusCode==200)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+    catch(e){
+      return false;
+    }
+  }
+
+  //Returns user, using for debugging
   static Future<String> me (String token)async{
     try{
-      final url = 'http://192.168.0.108/public/api/me';
+      final url = '$uri/me';
       var response = await http.get(url,
         headers: {
           "Authorization":"bearer $token",
@@ -65,6 +121,32 @@ class CustomHttpRequests{
     }
     catch(e){
       return e.toString();
+    }
+  }
+
+  //Registering a user after unique validation and OTP check
+  static Future<bool> registerUser(String phone, String username, String password, String referralId, String fid)async{
+    try{
+      var response = await http.post("$uri/register",
+          headers: defaultHeader,
+          body: {
+            'name': username,
+            'phone': phone,
+            'password': password,
+            'referral_id': referralId.toString(),
+            'fuuid': fid.toString(),
+          }
+      );
+      if(response.statusCode==200){
+        return true;
+      }
+      else{
+        print("Status Code error ${response.statusCode} ${response.body}");
+        return false;
+      }
+    }catch(e){
+      print(e);
+      return false;
     }
   }
 }

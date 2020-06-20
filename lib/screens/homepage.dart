@@ -1,7 +1,9 @@
 
+import 'package:bestfriends/screens/login.dart';
 import 'package:bestfriends/screens/postStatus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/post.dart';
 import '../widgets/singlePost.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +17,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>{
   String _x ="one";
+  SharedPreferences sharedPreferences;
+  @override
+  void initState() {
+    checkLoginStatus();
+    super.initState();
+  }
+  checkLoginStatus()async{
+    sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("token")==null)
+      {
+        Navigator.of(context).pushReplacementNamed(Login_Page.routeName);
+      }
+  }
+
   @override
   Widget build(BuildContext context) {
   int count =  Provider.of<Posts>(context).itemCount();

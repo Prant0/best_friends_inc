@@ -1,4 +1,5 @@
 import 'package:bestfriends/providers/comment.dart';
+import 'package:bestfriends/screens/profile.dart';
 import 'package:bestfriends/screens/singlePostDetails.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
@@ -141,7 +142,9 @@ class SinglePost extends StatelessWidget {
               child: Row(
                   children: <Widget>[
                     InkWell(
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.of(context).pushNamed(Profile.routeName, arguments: posterId);
+                      },
                       child: Row(
                         children: <Widget>[
                           ClipRRect(

@@ -1,7 +1,20 @@
+import 'package:bestfriends/http/requests.dart';
+import 'package:bestfriends/screens/login.dart';
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../widgets/personalDrwaerItems.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatelessWidget {
+  SharedPreferences sharedPreferences;
+  removeToken(BuildContext context)async{
+    sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.clear();
+    await CustomHttpRequests.logout();
+    Navigator.of(context).pushNamedAndRemoveUntil(Login_Page.routeName, (route) => false);
+
+  }
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -38,7 +51,9 @@ class CustomDrawer extends StatelessWidget {
                     PersonalDrawerItem(iconData: Icons.calendar_today, text: 'My Events', onTap: (){},),
                     PersonalDrawerItem(iconData: Icons.lock_open, text: 'Complete Verification', onTap: (){},),
                     PersonalDrawerItem(iconData: Icons.settings, text: 'Settings', onTap: (){},),
-                    PersonalDrawerItem(iconData: Icons.exit_to_app, text: 'Logout', onTap: (){},),
+                    PersonalDrawerItem(iconData: Icons.exit_to_app, text: 'Logout', onTap: (){
+                      removeToken(context);
+                    },),
                   ],
                 ),
                 ),

@@ -1,4 +1,5 @@
 import 'package:bestfriends/api/googleApi.dart';
+import 'package:bestfriends/http/requests.dart';
 import 'package:bestfriends/screens/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +14,10 @@ class Registation_Page extends StatefulWidget {
 class _Registation_PageState extends State<Registation_Page> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-  String _username, _password, _rePassword, _number, smsCode, verificationId;
+  String _username, _password, _rePassword, _number, _referralId="";
   bool _obscureText = true;
   bool onProgress = false;
   String errorTxt;
-  var url = "http://192.168.0.108/public/api/register";
 //TODO: OTP ERROR HANDLING
   Future<String> _submit() async {
     //if (_formKey.currentState.validate()){
@@ -27,31 +27,23 @@ class _Registation_PageState extends State<Registation_Page> {
       setState(() {
         onProgress = true;
       });
-      final checkUser = false; //await CustomHttpRequests.checkExistingUser(_number);
+      final checkUser = await CustomHttpRequests.checkExistingUser(_number);
       if (!checkUser) {
-        final sendOtp = await GoogleApi.checkOtpSuccess('+88$_number', context);
-        print(sendOtp);
-//          var response = await http.post(url,
-//              headers: {
-//                'Accept':'application/json',
-//              },
-//              body: {
-//                'name': _username,
-//                'phone': _number,
-//                'password': _password,
-//                'verified':'0',
-//                'referral_id':'null',
-//              }
-//          );
-//          if(response.statusCode==200){
-//            return 'Success';
-//          }
-//          else{
-//            setState(() {
-//              onProgress = false;
-//            });
-//            return 'Something Wrong!';
-//          }
+        if(_referralId!="")
+          {
+            final referralCheck = await CustomHttpRequests.checkReferral(_referralId);
+            if(!referralCheck)
+              {
+                setState(() {
+                  onProgress = false;
+                });
+                return "Invalid Referral ID";
+              }
+          }
+        await GoogleApi.checkOtpSuccess(_number, context, _username, _password, _referralId);
+        setState(() {
+          onProgress = false;
+        });
       } else {
         setState(() {
           onProgress = false;
@@ -107,9 +99,11 @@ class _Registation_PageState extends State<Registation_Page> {
                           borderRadius: BorderRadius.circular(40.0),
                         ),
                         //  labelText: "Username",
-                        hintText: 'Enter Full Name',
+                        hintText: 'John Doe',
+                        labelText: 'Your Name',
                         prefixIcon: Icon(Icons.face, color: Colors.teal),
                       ),
+                      maxLength: 20,
                     ),
                   ),
                   Padding(
@@ -121,10 +115,11 @@ class _Registation_PageState extends State<Registation_Page> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(40.0),
                         ),
-                        //  labelText: "Username",
-                        hintText: 'Enter 11 Digits Mobile Number',
+                        labelText: "11 Digit Phone",
+                        hintText: '01XXXXXXXXX',
                         prefixIcon: Icon(Icons.phone, color: Colors.teal),
                       ),
+                      maxLength: 11,
                     ),
                   ),
                   Padding(
@@ -149,7 +144,8 @@ class _Registation_PageState extends State<Registation_Page> {
                           borderRadius: BorderRadius.circular(40.0),
                         ),
                         // labelText: "Password",
-                        hintText: 'Password',
+                        hintText: 'XXXXXX',
+                        labelText: 'Password',
                         prefixIcon: Icon(
                           Icons.lock,
                           color: Colors.teal,
@@ -180,9 +176,29 @@ class _Registation_PageState extends State<Registation_Page> {
                           borderRadius: BorderRadius.circular(40.0),
                         ),
                         // labelText: "Password",
-                        hintText: 'Confirm Password',
+                        hintText: 'XXXXXX',
+                        labelText: 'Retype Password',
                         prefixIcon: Icon(
                           Icons.lock,
+                          color: Colors.teal,
+                        ),
+                        // icon: Icon(Icons.lock,color: Colors.teal,)
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    child: TextFormField(
+                      onChanged: (val) => _referralId = val,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(40.0),
+                        ),
+                        // labelText: "Password",
+                        hintText: '0123456789XX',
+                        labelText: 'Referral ID',
+                        prefixIcon: Icon(
+                          Icons.attach_money,
                           color: Colors.teal,
                         ),
                         // icon: Icon(Icons.lock,color: Colors.teal,)
