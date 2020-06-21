@@ -10,10 +10,9 @@ class CustomDrawer extends StatelessWidget {
   SharedPreferences sharedPreferences;
   removeToken(BuildContext context)async{
     sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.clear();
     await CustomHttpRequests.logout();
+    sharedPreferences.clear();
     Navigator.of(context).pushNamedAndRemoveUntil(Login_Page.routeName, (route) => false);
-
   }
   @override
   Widget build(BuildContext context) {

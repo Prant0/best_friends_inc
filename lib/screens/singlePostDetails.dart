@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SinglePostDetails extends StatelessWidget {
-  static const String routeName = '/SinglePostDetails';
+  static String routeName = '/SinglePostDetails';
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context).settings.arguments;
@@ -58,8 +58,6 @@ class SinglePostDetails extends StatelessWidget {
                             post.posterIsVerified == 1 ? Icon(Icons.check_circle,color: Colors.teal,size: 20.0,) : Container(),
                           ],
                         ),
-
-
                       ),
                       Container(
                             child: Column(

@@ -35,7 +35,6 @@ class _HomePageState extends State<HomePage>{
   Widget build(BuildContext context) {
   int count =  Provider.of<Posts>(context).itemCount();
   List<Post> allPosts = Provider.of<Posts>(context).posts;
-  print(allPosts);
     return Scaffold(
       backgroundColor:Color(0xffE2E4EA) ,
       appBar: AppBar(

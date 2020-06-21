@@ -1,21 +1,23 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 class CustomHttpRequests{
   static const String uri = "http://192.168.0.108/public/api";
-  static Future<String> myToken()async{
-    SharedPreferences sharedPreferences;
-    sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getString("token");
-  }
+  static SharedPreferences sharedPreferences;
+
   static const Map<String, String> defaultHeader = {
   "Accept":"application/json",
   };
 
-  //TODO: myToken is not waiting for token string. Fix logout.
-  static final Map<String, String> tokenHeader = {
-    "Accept":"application/json",
-    "Authorization":"bearer ${myToken()}",
-  };
+  static Future<Map<String, String>> getHeaderWithToken()async{
+    sharedPreferences = await SharedPreferences.getInstance();
+    var header = {
+      "Accept":"application/json",
+      "Authorization":"bearer ${sharedPreferences.getString('token')}",
+    };
+    return header;
+  }
 
 
   //Takes phone number and checks if the user exists
@@ -83,10 +85,8 @@ class CustomHttpRequests{
     {
       final url = '$uri/logout';
       var response = await http.post(url,
-        headers: tokenHeader,
+        headers: await getHeaderWithToken(),
       );
-      print(response.body);
-      print(await myToken());
       if(response.statusCode==200)
       {
         return true;
@@ -147,6 +147,33 @@ class CustomHttpRequests{
     }catch(e){
       print(e);
       return false;
+    }
+  }
+
+  //Create A New Post
+  //Registering a user after unique validation and OTP check
+  static Future<dynamic> createPost(String body, var media)async{
+    print(media.runtimeType);
+    try{
+      var response = await http.post("$uri/post",
+          headers: await getHeaderWithToken(),
+          body: {
+            'body': body==null?"":body,
+            'media': media==null||media=="null"?"":jsonEncode(media),
+          }
+      );
+      final data = jsonDecode(response.body);
+      if(response.statusCode==200 || response.statusCode==201){
+        print(data);
+        return data;
+      }
+      else{
+        print("Status Code error ${response.statusCode} ${response.body}");
+        return data["message"];
+      }
+    }catch(e){
+      print(e);
+      return "Something Wrong...!!!";
     }
   }
 }

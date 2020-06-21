@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 class Post{
   final int id;
   final String desc;
-  final int timelineId;
   final int posterId;
   final String posterName;
   final String posterImage;
@@ -27,7 +26,6 @@ class Post{
   Post({
     this.id,
     this.desc,
-    this.timelineId,
     this.posterId,
     this.posterName,
     this.posterImage,
@@ -55,7 +53,7 @@ class Posts with ChangeNotifier{
     Post(
       id: 1,
       desc: 'Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second',
-      timelineId: 1,
+      
       posterId: 1,
       posterName: 'Bappa Raj',
       posterImage: 'images/11.jpg',
@@ -79,7 +77,7 @@ class Posts with ChangeNotifier{
     Post(
       id: 2,
       desc: 'Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second',
-      timelineId: 1,
+      
       posterId: 1,
       posterName: 'Mr. Joshim',
       posterImage: 'images/22.jpg',
@@ -103,7 +101,6 @@ class Posts with ChangeNotifier{
     Post(
       id: 3,
       desc: null,
-      timelineId: 1,
       posterId: 1,
       posterName: 'Shakib Khan',
       posterImage: 'images/33.jpg',
@@ -136,6 +133,11 @@ class Posts with ChangeNotifier{
 
   Post singlePost(int postId){
     return _posts.firstWhere((element) => element.id==postId);
+  }
+
+  createPost(Post newPost){
+    _posts.add(newPost);
+    notifyListeners();
   }
 
 }
