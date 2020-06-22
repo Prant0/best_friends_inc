@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:bestfriends/http/requests.dart';
-import 'package:bestfriends/widgets/drawer.dart';
+import 'package:bestfriends/providers/post.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:provider/provider.dart';
 
 class PostStatus extends StatefulWidget {
   static const String routeName = '/postStatusScreen';
@@ -19,11 +21,10 @@ class PostStatus extends StatefulWidget {
 
 class _PostStatusState extends State<PostStatus> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  String body, errorMsg;
+  String body, responseMsg;
   bool onProgress=false;
   var imagesList;
   List<Asset> images = List<Asset>();
-  Map<String, String> allImages = {};
   Future<void> loadAssets() async {
     List<Asset> resultList = List<Asset>();
     try {
@@ -57,32 +58,52 @@ class _PostStatusState extends State<PostStatus> {
 
   createPost(BuildContext context)async{
     //TODO: Check Error Handling on Post Upload
-    final postRequest = await CustomHttpRequests.createPost(body, imagesList);
+    final Map<String, dynamic> postRequest = await CustomHttpRequests.createPost(body, imagesList);
+    if(postRequest["message"].toString()=="Success")
+      {
+        responseMsg = "Success";
+        Provider.of<Posts>(context,listen: false).createPost(postRequest);
+      }
+    else
+      {
+        responseMsg = "Something Wrong";
+      }
     setState(() {
       onProgress = false;
-      errorMsg = postRequest["message"].toString();
       _scaffoldKey.currentState.removeCurrentSnackBar();
       _scaffoldKey.currentState.showSnackBar(
         SnackBar(
-          content: Text(errorMsg),
+          content: Text(responseMsg),
         ),
       );
     });
   }
 
   Future<Map<String, String>> formatImages()async{
+    Map<String, String> allImages = {};
     ByteData byteData;
     if(images.length>0)
     {
-      print(images);
       for(int i=0; i<images.length; i++){
         byteData = await images[i].getByteData();
         List<int> imageData = byteData.buffer.asUint8List();
-        String baseData = base64Encode(imageData);
+        List<int> compressedImageData = await testCompressList(imageData);
+        String baseData = base64Encode(compressedImageData);
         allImages.putIfAbsent("$i", () => baseData);
       }
     }
     return allImages;
+  }
+
+  Future<List<int>> testCompressList(List<int> list) async {
+    var result = await FlutterImageCompress.compressWithList(
+      list,
+      minHeight: 300,
+      minWidth: 500,
+      quality: 100,
+      rotate: 0,
+    );
+    return result;
   }
 
   @override
@@ -127,7 +148,21 @@ class _PostStatusState extends State<PostStatus> {
                 ),
                 Expanded(
                   flex: 2,
-                  child: images==null?Container():ListView.builder(
+                  child: images.length<1?InkWell(
+                    onTap: (){
+                      loadAssets();
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 150,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      child: Icon(Icons.add, color: Theme.of(context).primaryColor,),
+                    ),
+                  ):ListView.builder(
                     scrollDirection: Axis.horizontal,
                       shrinkWrap: true,
                       itemExtent: 150,
@@ -135,12 +170,37 @@ class _PostStatusState extends State<PostStatus> {
                         return Card(
                           child: Padding(
                             padding: EdgeInsets.all(5),
-                            child: allImages.isEmpty?Container():Image.memory(base64.decode(allImages["$item"]), fit: BoxFit.cover,),
+                            child: imagesList==null?Container(
+                              alignment: Alignment.center,
+                              child: CircularProgressIndicator(),
+                            ):Stack(
+                                children: [
+                                  Container(
+                                      width: double.infinity,
+                                      child: Image.memory(base64.decode(imagesList["$item"]), fit: BoxFit.cover,)),
+//                                  Positioned(
+//                                    top: 2,
+//                                    right: 2,
+//                                    child: IconButton(
+//                                      icon: Icon(Icons.close),
+//                                      onPressed: (){
+//                                        setState(() {
+//                                          //TODO: Images removing only from last, Need Fix.
+//                                          images.removeAt(item);
+//                                        });
+//                                      },
+//                                    ),
+//                                  ),
+                                ],
+                            ),
                           ),
                         );
                       },
                     itemCount: images.length,
                   ),
+                ),
+                SizedBox(
+                  height: 20,
                 ),
                 Expanded(
                   flex: 1,

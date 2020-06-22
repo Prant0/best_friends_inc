@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bestfriends/providers/post.dart';
 import 'package:bestfriends/widgets/singlePost.dart';
 import 'package:bestfriends/widgets/singlePostDetailsFAB.dart';
@@ -40,13 +42,8 @@ class SinglePostDetails extends StatelessWidget {
                           children: <Widget>[
                             ClipRRect(
                               borderRadius: BorderRadius.circular(50),
-                              child: Image(
-                                image: AssetImage(
-                                post.posterImage,
-                              ),
-                              fit: BoxFit.cover,
-                              width: 35,
-                              height: 35,
+                              child: Container(
+                                child: Text("P"),
                               ),
                             ),
                             SizedBox(width: 15.0,),
@@ -69,7 +66,9 @@ class SinglePostDetails extends StatelessWidget {
                                     child: Container(
                                     width: double.infinity,
                                     child: Carousel(
-                                      images: post.image.map((imageUrl) => ExactAssetImage(imageUrl)).toList(), 
+                                      images: post.image.map((imageUrl){
+                                        return Image.memory(base64.decode(imageUrl), fit: BoxFit.cover,);
+                                      }).toList(),
                                       dotSize: 2,
                                       dotIncreaseSize: 2,dotIncreasedColor: Theme.of(context).primaryColor,
                                       dotSpacing: 15,

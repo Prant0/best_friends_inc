@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bestfriends/providers/comment.dart';
 import 'package:bestfriends/screens/profile.dart';
 import 'package:bestfriends/screens/singlePostDetails.dart';
@@ -149,14 +151,7 @@ class SinglePost extends StatelessWidget {
                         children: <Widget>[
                           ClipRRect(
                             borderRadius: BorderRadius.circular(50),
-                            child: Image(
-                              image: AssetImage(
-                              posterImage,
-                            ),
-                            fit: BoxFit.cover,
-                            width: 35,
-                            height: 35,
-                            ),
+                            child: Image.memory(base64Decode(posterImage), fit: BoxFit.cover, height: 35, width: 35,),
                           ),
                           SizedBox(width: 15.0,),
                           Text(
@@ -183,20 +178,22 @@ class SinglePost extends StatelessWidget {
                   child: Column(
                     children: [
                       desc==null?Container():Expanded(
-                      flex: postImage==null?8:1,
+                      flex: postImage.length<1?8:1,
                       child:Container(
                         alignment: Alignment.topLeft,
-                        child: Text(desc, overflow: postImage==null?TextOverflow.fade:TextOverflow.ellipsis,),
+                        child: Text(desc, overflow: postImage.length<1?TextOverflow.fade:TextOverflow.ellipsis,),
                         ),
                     ),
-                    postImage==null?Container():Expanded(
+                    postImage.length<1?Container():Expanded(
                       flex: 8,
                       child:Container(
                         //tag: postId.toString(),
                         child: Container(
                           width: double.infinity,
                           child: Carousel(
-                            images: postImage.map((imageUrl) => ExactAssetImage(imageUrl)).toList(), 
+                            images: postImage.map((imageUrl){
+                              return Image.memory(base64.decode(imageUrl), fit: BoxFit.cover,);
+                            }).toList(),
                             dotSize: 2,
                             dotIncreaseSize: 2,dotIncreasedColor: Theme.of(context).primaryColor,
                             dotSpacing: 15,

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -50,77 +52,77 @@ class Post{
 
 class Posts with ChangeNotifier{
   List<Post> _posts = [
-    Post(
-      id: 1,
-      desc: 'Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second',
-      
-      posterId: 1,
-      posterName: 'Bappa Raj',
-      posterImage: 'images/11.jpg',
-      posterIsVerified: 1,
-      active: 1,
-      image: ['images/1.jpg','images/11.jpg','images/22.jpg'],
-      likesCount: 2500,
-      commentsCount: 200,
-      sharesCount: 30,
-      soundcloudTitle: '',
-      soundcloudId: '',
-      youtubeTitle: '',
-      youtubeVideoId: '',
-      location: 'Dhaka',
-      type: 'Art',
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-      deletedAt: DateTime.now(),
-      sharedPostId: 0,
-    ),
-    Post(
-      id: 2,
-      desc: 'Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second',
-      
-      posterId: 1,
-      posterName: 'Mr. Joshim',
-      posterImage: 'images/22.jpg',
-      posterIsVerified: 0,
-      active: 1,
-      image: null,
-      likesCount: 375,
-      commentsCount: 45,
-      sharesCount: 3,
-      soundcloudTitle: '',
-      soundcloudId: '',
-      youtubeTitle: '',
-      youtubeVideoId: '',
-      location: 'Dhaka',
-      type: 'Art',
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-      deletedAt: DateTime.now(),
-      sharedPostId: 0,
-    ),
-    Post(
-      id: 3,
-      desc: null,
-      posterId: 1,
-      posterName: 'Shakib Khan',
-      posterImage: 'images/33.jpg',
-      posterIsVerified: 1,
-      active: 1,
-      image: ['images/3.jpg'],
-      likesCount: 500,
-      commentsCount: 99,
-      sharesCount: 0,
-      soundcloudTitle: '',
-      soundcloudId: '',
-      youtubeTitle: '',
-      youtubeVideoId: '',
-      location: 'Dhaka',
-      type: 'Art',
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-      deletedAt: DateTime.now(),
-      sharedPostId: 0,
-    ),
+//    Post(
+//      id: 1,
+//      desc: 'Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second',
+//
+//      posterId: "1",
+//      posterName: 'Bappa Raj',
+//      posterImage: 'images/11.jpg',
+//      posterIsVerified: 1,
+//      active: 1,
+//      image: ['images/1.jpg','images/11.jpg','images/22.jpg'],
+//      likesCount: 2500,
+//      commentsCount: 200,
+//      sharesCount: 30,
+//      soundcloudTitle: '',
+//      soundcloudId: '',
+//      youtubeTitle: '',
+//      youtubeVideoId: '',
+//      location: 'Dhaka',
+//      type: 'Art',
+//      createdAt: DateTime.now(),
+//      updatedAt: DateTime.now(),
+//      deletedAt: DateTime.now(),
+//      sharedPostId: 0,
+//    ),
+//    Post(
+//      id: 2,
+//      desc: 'Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second Hello World Second, Hello World Second, Hello World Second, Hello World Second, Hello World Second',
+//
+//      posterId: "1",
+//      posterName: 'Mr. Joshim',
+//      posterImage: 'images/22.jpg',
+//      posterIsVerified: 0,
+//      active: 1,
+//      image: null,
+//      likesCount: 375,
+//      commentsCount: 45,
+//      sharesCount: 3,
+//      soundcloudTitle: '',
+//      soundcloudId: '',
+//      youtubeTitle: '',
+//      youtubeVideoId: '',
+//      location: 'Dhaka',
+//      type: 'Art',
+//      createdAt: DateTime.now(),
+//      updatedAt: DateTime.now(),
+//      deletedAt: DateTime.now(),
+//      sharedPostId: 0,
+//    ),
+//    Post(
+//      id: 3,
+//      desc: null,
+//      posterId: "1",
+//      posterName: 'Shakib Khan',
+//      posterImage: 'images/33.jpg',
+//      posterIsVerified: 1,
+//      active: 1,
+//      image: ['images/3.jpg'],
+//      likesCount: 500,
+//      commentsCount: 99,
+//      sharesCount: 0,
+//      soundcloudTitle: '',
+//      soundcloudId: '',
+//      youtubeTitle: '',
+//      youtubeVideoId: '',
+//      location: 'Dhaka',
+//      type: 'Art',
+//      createdAt: DateTime.now(),
+//      updatedAt: DateTime.now(),
+//      deletedAt: DateTime.now(),
+//      sharedPostId: 0,
+//    ),
   ];
 
   List<Post> get posts{
@@ -135,8 +137,31 @@ class Posts with ChangeNotifier{
     return _posts.firstWhere((element) => element.id==postId);
   }
 
-  createPost(Post newPost){
-    _posts.add(newPost);
+  void createPost(Map<String, dynamic> postData){
+    List<String> tempMedia = [];
+    if(postData["media"]!=null)
+      {
+        final decodedMedia = jsonDecode(postData["media"]);
+        for(int i=0; i<decodedMedia.length; i++)
+        {
+          tempMedia.add(decodedMedia["$i"]);
+        }
+      }
+    Post newPost = Post(
+      id: postData["id"],
+      desc: postData["body"],
+      image: tempMedia,
+      createdAt: DateTime.parse(postData["created_at"]),
+      updatedAt: DateTime.parse(postData["updated_at"]),
+      posterId: postData["user"]["id"],
+      posterName: postData["user"]["name"],
+      posterIsVerified: postData["user"]["verified"],
+      posterImage: postData["user"]["profile_pic"],
+      likesCount: 0,
+      commentsCount: 0,
+      sharesCount: 0,
+    );
+    _posts.insert(0, newPost);
     notifyListeners();
   }
 

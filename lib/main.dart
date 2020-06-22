@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
       ],
         child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: "Find Friendz",
+        title: "Best Friends Inc.",
         routes: {
           HomePage.routeName: (BuildContext context)=>HomePage(),
           Login_Page.routeName:(BuildContext context)=>Login_Page(),

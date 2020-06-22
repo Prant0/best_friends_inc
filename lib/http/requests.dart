@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 class CustomHttpRequests{
@@ -126,6 +127,12 @@ class CustomHttpRequests{
 
   //Registering a user after unique validation and OTP check
   static Future<bool> registerUser(String phone, String username, String password, String referralId, String fid)async{
+    ByteData bytes = await rootBundle.load('images/avatar.jpg');
+    var buffer = bytes.buffer.asUint8List();
+    var profilePic = base64.encode(buffer);
+    ByteData bytesCover = await rootBundle.load('images/cover.jpg');
+    var bufferCover = bytesCover.buffer.asUint8List();
+    var coverPic = base64.encode(bufferCover);
     try{
       var response = await http.post("$uri/register",
           headers: defaultHeader,
@@ -135,6 +142,8 @@ class CustomHttpRequests{
             'password': password,
             'referral_id': referralId.toString(),
             'fuuid': fid.toString(),
+            'profile_pic': profilePic,
+            'cover_pic': coverPic,
           }
       );
       if(response.statusCode==200){
@@ -151,7 +160,6 @@ class CustomHttpRequests{
   }
 
   //Create A New Post
-  //Registering a user after unique validation and OTP check
   static Future<dynamic> createPost(String body, var media)async{
     print(media.runtimeType);
     try{
@@ -164,12 +172,11 @@ class CustomHttpRequests{
       );
       final data = jsonDecode(response.body);
       if(response.statusCode==200 || response.statusCode==201){
-        print(data);
         return data;
       }
       else{
         print("Status Code error ${response.statusCode} ${response.body}");
-        return data["message"];
+        return data;
       }
     }catch(e){
       print(e);
