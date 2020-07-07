@@ -14,11 +14,10 @@ class Registation_Page extends StatefulWidget {
 class _Registation_PageState extends State<Registation_Page> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-  String _username, _password, _rePassword, _number, _referralId="";
+  String _username, _password, _rePassword, _number, _referralId = "";
   bool _obscureText = true;
   bool onProgress = false;
   String errorTxt;
-//TODO: OTP ERROR HANDLING
   Future<String> _submit() async {
     //if (_formKey.currentState.validate()){
     final form = _formKey.currentState;
@@ -29,17 +28,15 @@ class _Registation_PageState extends State<Registation_Page> {
       });
       final checkUser = await CustomHttpRequests.checkExistingUser(_number);
       if (!checkUser) {
-        if(_referralId!="")
-          {
-            final referralCheck = await CustomHttpRequests.checkReferral(_referralId);
-            if(!referralCheck)
-              {
-                setState(() {
-                  onProgress = false;
-                });
-                return "Invalid Referral ID";
-              }
+        if (_referralId != "") {
+          final referralCheck = await CustomHttpRequests.checkReferral(_referralId);
+          if (!referralCheck) {
+            setState(() {
+              onProgress = false;
+            });
+            return "Invalid Referral ID";
           }
+        }
         await GoogleApi.checkOtpSuccess(_number, context, _username, _password, _referralId);
         setState(() {
           onProgress = false;

@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -22,7 +21,7 @@ class PostStatus extends StatefulWidget {
 class _PostStatusState extends State<PostStatus> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   String body, responseMsg;
-  bool onProgress=false;
+  bool onProgress = false;
   var imagesList;
   List<Asset> images = List<Asset>();
   Future<void> loadAssets() async {
@@ -46,28 +45,22 @@ class _PostStatusState extends State<PostStatus> {
     // setState to update our non-existent appearance.
     if (!mounted) return;
 
-    setState((){
+    setState(() {
       images = resultList;
     });
 
     imagesList = await formatImages();
-    setState(() {
-    });
-
+    setState(() {});
   }
 
-  createPost(BuildContext context)async{
-    //TODO: Check Error Handling on Post Upload
+  createPost(BuildContext context) async {
     final Map<String, dynamic> postRequest = await CustomHttpRequests.createPost(body, imagesList);
-    if(postRequest["message"].toString()=="Success")
-      {
-        responseMsg = "Success";
-        Provider.of<Posts>(context,listen: false).createPost(postRequest);
-      }
-    else
-      {
-        responseMsg = "Something Wrong";
-      }
+    if (postRequest["message"].toString() == "Success") {
+      responseMsg = "Success";
+      Provider.of<Posts>(context, listen: false).createPost(postRequest);
+    } else {
+      responseMsg = "Something Wrong";
+    }
     setState(() {
       onProgress = false;
       _scaffoldKey.currentState.removeCurrentSnackBar();
@@ -79,12 +72,11 @@ class _PostStatusState extends State<PostStatus> {
     });
   }
 
-  Future<Map<String, String>> formatImages()async{
+  Future<Map<String, String>> formatImages() async {
     Map<String, String> allImages = {};
     ByteData byteData;
-    if(images.length>0)
-    {
-      for(int i=0; i<images.length; i++){
+    if (images.length > 0) {
+      for (int i = 0; i < images.length; i++) {
         byteData = await images[i].getByteData();
         List<int> imageData = byteData.buffer.asUint8List();
         List<int> compressedImageData = await testCompressList(imageData);
@@ -110,7 +102,7 @@ class _PostStatusState extends State<PostStatus> {
   Widget build(BuildContext context) {
     return ModalProgressHUD(
       inAsyncCall: onProgress,
-          child: Scaffold(
+      child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
           centerTitle: true,
@@ -119,7 +111,7 @@ class _PostStatusState extends State<PostStatus> {
             IconButton(
               icon: Icon(Icons.camera),
               tooltip: "Add Media",
-              onPressed: (){
+              onPressed: () {
                 loadAssets();
               },
             ),
@@ -130,54 +122,62 @@ class _PostStatusState extends State<PostStatus> {
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
             height: MediaQuery.of(context).size.height,
             width: double.infinity,
-            child: Column(
-              children:[
-                Expanded(
-                  flex: 4,
-                  child: TextField(
-                    onChanged: (val)=>body=val,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      hintText: 'What\'s Going On...!!!',
-                      border: OutlineInputBorder(
-                      ),
-                    ),
+            child: Column(children: [
+              Expanded(
+                flex: 4,
+                child: TextField(
+                  onChanged: (val) => body = val,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: 'What\'s Going On...!!!',
+                    border: OutlineInputBorder(),
                   ),
                 ),
-                Expanded(
-                  flex: 2,
-                  child: images.length<1?InkWell(
-                    onTap: (){
-                      loadAssets();
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Theme.of(context).primaryColor,
+              ),
+              Expanded(
+                flex: 2,
+                child: images.length < 1
+                    ? InkWell(
+                        onTap: () {
+                          loadAssets();
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
-                      ),
-                      child: Icon(Icons.add, color: Theme.of(context).primaryColor,),
-                    ),
-                  ):ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemExtent: 150,
-                      itemBuilder: (context, item){
-                        return Card(
-                          child: Padding(
-                            padding: EdgeInsets.all(5),
-                            child: imagesList==null?Container(
-                              alignment: Alignment.center,
-                              child: CircularProgressIndicator(),
-                            ):Stack(
-                                children: [
-                                  Container(
-                                      width: double.infinity,
-                                      child: Image.memory(base64.decode(imagesList["$item"]), fit: BoxFit.cover,)),
+                      )
+                    : ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemExtent: 150,
+                        itemBuilder: (context, item) {
+                          return Card(
+                            child: Padding(
+                              padding: EdgeInsets.all(5),
+                              child: imagesList == null
+                                  ? Container(
+                                      alignment: Alignment.center,
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Stack(
+                                      children: [
+                                        Container(
+                                            width: double.infinity,
+                                            child: Image.memory(
+                                              base64.decode(imagesList["$item"]),
+                                              fit: BoxFit.cover,
+                                            )),
 //                                  Positioned(
 //                                    top: 2,
 //                                    right: 2,
@@ -191,46 +191,48 @@ class _PostStatusState extends State<PostStatus> {
 //                                      },
 //                                    ),
 //                                  ),
-                                ],
+                                      ],
+                                    ),
                             ),
-                          ),
-                        );
-                      },
-                    itemCount: images.length,
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Container(
-                      width: 200,
-                      height: 50,
-                      child: RaisedButton(
-                        onPressed: (){
-                          setState(() {
-                            onProgress = true;
-                          });
-                          createPost(context);
+                          );
                         },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        color: Theme.of(context).primaryColor,
-                        child: Text('Post Now', style: TextStyle(
+                        itemCount: images.length,
+                      ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: 200,
+                    height: 50,
+                    child: RaisedButton(
+                      onPressed: () {
+                        setState(() {
+                          onProgress = true;
+                        });
+                        createPost(context);
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      color: Theme.of(context).primaryColor,
+                      child: Text(
+                        'Post Now',
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           letterSpacing: 1,
-                        ),),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ]
-            ),
+              ),
+            ]),
           ),
         ),
       ),
