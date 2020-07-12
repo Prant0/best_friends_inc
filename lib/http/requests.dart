@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomHttpRequests {
-  static const String uri = "http://bfapi.kundefine.com/api";
+  static const String uri = "http://192.168.0.104/bf.demo/public/api";
   static SharedPreferences sharedPreferences;
 
   static const Map<String, String> defaultHeader = {
@@ -89,19 +89,20 @@ class CustomHttpRequests {
   }
 
   //Returns user, using for debugging
-  static Future<String> me(String token) async {
+  static Future<Map<String,dynamic>> me(String token) async {
     try {
       final url = '$uri/me';
       var response = await http.get(url, headers: {
         "Authorization": "bearer $token",
       });
+      Map<String,dynamic> data = json.decode(response.body);
       if (response.statusCode == 200) {
-        return response.body;
+        return data;
       } else {
         throw ('Error: Something wrong ${response.statusCode}');
       }
     } catch (e) {
-      return e.toString();
+      print(e.toString());
     }
   }
 

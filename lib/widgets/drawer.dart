@@ -1,15 +1,35 @@
 import 'package:bestfriends/http/requests.dart';
 import 'package:bestfriends/screens/login.dart';
+import 'package:bestfriends/screens/profile.dart';
 import 'package:bestfriends/screens/search.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/personalDrwaerItems.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
+  @override
+  _CustomDrawerState createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
   SharedPreferences sharedPreferences;
+  bool _isInit = true;
+
+
+  @override
+  void didChangeDependencies() async {
+    if (_isInit) {
+      sharedPreferences = await SharedPreferences.getInstance();
+      setState(() {
+        _isInit = false;
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
   removeToken(BuildContext context) async {
-    sharedPreferences = await SharedPreferences.getInstance();
     await CustomHttpRequests.logout();
     sharedPreferences.clear();
     Navigator.of(context).pushNamedAndRemoveUntil(Login_Page.routeName, (route) => false);
@@ -31,7 +51,7 @@ class CustomDrawer extends StatelessWidget {
                       child: Image.asset('images/bf.png'),
                     ),
                     Text(
-                      'Your Name',
+                      sharedPreferences==null?"Best Friends Inc.":sharedPreferences.getString("name"),
                       style: TextStyle(
                         fontSize: 25,
                       ),
@@ -47,8 +67,8 @@ class CustomDrawer extends StatelessWidget {
                     PersonalDrawerItem(
                       iconData: Icons.face,
                       text: 'My Profile',
-                      onTap: () {
-                        //TODO: Include Navigation to profile with current user profile ID which should be stored in Shared Preferences
+                      onTap: () async{
+                        Navigator.of(context).pushNamed(Profile.routeName, arguments: int.parse(sharedPreferences.getString("userId")));
                       },
                     ),
                     PersonalDrawerItem(
