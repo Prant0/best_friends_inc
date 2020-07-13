@@ -89,12 +89,10 @@ class CustomHttpRequests {
   }
 
   //Returns user, using for debugging
-  static Future<Map<String,dynamic>> me(String token) async {
+  static Future<Map<String,dynamic>> me() async {
     try {
-      final url = '$uri/me';
-      var response = await http.get(url, headers: {
-        "Authorization": "bearer $token",
-      });
+      final url = '$uri/get_auth_user';
+      var response = await http.get(url, headers: await getHeaderWithToken(),);
       Map<String,dynamic> data = json.decode(response.body);
       if (response.statusCode == 200) {
         return data;
@@ -103,6 +101,7 @@ class CustomHttpRequests {
       }
     } catch (e) {
       print(e.toString());
+      return {"error": e.toString()};
     }
   }
 
@@ -162,6 +161,27 @@ class CustomHttpRequests {
       var response = await http.get(
         "$uri/user/profile/$userId",
         headers: await getHeaderWithToken(),
+      );
+      final data = jsonDecode(response.body);
+      if (response.statusCode == 200)
+        return data;
+      else
+        return "Error";
+    } catch (e) {
+      print(e);
+      return "Something Wrong...!!!";
+    }
+  }
+
+  //Update User Profile
+  static Future<dynamic> updateProfile(String field, String newData) async {
+    try {
+      var response = await http.patch(
+        "$uri/user/profile?update=$field",
+        headers: await getHeaderWithToken(),
+        body: {
+          "value" : "$newData",
+        },
       );
       final data = jsonDecode(response.body);
       if (response.statusCode == 200)

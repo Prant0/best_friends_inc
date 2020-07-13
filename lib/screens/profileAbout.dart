@@ -4,20 +4,21 @@ class ProfileAbout extends StatelessWidget {
   final String petName, phone, occupation, birthday, gender, religion, livesIn, homeTown;
   //final List<String> hello;
   ProfileAbout({this.petName, this.phone, this.occupation, this.birthday, this.gender, this.religion, this.livesIn, this.homeTown});
-  List<Map<String, dynamic>> aboutData = [
+  //TODO: Make it dynamic with original data
+  final List<Map<String, dynamic>> aboutData = [
     {
       "icon": Icons.perm_identity,
-      "label": "Nick Name",
+      "label": "Known as",
       "data": "Short Name",
     },
     {
       "icon": Icons.phone_android,
-      "label": "Mobile",
+      "label": "Dial at",
       "data": "+8803333333333",
     },
     {
       "icon": Icons.business_center,
-      "label": "Occupation",
+      "label": "Work as",
       "data": "C.E.O",
     },
     {
@@ -32,7 +33,7 @@ class ProfileAbout extends StatelessWidget {
     },
     {
       "icon": Icons.language,
-      "label": "Religion",
+      "label": "Follows",
       "data": "Islam",
     },
     {
@@ -59,23 +60,26 @@ class ProfileAbout extends StatelessWidget {
         ),
         itemBuilder: (BuildContext context, index) {
           return Card(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Icon(
-                  aboutData[index]["icon"],
-                  size: 35,
-                  color: Theme.of(context).primaryColor,
-                ),
-                Text(
-                  aboutData[index]["label"],
-                  style: TextStyle(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    aboutData[index]["icon"],
+                    size: 35,
                     color: Theme.of(context).primaryColor,
                   ),
-                ),
-                Text(aboutData[index]["data"]),
-              ],
+                  Text(
+                    aboutData[index]["label"],
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                  Text(aboutData[index]["data"]),
+                ],
+              ),
             ),
           );
         },

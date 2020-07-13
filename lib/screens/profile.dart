@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:bestfriends/providers/user.dart';
 import 'package:bestfriends/screens/profileAbout.dart';
+import 'package:bestfriends/screens/updateProfile.dart';
 import 'package:bestfriends/widgets/profilePosts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   static const routeName = '/profile';
@@ -18,6 +20,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   User userData;
   bool _isInit = true, _isLoading = true;
   TabController _tabController;
+  SharedPreferences sharedPreferences;
 
   @override
   void initState() {
@@ -29,6 +32,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   void didChangeDependencies() async {
     if (_isInit) {
       userData = await Provider.of<Users>(context).getUser(ModalRoute.of(context).settings.arguments);
+      sharedPreferences = await SharedPreferences.getInstance();
       setState(() {
         _isLoading = false;
       });
@@ -104,7 +108,14 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         ),
                       ),
                       actions: <Widget>[
-                        IconButton(
+                        ModalRoute.of(context).settings.arguments==int.parse(sharedPreferences.getString("userId"))?
+                           IconButton(
+                             icon: Icon(Icons.edit),
+                             tooltip: 'Update Info',
+                             onPressed: () {
+                               Navigator.of(context).pushNamed(UpdateProfile.routeName);
+                             },
+                           ):IconButton(
                           icon: Icon(Icons.person_add),
                           tooltip: 'Follow',
                           onPressed: () {},
