@@ -65,13 +65,19 @@ class _Login_PageState extends State<Login_Page> {
       sharedPreferences = await SharedPreferences.getInstance();
       final result = await CustomHttpRequests.login(_phone, _password);
       final data = jsonDecode(result);
-      final userData = await CustomHttpRequests.me();
-      setState(() {
-        sharedPreferences.setString("token", data['access_token']);
-        sharedPreferences.setString("userId", userData["id"].toString());
-        sharedPreferences.setString("name", userData["name"]);
-      });
-      return true;
+      if(data["access_token"]!=null)
+        {
+          sharedPreferences.setString("token", data['access_token']);
+          final userData = await CustomHttpRequests.me();
+          setState(() {
+            sharedPreferences.setString("userId", userData["id"].toString());
+            sharedPreferences.setString("name", userData["name"]);
+          });
+          return true;
+        }
+      else{
+        return false;
+      }
     } catch (e) {
       print(e);
       return false;

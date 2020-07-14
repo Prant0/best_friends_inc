@@ -1,54 +1,57 @@
+import 'package:bestfriends/providers/user.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfileAbout extends StatelessWidget {
-  final String petName, phone, occupation, birthday, gender, religion, livesIn, homeTown;
-  //final List<String> hello;
-  ProfileAbout({this.petName, this.phone, this.occupation, this.birthday, this.gender, this.religion, this.livesIn, this.homeTown});
-  //TODO: Make it dynamic with original data
-  final List<Map<String, dynamic>> aboutData = [
-    {
-      "icon": Icons.perm_identity,
-      "label": "Known as",
-      "data": "Short Name",
-    },
-    {
-      "icon": Icons.phone_android,
-      "label": "Dial at",
-      "data": "+8803333333333",
-    },
-    {
-      "icon": Icons.business_center,
-      "label": "Work as",
-      "data": "C.E.O",
-    },
-    {
-      "icon": Icons.calendar_today,
-      "label": "Birthday",
-      "data": "1st January, 1990",
-    },
-    {
-      "icon": Icons.accessibility,
-      "label": "Gender",
-      "data": "Male",
-    },
-    {
-      "icon": Icons.language,
-      "label": "Follows",
-      "data": "Islam",
-    },
-    {
-      "icon": Icons.location_city,
-      "label": "Lives In",
-      "data": "Dhaka",
-    },
-    {
-      "icon": Icons.home,
-      "label": "Hometown",
-      "data": "Dhaka",
-    },
-  ];
+
+final String petName, phone, occupation, birthday, gender, religion, livesIn, homeTown;
+//final List<String> hello;
+ProfileAbout({this.petName, this.phone, this.occupation, this.birthday, this.gender, this.religion, this.livesIn, this.homeTown});
+
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> aboutData = [
+      {
+        "icon": Icons.perm_identity,
+        "label": "Known as",
+        "data": petName,
+      },
+      {
+        "icon": Icons.phone_android,
+        "label": "Dial at",
+        "data": phone,
+      },
+      {
+        "icon": Icons.business_center,
+        "label": "Work as",
+        "data": occupation,
+      },
+      {
+        "icon": Icons.calendar_today,
+        "label": "Birthday",
+        "data": birthday,
+      },
+      {
+        "icon": Icons.accessibility,
+        "label": "Gender",
+        "data": gender,
+      },
+      {
+        "icon": Icons.language,
+        "label": "Follows",
+        "data": religion,
+      },
+      {
+        "icon": Icons.location_city,
+        "label": "Lives In",
+        "data": livesIn,
+      },
+      {
+        "icon": Icons.home,
+        "label": "Hometown",
+        "data": homeTown,
+      },
+    ];
     return Container(
       padding: EdgeInsets.all(10),
       child: GridView.builder(
@@ -77,7 +80,7 @@ class ProfileAbout extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                     ),
                   ),
-                  Text(aboutData[index]["data"]),
+                  Text(aboutData[index]["data"]==null?"----":aboutData[index]["data"]),
                 ],
               ),
             ),

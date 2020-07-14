@@ -92,7 +92,7 @@ class _PostStatusState extends State<PostStatus> {
       list,
       minHeight: 300,
       minWidth: 500,
-      quality: 100,
+      quality: 40,
       rotate: 0,
     );
     return result;

@@ -8,7 +8,14 @@ class User {
   final int isVerified;
   final String profilePic;
   final String coverPic;
-  User({this.userId, this.name, this.phone, this.isVerified, this.coverPic, this.profilePic});
+  final String gender;
+  final String religion;
+  final String hometown;
+  final String livesIn;
+  final String birthday;
+  final String occupation;
+  final String nickName;
+  User({this.userId, this.name, this.phone, this.isVerified, this.coverPic, this.profilePic, this.gender, this.livesIn, this.occupation, this.nickName, this.religion, this.birthday, this.hometown});
 }
 
 class Users with ChangeNotifier {
@@ -26,6 +33,13 @@ class Users with ChangeNotifier {
         isVerified: user["verified"],
         profilePic: user["profile_pic"],
         coverPic: user["cover_pic"],
+        gender: user["gender"],
+        livesIn: user["lives_in"],
+        occupation: user["occupation: "],
+        nickName: user["nick_name"],
+        religion: user["religion"],
+        birthday: user["birthday"].toString(),
+        hometown: user["hometown"],
       );
     }
     notifyListeners();

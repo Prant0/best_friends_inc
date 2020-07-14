@@ -47,13 +47,7 @@ class _SearchPageState extends State<SearchPage> {
             icon: Icon(Icons.search),
             onPressed: isLoading
                 ? null
-                : searchController.text.length < 4
-                    ? () {
-                        setState(() {
-                          infoTxt = "Keyword should not less than 4 alphabets";
-                        });
-                      }
-                    : () async {
+                : () async {
                         setState(() {
                           isLoading = true;
                         });

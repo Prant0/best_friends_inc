@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bestfriends/http/requests.dart';
 import 'package:bestfriends/providers/user.dart';
 import 'package:bestfriends/screens/profileAbout.dart';
 import 'package:bestfriends/screens/updateProfile.dart';
@@ -22,8 +23,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   TabController _tabController;
   SharedPreferences sharedPreferences;
 
+  bool following = false;
+
   @override
   void initState() {
+
     _tabController = TabController(length: 4, initialIndex: 1, vsync: this);
     super.initState();
   }
@@ -33,9 +37,12 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     if (_isInit) {
       userData = await Provider.of<Users>(context).getUser(ModalRoute.of(context).settings.arguments);
       sharedPreferences = await SharedPreferences.getInstance();
-      setState(() {
-        _isLoading = false;
-      });
+      if(mounted)
+        {
+          setState(() {
+            _isLoading = false;
+          });
+        }
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -115,10 +122,29 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                              onPressed: () {
                                Navigator.of(context).pushNamed(UpdateProfile.routeName);
                              },
-                           ):IconButton(
-                          icon: Icon(Icons.person_add),
+                           ): following?IconButton(
+                  icon: Icon(Icons.not_interested),
+                  tooltip: 'Un-follow',
+                  onPressed: () async{
+                    //TODO: Fix follow button error
+                  final data = await CustomHttpRequests.followUser(userData.userId);
+                  if(data["detached"].length>0){
+                    setState(() {
+                      following = false;
+                    });
+                  }
+                  },
+                  ) :IconButton(
+                          icon: Icon(Icons.check_circle_outline),
                           tooltip: 'Follow',
-                          onPressed: () {},
+                          onPressed: () async{
+                              final data = await CustomHttpRequests.followUser(userData.userId);
+                              if(data["attached"].length>0){
+                                setState(() {
+                                  following = true;
+                                });
+                              }
+                          },
                         ),
                       ],
                     ),
@@ -175,7 +201,16 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   controller: _tabController,
                   children: <Widget>[
                     ProfilePosts(),
-                    ProfileAbout(),
+                    ProfileAbout(
+                      petName: userData.nickName,
+                      phone: userData.phone,
+                      occupation: userData.occupation,
+                      birthday: userData.birthday,
+                      gender: userData.gender,
+                      religion: userData.religion,
+                      livesIn: userData.livesIn,
+                      homeTown: userData.hometown,
+                    ),
                     Container(
                       child: Center(
                         child: Text("Follower"),

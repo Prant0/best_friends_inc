@@ -68,9 +68,9 @@ class _ProfilePostsState extends State<ProfilePosts> {
     return Stack(
       children: <Widget>[
         Container(
-          child: userPosts.length < 1
-              ? Center(child: CircularProgressIndicator())
-              : ListView.builder(
+          child: isLoaded==true && userPosts.length < 1
+              ? Container(alignment: Alignment.center, child: Text("No Posts Yet"),)
+              : userPosts.length < 1? Center(child: CircularProgressIndicator()) : ListView.builder(
                   controller: _scrollController,
                   itemCount: userPosts.length,
                   itemBuilder: (BuildContext context, int i) {

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomHttpRequests {
-  static const String uri = "http://192.168.0.104/bf.demo/public/api";
+  static const String uri = "http://192.168.0.109/bf.demo/public/api";
   static SharedPreferences sharedPreferences;
 
   static const Map<String, String> defaultHeader = {
@@ -62,9 +62,8 @@ class CustomHttpRequests {
       });
       if (response.statusCode == 200) {
         return response.body;
-      } else {
-        throw ('Error: Something wrong');
       }
+      return "Something Wrong";
     } catch (e) {
       return e.toString();
     }
@@ -205,10 +204,10 @@ class CustomHttpRequests {
       if (response.statusCode == 200)
         return data;
       else
-        return "Error";
+        return {"error": "Could not load data"};
     } catch (e) {
       print(e);
-      return "Something Wrong...!!!";
+      return {"error": "Something Wrong"};
     }
   }
 
@@ -220,14 +219,37 @@ class CustomHttpRequests {
         headers: await getHeaderWithToken(),
       );
       final data = jsonDecode(response.body);
-      print(data);
+      print(response.body);
+      print(response.statusCode);
       if (response.statusCode == 200)
         return data["data"];
       else
-        return "Error";
+        return [];
     } catch (e) {
       print(e);
-      return "Something Wrong...!!!";
+      return [];
     }
   }
+
+  //Toggle Follow Someone
+  static Future<dynamic> followUser(int uid) async {
+    try {
+      var response = await http.post(
+        "$uri/user/toggle_follow/$uid",
+        headers: await getHeaderWithToken(),
+      );
+      final data = jsonDecode(response.body);
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200)
+        return data["data"];
+      else
+        return {"error": "Something Wrong"};
+    } catch (e) {
+      print(e);
+      return {"error": "Something Wrong"};
+    }
+  }
+
+
 }
