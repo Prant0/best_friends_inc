@@ -242,7 +242,53 @@ class CustomHttpRequests {
       print(response.body);
       print(response.statusCode);
       if (response.statusCode == 200)
-        return data["data"];
+        return data;
+      else
+        return {"error": "Something Wrong"};
+    } catch (e) {
+      print(e);
+      return {"error": "Something Wrong"};
+    }
+  }
+
+
+  //Toggle Like Post
+  static Future<dynamic> likePost(int postId) async {
+    try {
+      var response = await http.post(
+        "$uri/post/toggle_like/$postId",
+        headers: await getHeaderWithToken(),
+      );
+      final data = jsonDecode(response.body);
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200)
+        return data;
+      else
+        return {"error": "Something Wrong"};
+    } catch (e) {
+      print(e);
+      return {"error": "Something Wrong"};
+    }
+  }
+
+
+  //Fetch Timeline
+  static Future<dynamic> timelinePosts(int call, int postCounts) async {
+    try {
+      var response = await http.post(
+        "$uri/user/timeline",
+        headers: await getHeaderWithToken(),
+        body: {
+          "call": call.toString(),
+          "total_product_shown": postCounts.toString(),
+        },
+      );
+      final data = jsonDecode(response.body);
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200)
+        return data;
       else
         return {"error": "Something Wrong"};
     } catch (e) {

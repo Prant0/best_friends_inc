@@ -17,6 +17,8 @@ class SinglePost extends StatelessWidget {
   final int sharesCount;
   final int postId;
   final int posterId;
+  final bool isLiked;
+  final Function likeFun;
   SinglePost({
     this.posterImage,
     this.posterName,
@@ -28,6 +30,8 @@ class SinglePost extends StatelessWidget {
     this.sharesCount,
     this.postId,
     this.posterId,
+    this.isLiked,
+    this.likeFun,
   });
 
   static void showComments(BuildContext context, int postId) {
@@ -236,12 +240,14 @@ class SinglePost extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      likeFun(postId, !isLiked);
+                    },
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: Row(children: [
                         Icon(
-                          Icons.thumb_up,
+                          isLiked?Icons.thumb_down:Icons.thumb_up,
                           color: Colors.teal,
                           size: 20.0,
                         ),

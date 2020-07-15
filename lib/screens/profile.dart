@@ -22,7 +22,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   bool _isInit = true, _isLoading = true;
   TabController _tabController;
   SharedPreferences sharedPreferences;
-
   bool following = false;
 
   @override
@@ -126,7 +125,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   icon: Icon(Icons.not_interested),
                   tooltip: 'Un-follow',
                   onPressed: () async{
-                    //TODO: Fix follow button error
                   final data = await CustomHttpRequests.followUser(userData.userId);
                   if(data["detached"].length>0){
                     setState(() {

@@ -11,7 +11,7 @@ class Post {
   final int posterIsVerified;
   final int active;
   final List<String> image;
-  final int likesCount;
+  int likesCount;
   final int commentsCount;
   final int sharesCount;
   final String soundcloudTitle;
@@ -24,6 +24,7 @@ class Post {
   final DateTime updatedAt;
   final DateTime deletedAt;
   final int sharedPostId;
+  bool isLiked;
   Post({
     this.id,
     this.desc,
@@ -46,6 +47,7 @@ class Post {
     this.updatedAt,
     this.deletedAt,
     this.sharedPostId,
+    this.isLiked,
   });
 }
 
@@ -136,6 +138,63 @@ class Posts with ChangeNotifier {
     return _posts.firstWhere((element) => element.id == postId);
   }
 
+  Future<bool> handleLike(int postId, bool isLiked)async{
+    //TODO: Stop reloading entire list
+    final response = await CustomHttpRequests.likePost(postId);
+    var tempPost = _posts.firstWhere((element) => element.id==postId);
+    tempPost.likesCount = response[1]["total_like"];
+    if(response[0]["attached"].length>0)
+      {
+        tempPost.isLiked = true;
+      }
+    else if(response[0]["detached"].length>0)
+    {
+      tempPost.isLiked = false;
+    }
+    print(postId);
+    notifyListeners();
+    return true;
+  }
+
+  Future fetchTimeline()async{
+    final data = await CustomHttpRequests.timelinePosts(0, 0);
+    final postData = data["data"];
+    if(postData == "No Post Found")
+      return;
+    final postMetaData = data["meta-data"];
+    for(var group in postData){
+      for(var singlePost in group){
+        if(singlePost["type"]==null)
+          {
+            List<String> tempMedia = [];
+            if (singlePost["media"] != null) {
+              final decodedMedia = jsonDecode(singlePost["media"]);
+              for (int i = 0; i < decodedMedia.length; i++) {
+                tempMedia.add(decodedMedia["$i"]);
+              }
+            }
+            Post newPost = Post(
+              id: singlePost["id"],
+              desc: singlePost["body"],
+              image: tempMedia,
+              createdAt: DateTime.parse(singlePost["created_at"]),
+              updatedAt: DateTime.parse(singlePost["updated_at"]),
+              posterId: singlePost["user"]["id"],
+              posterName: singlePost["user"]["name"],
+              posterIsVerified: singlePost["user"]["verified"],
+              posterImage: singlePost["user"]["profile_pic"],
+              likesCount: singlePost["likes_count"],
+              commentsCount: singlePost["total_comment"],
+              sharesCount: 0,
+              isLiked: singlePost["is_liked"],
+            );
+            _posts.add(newPost);
+          }
+      }
+    }
+    notifyListeners();
+  }
+
   void createPost(Map<String, dynamic> postData) {
     List<String> tempMedia = [];
     if (postData["media"] != null) {
@@ -163,7 +222,6 @@ class Posts with ChangeNotifier {
   }
 
   Future<List<Post>> profilePosts(int userId, int page) async {
-    //TODO: Add Dynamic Poster Name and Poster Image
     List<Post> usersPosts = [];
     final data = await CustomHttpRequests.userPosts(userId, page);
     //print(data);
