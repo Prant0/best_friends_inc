@@ -9,6 +9,9 @@ import '../widgets/singlePost.dart';
 import 'package:provider/provider.dart';
 import '../widgets/drawer.dart';
 
+//TODO: Add Products
+//TODO: Infinity Scroll to timeline
+
 class HomePage extends StatefulWidget {
   static const String routeName = '/HomePage';
   @override
@@ -49,6 +52,7 @@ class _HomePageState extends State<HomePage>{
 
   @override
   Widget build(BuildContext context) {
+    //TODO: implement timeline pull to refresh and infinity scroll
     allPosts = Provider.of<Posts>(context).posts;
     return Scaffold(
       backgroundColor:Color(0xffE2E4EA) ,

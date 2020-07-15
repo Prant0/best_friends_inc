@@ -154,11 +154,49 @@ class CustomHttpRequests {
     }
   }
 
-  //Get User Info
+  //Create A New Comment
+  static Future<dynamic> createComment(String body, int postId) async {
+    try {
+      var response = await http.post("$uri/comment/$postId", headers: await getHeaderWithToken(), body: {
+        'body': body == null ? "" : body,
+        'media': "",
+      });
+      final data = jsonDecode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return data;
+      } else {
+        print("Status Code error ${response.statusCode} ${response.body}");
+        return data;
+      }
+    } catch (e) {
+      print(e);
+      return "Something Wrong...!!!";
+    }
+  }
+
+  //Get Profile Comments
   static Future<dynamic> userInfo(int userId) async {
     try {
       var response = await http.get(
         "$uri/user/profile/$userId",
+        headers: await getHeaderWithToken(),
+      );
+      final data = jsonDecode(response.body);
+      if (response.statusCode == 200)
+        return data;
+      else
+        return "Error";
+    } catch (e) {
+      print(e);
+      return "Something Wrong...!!!";
+    }
+  }
+
+  //Get Profile Comments
+  static Future<dynamic> getProfileComments(int postId) async {
+    try {
+      var response = await http.get(
+        "$uri/comment/$postId",
         headers: await getHeaderWithToken(),
       );
       final data = jsonDecode(response.body);

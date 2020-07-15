@@ -72,6 +72,7 @@ class _Login_PageState extends State<Login_Page> {
           setState(() {
             sharedPreferences.setString("userId", userData["id"].toString());
             sharedPreferences.setString("name", userData["name"]);
+            sharedPreferences.setString("profile_pic", userData["profile_pic"]);
           });
           return true;
         }

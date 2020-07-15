@@ -3,6 +3,7 @@ import 'package:bestfriends/screens/postStatus.dart';
 import 'package:bestfriends/screens/profile.dart';
 import 'package:bestfriends/screens/search.dart';
 import 'package:bestfriends/screens/updateProfile.dart';
+import 'package:bestfriends/widgets/allComments.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -41,6 +42,7 @@ class _MyAppState extends State<MyApp> {
           Profile.routeName: (BuildContext context) => Profile(),
           SearchPage.routeName: (BuildContext context) => SearchPage(),
           UpdateProfile.routeName: (BuildContext context) => UpdateProfile(),
+          AllComments.routeName: (BuildContext context) => AllComments(),
         },
         theme: ThemeData(
             primaryColor: Colors.teal,

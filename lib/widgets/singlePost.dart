@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:bestfriends/providers/comment.dart';
 import 'package:bestfriends/screens/profile.dart';
+import 'package:bestfriends/widgets/allComments.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SinglePost extends StatelessWidget {
   final String posterImage;
@@ -35,108 +38,18 @@ class SinglePost extends StatelessWidget {
   });
 
   static void showComments(BuildContext context, int postId) {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(25),
-            topRight: Radius.circular(25),
-          ),
-        ),
-        context: context,
-        builder: (context) {
-          final _comments = Provider.of<Comments>(context).postComments(postId);
-          return Container(
-            height: MediaQuery.of(context).size.height * 0.8,
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    width: double.infinity,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 8,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Add a comment',
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Center(
-                            child: IconButton(
-                              icon: Icon(Icons.send),
-                              color: Theme.of(context).primaryColor,
-                              onPressed: () {},
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 8,
-                  child: _comments.length < 1
-                      ? Container(
-                          alignment: Alignment.center,
-                          child: Text('Be the first commenter'),
-                        )
-                      : Container(
-                          child: ListView.builder(
-                            itemBuilder: (context, i) {
-                              return ListTile(
-                                  leading: ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: Container(
-                                      height: 30,
-                                      width: 30,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(_comments[i].cmntrPic),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  title: Text(
-                                    _comments[i].cmntText,
-                                    textAlign: TextAlign.justify,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    _comments[i].cmntrName,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                  trailing: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.thumb_up,
-                                      color: _comments[i].likedByMe == true ? Colors.blue : Colors.grey,
-                                    ),
-                                  ));
-                            },
-                            itemCount: _comments.length,
-                          ),
-                        ),
-                ),
-              ],
+      showModalBottomSheet(
+          isScrollControlled: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25),
             ),
-          );
-        });
+          ),
+          context: context,
+          builder: (context){
+            return AllComments(postId:postId);
+          });
   }
 
   @override
@@ -246,8 +159,8 @@ class SinglePost extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: Row(children: [
-                        Icon(
-                          isLiked?Icons.thumb_down:Icons.thumb_up,
+                        FaIcon(
+                          isLiked==null||isLiked?FontAwesomeIcons.solidHeart:FontAwesomeIcons.heart,
                           color: Colors.teal,
                           size: 20.0,
                         ),
@@ -263,14 +176,15 @@ class SinglePost extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
+                     // Navigator.of(context).pushNamed(AllComments.routeName, arguments: postId);
                       showComments(context, postId);
                     },
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: Row(
                         children: <Widget>[
-                          Icon(
-                            Icons.comment,
+                          FaIcon(
+                            FontAwesomeIcons.comments,
                             color: Colors.teal,
                             size: 20.0,
                           ),
