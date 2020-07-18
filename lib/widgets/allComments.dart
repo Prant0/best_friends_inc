@@ -1,3 +1,4 @@
+import 'package:bestfriends/screens/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -99,13 +100,19 @@ class _AllCommentsState extends State<AllComments> {
                     children: <Widget>[
                       ListTile(
                         dense: true,
-                        leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Image.memory(
-                            base64Decode(_allComments[i].cmntrPic),
-                            fit: BoxFit.cover,
-                            height: 35,
-                            width: 35,
+                        leading: InkWell(
+                          onTap: (){
+                            print(_allComments[i].cmntrId.runtimeType);
+                            Navigator.of(context).pushNamed(Profile.routeName, arguments: _allComments[i].cmntrId);
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Image.memory(
+                              base64Decode(_allComments[i].cmntrPic),
+                              fit: BoxFit.cover,
+                              height: 35,
+                              width: 35,
+                            ),
                           ),
                         ),
                         title: Text(

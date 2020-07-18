@@ -4,15 +4,15 @@ import 'package:bestfriends/http/requests.dart';
 import 'package:flutter/cupertino.dart';
 class Post {
   final int id;
-  final String desc;
+  String desc;
   final int posterId;
   final String posterName;
   final String posterImage;
   final int posterIsVerified;
   final int active;
-  final List<String> image;
+  List<String> image;
   int likesCount;
-  final int commentsCount;
+  int commentsCount;
   final int sharesCount;
   final String soundcloudTitle;
   final String soundcloudId;
@@ -135,6 +135,7 @@ class Posts with ChangeNotifier {
   }
 
   Post singlePost(int postId) {
+    print(_posts[0].id);
     return _posts.firstWhere((element) => element.id == postId);
   }
 
@@ -190,6 +191,32 @@ class Posts with ChangeNotifier {
             );
             _posts.add(newPost);
           }
+        else{
+//          List<String> tempMedia = [];
+//          if (singlePost["media"] != null) {
+//            final decodedMedia = jsonDecode(singlePost["media"]);
+//            for (int i = 0; i < decodedMedia.length; i++) {
+//              tempMedia.add(decodedMedia["$i"]);
+//            }
+//          }
+          Post newPost = Post(
+            id: singlePost["id"],
+            desc: singlePost["description"],
+            image: null,
+            createdAt: DateTime.parse(singlePost["created_at"]),
+            updatedAt: DateTime.parse(singlePost["updated_at"]),
+            posterId: null,//singlePost["user"]["id"],
+            posterName: singlePost["demo vendor name"],
+            posterIsVerified: null,//singlePost["user"]["verified"],
+            posterImage: null,//singlePost["user"]["profile_pic"],
+            likesCount: singlePost["likes_count"],
+            commentsCount: singlePost["total_comment"],
+            sharesCount: 0,
+            isLiked: singlePost["is_liked"],
+            type: singlePost["type"],
+          );
+          _posts.add(newPost);
+        }
       }
     }
     notifyListeners();
@@ -221,6 +248,24 @@ class Posts with ChangeNotifier {
     notifyListeners();
   }
 
+  void updatePost(Map<String, dynamic> postData) {
+    print(postData["id"]);
+    List<String> tempMedia = [];
+    if (postData["media"] != null) {
+      final decodedMedia = jsonDecode(postData["media"]);
+      for (int i = 0; i < decodedMedia.length; i++) {
+        tempMedia.add(decodedMedia["$i"]);
+      }
+    }
+    Post getPost = _posts.firstWhere((element) => element.id==postData["id"]);
+    getPost.desc = postData["body"];
+    getPost.image = tempMedia;
+    getPost.likesCount = postData["likes_count"];
+    getPost.commentsCount = postData["total_comment"];
+    getPost.isLiked = postData["is_liked"];
+    notifyListeners();
+  }
+
   Future<List<Post>> profilePosts(int userId, int page) async {
     List<Post> usersPosts = [];
     final data = await CustomHttpRequests.userPosts(userId, page);
@@ -243,10 +288,12 @@ class Posts with ChangeNotifier {
         posterName: data["user"]["name"],
         posterIsVerified: 0,
         posterImage: data["user"]["profile_pic"],
-        likesCount: 0,
-        commentsCount: 0,
+        likesCount: data["likes_count"],
+        isLiked: data["is_liked"],
+        commentsCount: data["total_comment"],
         sharesCount: 0,
       );
+      _posts.add(newPost);
       usersPosts.add(newPost);
     }
     return usersPosts;

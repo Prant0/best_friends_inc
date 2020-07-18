@@ -15,7 +15,8 @@ class User {
   final String birthday;
   final String occupation;
   final String nickName;
-  User({this.userId, this.name, this.phone, this.isVerified, this.coverPic, this.profilePic, this.gender, this.livesIn, this.occupation, this.nickName, this.religion, this.birthday, this.hometown});
+  bool isFollowedByMe;
+  User({this.userId, this.name, this.phone, this.isVerified, this.coverPic, this.profilePic, this.gender, this.livesIn, this.occupation, this.nickName, this.religion, this.birthday, this.hometown, this.isFollowedByMe});
 }
 
 class Users with ChangeNotifier {
@@ -40,6 +41,7 @@ class Users with ChangeNotifier {
         religion: user["religion"],
         birthday: user["birthday"].toString(),
         hometown: user["hometown"],
+        isFollowedByMe: user["is_followed"],
       );
     }
     notifyListeners();

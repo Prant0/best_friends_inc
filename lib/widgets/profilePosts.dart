@@ -2,6 +2,7 @@ import 'package:bestfriends/providers/post.dart';
 import 'package:bestfriends/widgets/singlePost.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePosts extends StatefulWidget {
   @override
@@ -11,6 +12,8 @@ class ProfilePosts extends StatefulWidget {
 class _ProfilePostsState extends State<ProfilePosts> {
   ScrollController _scrollController = ScrollController();
   bool isLoaded = false, fetching = false;
+  SharedPreferences sharedPreferences;
+  int myUserId;
   int currentPage = 1;
   List<dynamic> userPosts = [];
   @override
@@ -43,7 +46,9 @@ class _ProfilePostsState extends State<ProfilePosts> {
   void didChangeDependencies() async {
     if (isLoaded == false) {
       try {
-        userPosts = await Provider.of<Posts>(context, listen: false).profilePosts(ModalRoute.of(context).settings.arguments, currentPage);
+        userPosts = await Provider.of<Posts>(context).profilePosts(ModalRoute.of(context).settings.arguments, currentPage);
+        sharedPreferences = await SharedPreferences.getInstance();
+        myUserId = int.parse(sharedPreferences.getString("userId"));
         if (mounted) {
           setState(() {
             isLoaded = true;
@@ -54,6 +59,16 @@ class _ProfilePostsState extends State<ProfilePosts> {
       }
     }
     super.didChangeDependencies();
+  }
+
+  void likeAction(int postId, bool isLiked){
+    Provider.of<Posts>(context, listen: false).handleLike(postId, isLiked);
+    final tempPost = userPosts.firstWhere((element) => element.id==postId);
+    final tempIndex = userPosts.indexOf(tempPost);
+    print(tempIndex);
+
+        userPosts[tempIndex].isLiked = !userPosts[tempIndex].isLiked;
+
   }
 
   @override
@@ -80,11 +95,15 @@ class _ProfilePostsState extends State<ProfilePosts> {
                       posterIsVerified: userPosts[i].posterIsVerified,
                       desc: userPosts[i].desc,
                       postImage: userPosts[i].image,
+                      isLiked: userPosts[i].isLiked,
                       likesCount: userPosts[i].likesCount,
                       commentsCount: userPosts[i].commentsCount,
                       sharesCount: userPosts[i].sharesCount,
                       postId: userPosts[i].id,
                       posterId: userPosts[i].posterId,
+                      createdAt: userPosts[i].createdAt,
+                      isMyPost: myUserId==userPosts[i].posterId,
+                      likeFun: likeAction,
                     );
                   }),
         ),

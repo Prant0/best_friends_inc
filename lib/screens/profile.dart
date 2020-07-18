@@ -39,6 +39,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       if(mounted)
         {
           setState(() {
+            following = userData.isFollowedByMe;
             _isLoading = false;
           });
         }

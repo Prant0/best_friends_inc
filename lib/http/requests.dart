@@ -154,6 +154,26 @@ class CustomHttpRequests {
     }
   }
 
+  //Update Post
+  static Future<dynamic> updatePost(String body, var media, int postId) async {
+    try {
+      var response = await http.patch("$uri/post/$postId", headers: await getHeaderWithToken(), body: {
+        'body': body == null ? "" : body,
+        'media': media == null || media == "null" ? "" : jsonEncode(media),
+      });
+      final data = jsonDecode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return data;
+      } else {
+        print("Status Code error ${response.statusCode} ${response.body}");
+        return data;
+      }
+    } catch (e) {
+      print(e);
+      return "Something Wrong...!!!";
+    }
+  }
+
   //Create A New Comment
   static Future<dynamic> createComment(String body, int postId) async {
     try {
@@ -324,6 +344,25 @@ class CustomHttpRequests {
       );
       final data = jsonDecode(response.body);
       print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200)
+        return data;
+      else
+        return {"error": "Something Wrong"};
+    } catch (e) {
+      print(e);
+      return {"error": "Something Wrong"};
+    }
+  }
+
+  //Get Single Post
+  static Future<dynamic> getOnePost(int postId) async {
+    try {
+      var response = await http.post(
+        "$uri/post/$postId",
+        headers: await getHeaderWithToken(),
+      );
+      final data = jsonDecode(response.body);
       print(response.statusCode);
       if (response.statusCode == 200)
         return data;

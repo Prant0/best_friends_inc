@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+//TODO: Logout Login Dynamic
+
 class Login_Page extends StatefulWidget {
   static const routeName = '/loginPage';
   @override

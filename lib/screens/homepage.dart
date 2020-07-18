@@ -20,6 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>{
   bool _init = true;
+  int myUserId;
   SharedPreferences sharedPreferences;
   List<Post> allPosts = [];
   @override
@@ -33,6 +34,9 @@ class _HomePageState extends State<HomePage>{
       {
         Navigator.of(context).pushReplacementNamed(Login_Page.routeName);
       }
+    else{
+      myUserId = int.parse(sharedPreferences.getString("userId"));
+    }
   }
 
   @override
@@ -74,7 +78,11 @@ class _HomePageState extends State<HomePage>{
         child: ListView.builder(
           itemCount: allPosts.length,
           itemBuilder: (BuildContext context, int i){
-          return SinglePost(
+          return allPosts[i].type=="product"?Container(
+            height: 20,
+            width: 50,
+            color: Colors.red,
+          ):SinglePost(
             posterImage: allPosts[i].posterImage,
             posterName: allPosts[i].posterName,
             posterIsVerified: allPosts[i].posterIsVerified,
@@ -86,7 +94,9 @@ class _HomePageState extends State<HomePage>{
             postId: allPosts[i].id,
             posterId: allPosts[i].posterId,
             isLiked: allPosts[i].isLiked,
+            createdAt: allPosts[i].createdAt,
             likeFun: likeAction,
+            isMyPost: myUserId == allPosts[i].posterId,
           );
         }),
       )

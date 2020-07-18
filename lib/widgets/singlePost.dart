@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:bestfriends/providers/comment.dart';
 import 'package:bestfriends/screens/profile.dart';
+import 'package:bestfriends/screens/singlePostDetails.dart';
 import 'package:bestfriends/widgets/allComments.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:time_formatter/time_formatter.dart';
 
 class SinglePost extends StatelessWidget {
   final String posterImage;
@@ -21,7 +23,10 @@ class SinglePost extends StatelessWidget {
   final int postId;
   final int posterId;
   final bool isLiked;
+  final DateTime createdAt;
   final Function likeFun;
+  final String postType;
+  final bool isMyPost;
   SinglePost({
     this.posterImage,
     this.posterName,
@@ -34,7 +39,10 @@ class SinglePost extends StatelessWidget {
     this.postId,
     this.posterId,
     this.isLiked,
+    this.createdAt,
     this.likeFun,
+    this.postType,
+    this.isMyPost,
   });
 
   static void showComments(BuildContext context, int postId) {
@@ -99,6 +107,29 @@ class SinglePost extends StatelessWidget {
                           tooltip: 'Verified User',
                         )
                       : Container(),
+                  Spacer(),
+                  Text(formatTime(createdAt.millisecondsSinceEpoch)),
+                  isMyPost?
+                      PopupMenuButton(
+                        itemBuilder: (context){
+                          return [
+                            PopupMenuItem(
+                              value: "edit",
+                              child: Text("Edit"),
+                            ),
+                            PopupMenuItem(
+                              value: "delete",
+                              child: Text("Delete"),
+                            ),
+                          ];
+                        },
+                        onSelected: (val){
+                          if(val=="edit"){
+                            Navigator.of(context).pushReplacementNamed(SinglePostDetails.routeName, arguments: postId);
+                          }
+                        },
+                      )
+                      :Container(),
                 ],
               ),
             ),
