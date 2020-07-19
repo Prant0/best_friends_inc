@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:bestfriends/http/requests.dart';
 import 'package:bestfriends/providers/user.dart';
+import 'package:bestfriends/screens/followers.dart';
+import 'package:bestfriends/screens/followings.dart';
 import 'package:bestfriends/screens/profileAbout.dart';
 import 'package:bestfriends/screens/updateProfile.dart';
 import 'package:bestfriends/widgets/profilePosts.dart';
@@ -182,7 +184,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                   ),
                                 ),
                                 Tab(
-                                  text: "Following",
+                                  text: "Followings",
                                   icon: Icon(
                                     Icons.group,
                                     color: Theme.of(context).primaryColor,
@@ -210,16 +212,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       livesIn: userData.livesIn,
                       homeTown: userData.hometown,
                     ),
-                    Container(
-                      child: Center(
-                        child: Text("Follower"),
-                      ),
-                    ),
-                    Container(
-                      child: Center(
-                        child: Text("Following"),
-                      ),
-                    ),
+                    FollowersScreen(userId: userData.userId,),
+                    FollowingScreen(userId: userData.userId,),
                   ],
                 ),
               ),

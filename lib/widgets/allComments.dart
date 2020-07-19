@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_formatter/time_formatter.dart';
 
-//TODO: Click commenter pic go to his profile
 //TODO: Like a comment and show likes count
 //TODO: Infinity Scroll to comments
 
@@ -35,6 +34,8 @@ class _AllCommentsState extends State<AllComments> {
     if(_init)
       {
         await Provider.of<Comments>(context).getComments(widget.postId);
+        sharedPreferences = await SharedPreferences.getInstance();
+
       }
     setState(() {
       _init = false;
@@ -78,6 +79,8 @@ class _AllCommentsState extends State<AllComments> {
                           List<String> data = await getProfilePic();
                           _commentsProvider.createComment(widget.postId, _commentController.text, data[0], data[1]);
                           _commentController.clear();
+                          setState(() {
+                          });
                         },
                       ),
                     ),
@@ -98,11 +101,77 @@ class _AllCommentsState extends State<AllComments> {
                 itemBuilder: (context, i) {
                   return Column(
                     children: <Widget>[
+                      _allComments[i].cmntrId.toString()==sharedPreferences.getString("userId")?
+                          Dismissible(
+                            key: GlobalKey(),
+                            direction: DismissDirection.endToStart,
+                            background: Container(
+                              alignment: Alignment.centerRight,
+                              padding: EdgeInsets.only(right: 25),
+                              color: Colors.red,
+                              child: Icon(Icons.delete_outline, color: Colors.white, size: 25,),
+                            ),
+                            onDismissed: (_)async{
+                              await Provider.of<Comments>(context, listen: false).deleteComment(_allComments[i].cmntId);
+                            },
+                            child: ListTile(
+                              dense: true,
+                              leading: InkWell(
+                                onTap: (){
+                                  Navigator.of(context).pushNamed(Profile.routeName, arguments: _allComments[i].cmntrId);
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.memory(
+                                    base64Decode(_allComments[i].cmntrPic),
+                                    fit: BoxFit.cover,
+                                    height: 35,
+                                    width: 35,
+                                  ),
+                                ),
+                              ),
+                              title: Text(
+                                _allComments[i].cmntText,
+                                textAlign: TextAlign.justify,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    _allComments[i].cmntrName,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  Text(formatTime(_allComments[i].cmntTime.millisecondsSinceEpoch)),
+                                ],
+                              ),
+//                              trailing: Column(
+//                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                                children: <Widget>[
+//                                  InkWell(
+//                                    onTap: () {},
+//                                    child: FaIcon(
+//                                      _allComments[i].likedByMe?FontAwesomeIcons.solidHeart:FontAwesomeIcons.heart,
+//                                      color: Theme.of(context).primaryColor,
+//                                    ),
+//                                  ),
+//                                  Text(_allComments[i].cmntLikes.toString(),),
+//                                ],
+//                              ),
+
+                            ),
+                          ):
                       ListTile(
                         dense: true,
                         leading: InkWell(
                           onTap: (){
-                            print(_allComments[i].cmntrId.runtimeType);
                             Navigator.of(context).pushNamed(Profile.routeName, arguments: _allComments[i].cmntrId);
                           },
                           child: ClipRRect(

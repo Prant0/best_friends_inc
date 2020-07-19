@@ -154,4 +154,13 @@ class Comments with ChangeNotifier{
     notifyListeners();
     return _comments.toList();
   }
+
+  Future deleteComment(int commentId)async{
+    final result = await CustomHttpRequests.deleteComment(commentId);
+    if(result==1)
+    {
+      _comments.removeWhere((element) => element.cmntId==commentId);
+    }
+    notifyListeners();
+  }
 }

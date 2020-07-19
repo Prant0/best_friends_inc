@@ -9,14 +9,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/personalDrwaerItems.dart';
 
-class CustomDrawer extends StatefulWidget {
+class CompanyDrawer extends StatefulWidget {
   final GlobalKey<ScaffoldState> sKey;
-  CustomDrawer(this.sKey);
+  CompanyDrawer(this.sKey);
   @override
-  _CustomDrawerState createState() => _CustomDrawerState();
+  _CompanyDrawerState createState() => _CompanyDrawerState();
 }
 
-class _CustomDrawerState extends State<CustomDrawer> {
+class _CompanyDrawerState extends State<CompanyDrawer> {
   SharedPreferences sharedPreferences;
   bool _isInit = true;
 
@@ -71,10 +71,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   children: <Widget>[
                     ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child: sharedPreferences==null?Container():Image.memory(base64Decode(sharedPreferences.getString("profile_pic")),width: 100, height: 100, fit: BoxFit.cover,),
+                      child: Image.asset("images/bf.png", height: 100, width: 100, fit: BoxFit.cover,),
                     ),
                     Text(
-                      sharedPreferences==null?"Best Friends Inc.":sharedPreferences.getString("name"),
+                      "Best Friends Inc.",
                       style: TextStyle(
                         fontSize: 25,
                       ),
@@ -88,78 +88,38 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 child: ListView(
                   children: <Widget>[
                     PersonalDrawerItem(
-                      iconData: Icons.face,
-                      text: 'My Profile',
-                      onTap: () async{
-                        Navigator.of(context).pushNamed(Profile.routeName, arguments: int.parse(sharedPreferences.getString("userId")));
+                      iconData: Icons.shopping_cart,
+                      text: 'E-commerce',
+                      onTap: (){
+                        showSnack();
                       },
                     ),
                     PersonalDrawerItem(
-                      iconData: Icons.search,
-                      text: 'Search User',
+                      iconData: Icons.pin_drop,
+                      text: 'Blood Bank',
                       onTap: () {
-                        Navigator.of(context).pushNamed(SearchPage.routeName);
+                       showSnack();
                       },
                     ),
                     PersonalDrawerItem(
-                      iconData: Icons.timeline,
-                      text: 'Timeline',
-                      onTap: () {},
-                    ),
-                    PersonalDrawerItem(
-                      iconData: Icons.account_balance_wallet,
-                      text: 'E-Wallet',
+                      iconData: Icons.card_giftcard,
+                      text: 'E-courier',
                       onTap: () {
                         showSnack();
                       },
                     ),
                     PersonalDrawerItem(
-                      iconData: Icons.photo,
-                      text: 'My Albums',
+                      iconData: Icons.directions_car,
+                      text: 'Ride Sharing',
                       onTap: () {
                         showSnack();
                       },
                     ),
                     PersonalDrawerItem(
-                      iconData: Icons.book,
-                      text: 'My Pages',
+                      iconData: Icons.laptop_chromebook,
+                      text: 'E-learning',
                       onTap: () {
                         showSnack();
-                      },
-                    ),
-                    PersonalDrawerItem(
-                      iconData: Icons.group,
-                      text: 'My Groups',
-                      onTap: () {
-                        showSnack();
-                      },
-                    ),
-                    PersonalDrawerItem(
-                      iconData: Icons.calendar_today,
-                      text: 'My Events',
-                      onTap: () {
-                        showSnack();
-                      },
-                    ),
-                    PersonalDrawerItem(
-                      iconData: Icons.lock_open,
-                      text: 'Complete Verification',
-                      onTap: () {
-                        showSnack();
-                      },
-                    ),
-                    PersonalDrawerItem(
-                      iconData: Icons.settings,
-                      text: 'Settings',
-                      onTap: () {
-                        showSnack();
-                      },
-                    ),
-                    PersonalDrawerItem(
-                      iconData: Icons.exit_to_app,
-                      text: 'Logout',
-                      onTap: () {
-                        removeToken(context);
                       },
                     ),
                   ],

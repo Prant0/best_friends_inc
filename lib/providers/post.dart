@@ -125,6 +125,7 @@ class Posts with ChangeNotifier {
 //      sharedPostId: 0,
 //    ),
   ];
+  List<Post> usersPosts = [];
 
   List<Post> get posts {
     return _posts.toList();
@@ -157,11 +158,11 @@ class Posts with ChangeNotifier {
     return true;
   }
 
-  Future fetchTimeline()async{
-    final data = await CustomHttpRequests.timelinePosts(0, 0);
+  Future<dynamic> fetchTimeline(dynamic meta)async{
+    final data = await CustomHttpRequests.timelinePosts(meta);
     final postData = data["data"];
     if(postData == "No Post Found")
-      return;
+      return {};
     final postMetaData = data["meta-data"];
     for(var group in postData){
       for(var singlePost in group){
@@ -192,13 +193,6 @@ class Posts with ChangeNotifier {
             _posts.add(newPost);
           }
         else{
-//          List<String> tempMedia = [];
-//          if (singlePost["media"] != null) {
-//            final decodedMedia = jsonDecode(singlePost["media"]);
-//            for (int i = 0; i < decodedMedia.length; i++) {
-//              tempMedia.add(decodedMedia["$i"]);
-//            }
-//          }
           Post newPost = Post(
             id: singlePost["id"],
             desc: singlePost["description"],
@@ -220,6 +214,7 @@ class Posts with ChangeNotifier {
       }
     }
     notifyListeners();
+    return postMetaData;
   }
 
   void createPost(Map<String, dynamic> postData) {
@@ -267,7 +262,6 @@ class Posts with ChangeNotifier {
   }
 
   Future<List<Post>> profilePosts(int userId, int page) async {
-    List<Post> usersPosts = [];
     final data = await CustomHttpRequests.userPosts(userId, page);
     //print(data);
     for (var data in data["data"]) {
@@ -298,4 +292,15 @@ class Posts with ChangeNotifier {
     }
     return usersPosts;
   }
+
+  Future deletePost(int postId)async{
+    final result = await CustomHttpRequests.deletePost(postId);
+    if(result==1)
+    {
+      _posts.removeWhere((element) => element.id==postId);
+      usersPosts.removeWhere((element) => element.id==postId);
+    }
+    notifyListeners();
+  }
+
 }

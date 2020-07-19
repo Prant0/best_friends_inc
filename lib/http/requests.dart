@@ -332,26 +332,21 @@ class CustomHttpRequests {
 
 
   //Fetch Timeline
-  static Future<dynamic> timelinePosts(int call, int postCounts) async {
+  static Future<dynamic> timelinePosts(dynamic meta) async {
     try {
       var response = await http.post(
         "$uri/user/timeline",
         headers: await getHeaderWithToken(),
-        body: {
-          "call": call.toString(),
-          "total_product_shown": postCounts.toString(),
-        },
+        body: meta,
       );
       final data = jsonDecode(response.body);
-      print(response.body);
-      print(response.statusCode);
       if (response.statusCode == 200)
         return data;
       else
-        return {"error": "Something Wrong"};
+        return data;
     } catch (e) {
       print(e);
-      return {"error": "Something Wrong"};
+      return {"error": "Something Wrong Exception"};
     }
   }
 
@@ -373,6 +368,79 @@ class CustomHttpRequests {
       return {"error": "Something Wrong"};
     }
   }
+
+  //Delete a post
+  static Future<dynamic> deletePost(int postId) async {
+    try {
+      var response = await http.delete(
+        "$uri/post/$postId",
+        headers: await getHeaderWithToken(),
+      );
+      final data = jsonDecode(response.body);
+      if (response.statusCode == 200)
+        return data;
+      else
+        return {"error": "Something Wrong"};
+    } catch (e) {
+      print(e);
+      return {"error": "Something Wrong"};
+    }
+  }
+
+  //Delete a Comments
+  static Future<dynamic> deleteComment(int commentId) async {
+    try {
+      var response = await http.delete(
+        "$uri/comment/$commentId",
+        headers: await getHeaderWithToken(),
+      );
+      final data = jsonDecode(response.body);
+      if (response.statusCode == 200)
+        return data;
+      else
+        return {"error": "Something Wrong"};
+    } catch (e) {
+      print(e);
+      return {"error": "Something Wrong"};
+    }
+  }
+
+  //Get User Follower
+  static Future<dynamic> getFollowers(int userId) async {
+    try {
+      var response = await http.get(
+        "$uri/user/followers/$userId",
+        headers: await getHeaderWithToken(),
+      );
+      final data = jsonDecode(response.body);
+      if (response.statusCode == 200)
+        return data;
+      else
+        return [{"error": "Something Wrong"}];
+    } catch (e) {
+      print(e);
+      return [{"error": "Something Wrong"}];
+    }
+  }
+
+  //Get User Followings
+  static Future<dynamic> getFollowings(int userId) async {
+    try {
+      var response = await http.get(
+        "$uri/user/followings/$userId",
+        headers: await getHeaderWithToken(),
+      );
+      final data = jsonDecode(response.body);
+      if (response.statusCode == 200)
+        return data;
+      else
+        return [{"error": "Something Wrong"}];
+    } catch (e) {
+      print(e);
+      return [{"error": "Something Wrong"}];
+    }
+  }
+
 
 
 }

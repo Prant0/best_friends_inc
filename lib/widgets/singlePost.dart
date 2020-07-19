@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bestfriends/providers/comment.dart';
+import 'package:bestfriends/providers/post.dart';
 import 'package:bestfriends/screens/profile.dart';
 import 'package:bestfriends/screens/singlePostDetails.dart';
 import 'package:bestfriends/widgets/allComments.dart';
@@ -58,6 +59,42 @@ class SinglePost extends StatelessWidget {
           builder: (context){
             return AllComments(postId:postId);
           });
+  }
+
+  showAlertDialog(BuildContext context, int postId) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed:  () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("DELETE", style: TextStyle(
+        color: Colors.red
+      ),),
+      onPressed:  ()async{
+        await Provider.of<Posts>(context, listen: false).deletePost(postId);
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: Text("Are you sure want to delete this post?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -127,6 +164,10 @@ class SinglePost extends StatelessWidget {
                           if(val=="edit"){
                             Navigator.of(context).pushReplacementNamed(SinglePostDetails.routeName, arguments: postId);
                           }
+                          else if(val=="delete")
+                            {
+                              showAlertDialog(context, postId);
+                            }
                         },
                       )
                       :Container(),
