@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,11 +24,15 @@ class CustomHttpRequests {
   }
 
   //Takes phone number and checks if the user exists
-  static Future<bool> checkExistingUser(String number) async {
-    var url = "$uri/check_user_exists/$number";
-    var response = await http.get(
+  static Future<bool> checkExistingUser(String number, String deviceId) async {
+    var url = "$uri/check_user_exists";
+    var response = await http.post(
       url,
       headers: defaultHeader,
+      body: {
+        "phone"       : number,
+        "device_id"    : deviceId
+      },
     );
     if (response.body == "found") {
       return true;
@@ -105,7 +110,7 @@ class CustomHttpRequests {
   }
 
   //Registering a user after unique validation and OTP check
-  static Future<bool> registerUser(String phone, String username, String password, String referralId, String fid) async {
+  static Future<bool> registerUser(String phone, String username, String password, String referralId, String fid, String deviceId) async {
     ByteData bytes = await rootBundle.load('images/avatar.jpg');
     var buffer = bytes.buffer.asUint8List();
     var profilePic = base64.encode(buffer);
@@ -121,6 +126,7 @@ class CustomHttpRequests {
         'fuuid': fid.toString(),
         'profile_pic': profilePic,
         'cover_pic': coverPic,
+        'device_id': deviceId
       });
       if (response.statusCode == 200) {
         return true;

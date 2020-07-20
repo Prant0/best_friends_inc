@@ -1,6 +1,7 @@
 import 'package:bestfriends/api/googleApi.dart';
 import 'package:bestfriends/http/requests.dart';
 import 'package:bestfriends/screens/login.dart';
+import 'package:device_info/device_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -14,7 +15,7 @@ class Registation_Page extends StatefulWidget {
 class _Registation_PageState extends State<Registation_Page> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-  String _username, _password, _rePassword, _number, _referralId = "";
+  String _username, _password, _rePassword, _number, deviceId, _referralId = "";
   bool _obscureText = true;
   bool onProgress = false;
   String errorTxt;
@@ -26,7 +27,7 @@ class _Registation_PageState extends State<Registation_Page> {
       setState(() {
         onProgress = true;
       });
-      final checkUser = await CustomHttpRequests.checkExistingUser(_number);
+      final checkUser = await CustomHttpRequests.checkExistingUser(_number,deviceId);
       if (!checkUser) {
         if (_referralId != "") {
           final referralCheck = await CustomHttpRequests.checkReferral(_referralId);
@@ -37,7 +38,7 @@ class _Registation_PageState extends State<Registation_Page> {
             return "Invalid Referral ID";
           }
         }
-        await GoogleApi.checkOtpSuccess(_number, context, _username, _password, _referralId);
+        await GoogleApi.checkOtpSuccess(_number, context, _username, _password, _referralId, deviceId);
         setState(() {
           onProgress = false;
         });
@@ -45,7 +46,7 @@ class _Registation_PageState extends State<Registation_Page> {
         setState(() {
           onProgress = false;
         });
-        return 'Phone number already registered';
+        return 'Number|Device already registered';
       }
     } else {
       return 'Invalid Inputs';
@@ -56,6 +57,24 @@ class _Registation_PageState extends State<Registation_Page> {
   void initState() {
     FirebaseAuth.instance.signOut();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() async{
+    deviceId = await _getId();
+    print(deviceId);
+    super.didChangeDependencies();
+  }
+
+  Future<String> _getId() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    } else {
+      AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.androidId; // unique ID on Android
+    }
   }
 
   @override
@@ -100,7 +119,7 @@ class _Registation_PageState extends State<Registation_Page> {
                         labelText: 'Your Name',
                         prefixIcon: Icon(Icons.face, color: Colors.teal),
                       ),
-                      maxLength: 20,
+                      maxLength: 30,
                     ),
                   ),
                   Padding(

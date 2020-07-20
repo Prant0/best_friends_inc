@@ -32,9 +32,10 @@ class _ProfilePostsState extends State<ProfilePosts> {
     });
     print(currentPage);
     final morePosts = await Provider.of<Posts>(context, listen: false).profilePosts(ModalRoute.of(context).settings.arguments, currentPage + 1);
-    for (Post newPost in morePosts) {
-      userPosts.add(newPost);
-    }
+      userPosts = morePosts;
+//    for (Post newPost in morePosts) {
+//      userPosts.add(newPost);
+//    }
 
     setState(() {
       fetching = false;

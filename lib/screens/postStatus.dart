@@ -23,6 +23,7 @@ class PostStatus extends StatefulWidget {
 
 class _PostStatusState extends State<PostStatus> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  TextEditingController bodyController = TextEditingController();
   String body, responseMsg;
   bool onProgress = false;
   var imagesList;
@@ -57,7 +58,7 @@ class _PostStatusState extends State<PostStatus> {
   }
 
   createPost(BuildContext context) async {
-    final Map<String, dynamic> postRequest = await CustomHttpRequests.createPost(body, imagesList);
+    final Map<String, dynamic> postRequest = await CustomHttpRequests.createPost(bodyController.text, imagesList);
     if (postRequest["message"].toString() == "Success") {
       responseMsg = "Success";
       Provider.of<Posts>(context, listen: false).createPost(postRequest);
@@ -66,6 +67,11 @@ class _PostStatusState extends State<PostStatus> {
     }
     setState(() {
       onProgress = false;
+      if(responseMsg=="Success")
+        {
+          images = List<Asset>();
+          bodyController.text = "";
+        }
       _scaffoldKey.currentState.removeCurrentSnackBar();
       _scaffoldKey.currentState.showSnackBar(
         SnackBar(
@@ -129,7 +135,7 @@ class _PostStatusState extends State<PostStatus> {
               Expanded(
                 flex: 4,
                 child: TextField(
-                  onChanged: (val) => body = val,
+                  controller: bodyController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   autofocus: true,
@@ -188,7 +194,6 @@ class _PostStatusState extends State<PostStatus> {
 //                                      icon: Icon(Icons.close),
 //                                      onPressed: (){
 //                                        setState(() {
-//                                          //TODO: Images removing only from last, Need Fix.
 //                                          images.removeAt(item);
 //                                        });
 //                                      },

@@ -8,9 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_formatter/time_formatter.dart';
 
-//TODO: Like a comment and show likes count
-//TODO: Infinity Scroll to comments
-
 class AllComments extends StatefulWidget {
   static const String routeName = '/AllComments';
   final int postId;
@@ -206,19 +203,19 @@ class _AllCommentsState extends State<AllComments> {
                             Text(formatTime(_allComments[i].cmntTime.millisecondsSinceEpoch)),
                           ],
                         ),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            InkWell(
-                              onTap: () {},
-                              child: FaIcon(
-                                _allComments[i].likedByMe?FontAwesomeIcons.solidHeart:FontAwesomeIcons.heart,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                            Text(_allComments[i].cmntLikes.toString(),),
-                          ],
-                        ),
+//                        trailing: Column(
+//                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                          children: <Widget>[
+//                            InkWell(
+//                              onTap: () {},
+//                              child: FaIcon(
+//                                _allComments[i].likedByMe?FontAwesomeIcons.solidHeart:FontAwesomeIcons.heart,
+//                                color: Theme.of(context).primaryColor,
+//                              ),
+//                            ),
+//                            Text(_allComments[i].cmntLikes.toString(),),
+//                          ],
+//                        ),
 
                       ),
                       Divider(),

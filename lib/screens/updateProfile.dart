@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateProfile extends StatefulWidget {
   static const routeName = '/update_profile';
@@ -16,7 +17,6 @@ class UpdateProfile extends StatefulWidget {
 
 class _UpdateProfileState extends State<UpdateProfile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  //TODO: Update Profile complete, make it with Provider.
   bool _init=true, _processing=false;
   Map<String, dynamic> userData;
   final nickName = TextEditingController();
@@ -24,6 +24,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   final livesIn = TextEditingController();
   final homeTown = TextEditingController();
   final birthDay = TextEditingController();
+  SharedPreferences sharedPreferences;
   String profilePic, coverPic;
   final List<String> gender = ["Male","Female","Other"];
   String _selectedGender;
@@ -151,6 +152,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
       await CustomHttpRequests.updateProfile("religion", _selectedReligion);
       await CustomHttpRequests.updateProfile("profile_pic", profilePic);
       await CustomHttpRequests.updateProfile("cover_pic", coverPic);
+      sharedPreferences = await SharedPreferences.getInstance();
+      sharedPreferences.setString("profile_pic", profilePic);
       msg = "Updated Successfully";
     }catch(e){
       print(e.toString());

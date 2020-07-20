@@ -10,8 +10,6 @@ import '../widgets/singlePost.dart';
 import 'package:provider/provider.dart';
 import '../widgets/drawer.dart';
 
-//TODO: Add Products
-//TODO: Infinity Scroll to timeline
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/HomePage';
@@ -86,7 +84,6 @@ class _HomePageState extends State<HomePage>{
 
   @override
   Widget build(BuildContext context) {
-    //TODO: implement timeline pull to refresh and infinity scroll
     allPosts = Provider.of<Posts>(context).posts;
     return Scaffold(
       key: _scaffoldKey,
@@ -113,55 +110,70 @@ class _HomePageState extends State<HomePage>{
         child: Text("No posts found, follow someone to see posts"),
       ):Stack(
         children: <Widget>[
-          Container(
-            child: ListView.builder(
-                controller: _scrollController,
-                itemCount: allPosts.length,
-                itemBuilder: (BuildContext context, int i){
-                  return allPosts[i].type=="product"?Container(
-                    height: 300,
-                    child: Card(
-                      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-                      child: Stack(
-                        children: <Widget>[
-                          Image.asset("images/product.jpg", fit: BoxFit.cover, width: double.infinity, height: double.infinity,),
-                          Positioned(
-                            bottom: 15,
-                            right: 15,
-                            child: Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: Colors.white,
+          RefreshIndicator(
+            onRefresh: ()async{
+              Provider.of<Posts>(context,listen: false).refreshPostList();
+              meta = {
+                "call": 0.toString(),
+                "total_product_shown": 0.toString(),
+              };
+              setState(() {
+                fetching = true;
+                _init = true;
+                isLoading = true;
+                didChangeDependencies();
+              });
+            },
+            child: Container(
+              child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: allPosts.length,
+                  itemBuilder: (BuildContext context, int i){
+                    return allPosts[i].type=="product"?Container(
+                      height: 300,
+                      child: Card(
+                        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                        child: Stack(
+                          children: <Widget>[
+                            Image.asset("images/product.jpg", fit: BoxFit.cover, width: double.infinity, height: double.infinity,),
+                            Positioned(
+                              bottom: 15,
+                              right: 15,
+                              child: Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: Colors.white,
 
-                              ),
-                              child: IconButton(
-                                onPressed: (){},
-                                icon: Icon(Icons.add_shopping_cart, color: Theme.of(context).primaryColor,),
+                                ),
+                                child: IconButton(
+                                  onPressed: (){},
+                                  icon: Icon(Icons.add_shopping_cart, color: Theme.of(context).primaryColor,),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ):SinglePost(
-                    posterImage: allPosts[i].posterImage,
-                    posterName: allPosts[i].posterName,
-                    posterIsVerified: allPosts[i].posterIsVerified,
-                    desc: allPosts[i].desc,
-                    postImage: allPosts[i].image,
-                    likesCount: allPosts[i].likesCount,
-                    commentsCount: allPosts[i].commentsCount,
-                    sharesCount: allPosts[i].sharesCount,
-                    postId: allPosts[i].id,
-                    posterId: allPosts[i].posterId,
-                    isLiked: allPosts[i].isLiked,
-                    createdAt: allPosts[i].createdAt,
-                    likeFun: likeAction,
-                    isMyPost: myUserId == allPosts[i].posterId,
-                  );
-                }),
+                    ):SinglePost(
+                      posterImage: allPosts[i].posterImage,
+                      posterName: allPosts[i].posterName,
+                      posterIsVerified: allPosts[i].posterIsVerified,
+                      desc: allPosts[i].desc,
+                      postImage: allPosts[i].image,
+                      likesCount: allPosts[i].likesCount,
+                      commentsCount: allPosts[i].commentsCount,
+                      sharesCount: allPosts[i].sharesCount,
+                      postId: allPosts[i].id,
+                      posterId: allPosts[i].posterId,
+                      isLiked: allPosts[i].isLiked,
+                      createdAt: allPosts[i].createdAt,
+                      likeFun: likeAction,
+                      isMyPost: myUserId == allPosts[i].posterId,
+                    );
+                  }),
+            ),
           ),
           fetching?Positioned(
             bottom: 0,

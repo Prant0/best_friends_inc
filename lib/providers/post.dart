@@ -141,7 +141,6 @@ class Posts with ChangeNotifier {
   }
 
   Future<bool> handleLike(int postId, bool isLiked)async{
-    //TODO: Stop reloading entire list
     final response = await CustomHttpRequests.likePost(postId);
     var tempPost = _posts.firstWhere((element) => element.id==postId);
     tempPost.likesCount = response[1]["total_like"];
@@ -263,7 +262,6 @@ class Posts with ChangeNotifier {
 
   Future<List<Post>> profilePosts(int userId, int page) async {
     final data = await CustomHttpRequests.userPosts(userId, page);
-    //print(data);
     for (var data in data["data"]) {
       List<String> tempMedia = [];
       if (data["media"] != null) {
@@ -287,10 +285,14 @@ class Posts with ChangeNotifier {
         commentsCount: data["total_comment"],
         sharesCount: 0,
       );
-      _posts.add(newPost);
-      usersPosts.add(newPost);
+      try
+        {
+          _posts.firstWhere((element) => element.id==data["id"]);
+        }catch(e){
+        _posts.add(newPost);
+      }
     }
-    return usersPosts;
+    return _posts.where((element) => element.posterId==userId).toList();
   }
 
   Future deletePost(int postId)async{
@@ -298,9 +300,12 @@ class Posts with ChangeNotifier {
     if(result==1)
     {
       _posts.removeWhere((element) => element.id==postId);
-      usersPosts.removeWhere((element) => element.id==postId);
     }
     notifyListeners();
+  }
+
+  refreshPostList(){
+    _posts.clear();
   }
 
 }

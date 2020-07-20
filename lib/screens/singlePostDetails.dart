@@ -15,7 +15,6 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 
 class SinglePostDetails extends StatefulWidget {
-  //TODO:
   static String routeName = '/SinglePostDetails';
 
   @override

@@ -45,8 +45,8 @@ class _MyAppState extends State<MyApp> {
           AllComments.routeName: (BuildContext context) => AllComments(),
         },
         theme: ThemeData(
-            primaryColor: Colors.teal,
             accentColor: Colors.deepOrangeAccent,
+            primaryColor: Colors.teal,
             textTheme: TextTheme(
               headline: TextStyle(fontSize: 60.0, fontWeight: FontWeight.bold, color: Colors.teal),
               title: TextStyle(

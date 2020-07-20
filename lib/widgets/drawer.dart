@@ -35,7 +35,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   removeToken(BuildContext context) async {
     await CustomHttpRequests.logout();
-    sharedPreferences.clear();
+    sharedPreferences.remove("userId");
+    sharedPreferences.remove("name");
+    sharedPreferences.remove("profile_pic");
+    sharedPreferences.remove("token");
     Navigator.of(context).pushNamedAndRemoveUntil(Login_Page.routeName, (route) => false);
   }
 

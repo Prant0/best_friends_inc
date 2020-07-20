@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-//TODO: Logout Login Dynamic
-
 class Login_Page extends StatefulWidget {
   static const routeName = '/loginPage';
   @override
@@ -23,9 +21,12 @@ class _Login_PageState extends State<Login_Page> {
   String _phone, _password;
   bool _obscureText = true;
   bool onProgress = false;
+  String phoneNum;
+  TextEditingController numberController = TextEditingController();
 
   @override
   void initState() {
+    checkPhoneNumber();
     checkLoginStatus();
     super.initState();
   }
@@ -35,6 +36,14 @@ class _Login_PageState extends State<Login_Page> {
     if (sharedPreferences.getString("token") != null) {
       Navigator.of(context).pushReplacementNamed(HomePage.routeName);
     }
+  }
+
+  checkPhoneNumber()async{
+    sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      phoneNum = sharedPreferences.getString("userPhone");
+      numberController.text = phoneNum;
+    });
   }
 
   Future<String> _submit() async {
@@ -74,6 +83,7 @@ class _Login_PageState extends State<Login_Page> {
           setState(() {
             sharedPreferences.setString("userId", userData["id"].toString());
             sharedPreferences.setString("name", userData["name"]);
+            sharedPreferences.setString("userPhone", userData["phone"]);
             sharedPreferences.setString("profile_pic", userData["profile_pic"]);
           });
           return true;
@@ -91,10 +101,10 @@ class _Login_PageState extends State<Login_Page> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.white,
       body: ModalProgressHUD(
         inAsyncCall: onProgress,
         child: Container(
+          color: Colors.transparent,
           padding: EdgeInsets.all(25.0),
           child: SingleChildScrollView(
             child: Form(
@@ -113,6 +123,8 @@ class _Login_PageState extends State<Login_Page> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
                     child: TextFormField(
+                      controller: numberController,
+                      readOnly: phoneNum!=null,
                       onSaved: (val) => _phone = val,
                       validator: (val) => val.length < 6 ? 'Username Too Short' : null,
                       decoration: InputDecoration(

@@ -3,10 +3,12 @@ import 'package:bestfriends/screens/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GoogleApi {
   static String verificationId, smsCode;
-  static Future<bool> checkOtpSuccess(String number, BuildContext context, String username, String password, String referralId) async {
+  static SharedPreferences sharedPreferences;
+  static Future<bool> checkOtpSuccess(String number, BuildContext context, String username, String password, String referralId, String deviceId) async {
     final PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout = (String verId) {
       verificationId = verId;
     };
@@ -34,7 +36,7 @@ class GoogleApi {
       codeAutoRetrievalTimeout: autoRetrievalTimeout,
     )
         .then((value) async {
-      final smsResponse = await smsCodeDialogue(context, number, username, password, referralId);
+      final smsResponse = await smsCodeDialogue(context, number, username, password, referralId, deviceId);
       return smsResponse;
     }).catchError((e) {
       print('Execution Failed');
@@ -42,7 +44,7 @@ class GoogleApi {
     });
   }
 
-  static Future<bool> smsCodeDialogue(BuildContext context, String number, String username, String password, String referralId) async {
+  static Future<bool> smsCodeDialogue(BuildContext context, String number, String username, String password, String referralId, String deviceId) async {
     String errorMsg;
     bool onProgress = false;
     return showDialog(
@@ -59,6 +61,7 @@ class GoogleApi {
                   keyboardType: TextInputType.number,
                   maxLength: 6,
                   onChanged: (value) {
+                    if(value.length<7)
                     smsCode = value;
                   },
                 ),
@@ -73,9 +76,11 @@ class GoogleApi {
                       final codeRes = await signInUser(context);
                       print(codeRes);
                       if (codeRes != "Wrong OTP") {
-                        final regRes = await CustomHttpRequests.registerUser(number,username,password,referralId,codeRes);
+                        final regRes = await CustomHttpRequests.registerUser(number,username,password,referralId,codeRes, deviceId);
                         if(regRes)
                           {
+                            sharedPreferences = await SharedPreferences.getInstance();
+                            sharedPreferences.setString("userPhone", number);
                             Navigator.of(context).pop();
                             Navigator.of(context).pushReplacementNamed(Login_Page.routeName);
                           }
