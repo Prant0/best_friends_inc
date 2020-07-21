@@ -4,6 +4,7 @@ import 'package:bestfriends/screens/login.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class Registation_Page extends StatefulWidget {
@@ -98,9 +99,10 @@ class _Registation_PageState extends State<Registation_Page> {
                 width: 200,
                 child: Image(image: AssetImage('images/bf.png')),
               ),
-              Text(
+              NeumorphicText(
                 'Register',
-                style: TextStyle(fontSize: 42.0, fontWeight: FontWeight.w900, letterSpacing: 2),
+                textStyle: NeumorphicTextStyle(fontSize: 42.0, fontWeight: FontWeight.w900, letterSpacing: 2,),
+                style: NeumorphicStyle(color: Theme.of(context).primaryColor),
               ),
               Form(
                 key: _formKey,
@@ -117,7 +119,7 @@ class _Registation_PageState extends State<Registation_Page> {
                         //  labelText: "Username",
                         hintText: 'John Doe',
                         labelText: 'Your Name',
-                        prefixIcon: Icon(Icons.face, color: Colors.teal),
+                        prefixIcon: Icon(Icons.face, color: Theme.of(context).primaryColor),
                       ),
                       maxLength: 30,
                     ),
@@ -133,7 +135,7 @@ class _Registation_PageState extends State<Registation_Page> {
                         ),
                         labelText: "11 Digit Phone",
                         hintText: '01XXXXXXXXX',
-                        prefixIcon: Icon(Icons.phone, color: Colors.teal),
+                        prefixIcon: Icon(Icons.phone, color: Theme.of(context).primaryColor),
                       ),
                       maxLength: 11,
                     ),
@@ -153,7 +155,7 @@ class _Registation_PageState extends State<Registation_Page> {
                           },
                           child: Icon(
                             _obscureText ? Icons.visibility : Icons.visibility_off,
-                            color: Colors.teal,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                         border: OutlineInputBorder(
@@ -164,7 +166,7 @@ class _Registation_PageState extends State<Registation_Page> {
                         labelText: 'Password',
                         prefixIcon: Icon(
                           Icons.lock,
-                          color: Colors.teal,
+                          color: Theme.of(context).primaryColor,
                         ),
                         // icon: Icon(Icons.lock,color: Colors.teal,)
                       ),
@@ -185,7 +187,7 @@ class _Registation_PageState extends State<Registation_Page> {
                           },
                           child: Icon(
                             _obscureText ? Icons.visibility : Icons.visibility_off,
-                            color: Colors.teal,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                         border: OutlineInputBorder(
@@ -196,7 +198,7 @@ class _Registation_PageState extends State<Registation_Page> {
                         labelText: 'Retype Password',
                         prefixIcon: Icon(
                           Icons.lock,
-                          color: Colors.teal,
+                          color: Theme.of(context).primaryColor,
                         ),
                         // icon: Icon(Icons.lock,color: Colors.teal,)
                       ),
@@ -215,7 +217,7 @@ class _Registation_PageState extends State<Registation_Page> {
                         labelText: 'Referral ID',
                         prefixIcon: Icon(
                           Icons.attach_money,
-                          color: Colors.teal,
+                          color: Theme.of(context).primaryColor,
                         ),
                         // icon: Icon(Icons.lock,color: Colors.teal,)
                       ),
@@ -230,17 +232,21 @@ class _Registation_PageState extends State<Registation_Page> {
                     Container(
                       width: 150.0,
                       child: Builder(
-                        builder: (context) => RaisedButton(
+                        builder: (context) => NeumorphicButton(
                           child: Text(
                             'Submit',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,
                             ),
+                            textAlign: TextAlign.center,
                           ),
-                          color: Theme.of(context).primaryColor,
-                          elevation: 10.0,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                          style: NeumorphicStyle(
+                            color: Theme.of(context).primaryColor,
+                          ),
+//                          color: Theme.of(context).primaryColor,
+//                          elevation: 10.0,
+//                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                           onPressed: () async {
                             String subResult = await _submit();
                             if (subResult == 'Success') {

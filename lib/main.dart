@@ -6,7 +6,7 @@ import 'package:bestfriends/screens/updateProfile.dart';
 import 'package:bestfriends/widgets/allComments.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import './providers/comment.dart';
 import './providers/post.dart';
 import './screens/singlePostDetails.dart';
@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(value: Comments()),
         ChangeNotifierProvider.value(value: Users()),
       ],
-      child: MaterialApp(
+      child: NeumorphicApp(
         debugShowCheckedModeBanner: false,
         title: "Best Friends Inc.",
         routes: {
@@ -44,9 +44,9 @@ class _MyAppState extends State<MyApp> {
           UpdateProfile.routeName: (BuildContext context) => UpdateProfile(),
           AllComments.routeName: (BuildContext context) => AllComments(),
         },
-        theme: ThemeData(
-            accentColor: Colors.deepOrangeAccent,
-            primaryColor: Colors.teal,
+        theme: NeumorphicThemeData(
+            accentColor: Colors.green,
+            baseColor: Colors.white,
             textTheme: TextTheme(
               headline: TextStyle(fontSize: 60.0, fontWeight: FontWeight.bold, color: Colors.teal),
               title: TextStyle(

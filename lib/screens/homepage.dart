@@ -4,6 +4,7 @@ import 'package:bestfriends/screens/postStatus.dart';
 import 'package:bestfriends/widgets/companyDrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/post.dart';
 import '../widgets/singlePost.dart';
@@ -88,8 +89,8 @@ class _HomePageState extends State<HomePage>{
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor:Color(0xffE2E4EA) ,
-      appBar: AppBar(
-        title: Center(child: Text("Best Friends Inc",style: TextStyle(),)),
+      appBar: NeumorphicAppBar(
+        title: Center(child: NeumorphicText("Best Friends Inc.",style: NeumorphicStyle(color: Theme.of(context).primaryColor), textStyle: NeumorphicTextStyle(fontSize: 25),)),
       ),
       drawer: CustomDrawer(_scaffoldKey),
       endDrawer: CompanyDrawer(_scaffoldKey),
@@ -98,9 +99,9 @@ class _HomePageState extends State<HomePage>{
           Navigator.pushNamed(context, PostStatus.routeName);
         },
         isExtended: true,
-        icon: Icon(Icons.add),
-        label: Text('Post'),
-        backgroundColor: Theme.of(context).primaryColor,
+        icon: Icon(Icons.add, color: Theme.of(context).primaryColor,),
+        label: Text('Post', style: TextStyle(color: Theme.of(context).primaryColor),),
+        backgroundColor: Colors.white,
       ),
       body: isLoading?Container(
         alignment: Alignment.center,
@@ -124,14 +125,14 @@ class _HomePageState extends State<HomePage>{
                 didChangeDependencies();
               });
             },
-            child: Container(
+            child: Neumorphic(
               child: ListView.builder(
                   controller: _scrollController,
                   itemCount: allPosts.length,
                   itemBuilder: (BuildContext context, int i){
                     return allPosts[i].type=="product"?Container(
                       height: 300,
-                      child: Card(
+                      child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
                         child: Stack(
                           children: <Widget>[

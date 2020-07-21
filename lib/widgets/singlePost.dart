@@ -7,6 +7,7 @@ import 'package:bestfriends/screens/singlePostDetails.dart';
 import 'package:bestfriends/widgets/allComments.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,7 +15,7 @@ import 'package:time_formatter/time_formatter.dart';
 
 //TODO: Show Delete Message or Do something after delete
 
-class SinglePost extends StatelessWidget {
+class SinglePost extends StatefulWidget {
   final String posterImage;
   final String posterName;
   final int posterIsVerified;
@@ -63,6 +64,12 @@ class SinglePost extends StatelessWidget {
           });
   }
 
+  @override
+  _SinglePostState createState() => _SinglePostState();
+}
+
+class _SinglePostState extends State<SinglePost> {
+  bool isExpanded = true;
   showAlertDialog(BuildContext context, int postId) {
     // set up the buttons
     Widget cancelButton = FlatButton(
@@ -101,8 +108,8 @@ class SinglePost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+    return Neumorphic(
+      margin: EdgeInsets.symmetric(vertical: 5),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
@@ -113,14 +120,14 @@ class SinglePost extends StatelessWidget {
                 children: <Widget>[
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).pushNamed(Profile.routeName, arguments: posterId);
+                      Navigator.of(context).pushNamed(Profile.routeName, arguments: widget.posterId);
                     },
                     child: Row(
                       children: <Widget>[
                         ClipRRect(
                           borderRadius: BorderRadius.circular(50),
                           child: Image.memory(
-                            base64Decode(posterImage),
+                            base64Decode(widget.posterImage),
                             fit: BoxFit.cover,
                             height: 35,
                             width: 35,
@@ -130,13 +137,13 @@ class SinglePost extends StatelessWidget {
                           width: 15.0,
                         ),
                         Text(
-                          posterName,
+                          widget.posterName,
                           style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w800),
                         ),
                       ],
                     ),
                   ),
-                  posterIsVerified == 1
+                  widget.posterIsVerified == 1
                       ? IconButton(
                           icon: Icon(
                             Icons.check_circle,
@@ -147,8 +154,8 @@ class SinglePost extends StatelessWidget {
                         )
                       : Container(),
                   Spacer(),
-                  Text(formatTime(createdAt.millisecondsSinceEpoch)),
-                  isMyPost?
+                  Text(formatTime(widget.createdAt.millisecondsSinceEpoch)),
+                  widget.isMyPost?
                       PopupMenuButton(
                         itemBuilder: (context){
                           return [
@@ -164,11 +171,11 @@ class SinglePost extends StatelessWidget {
                         },
                         onSelected: (val){
                           if(val=="edit"){
-                            Navigator.of(context).pushReplacementNamed(SinglePostDetails.routeName, arguments: postId);
+                            Navigator.of(context).pushReplacementNamed(SinglePostDetails.routeName, arguments: widget.postId);
                           }
                           else if(val=="delete")
                             {
-                              showAlertDialog(context, postId);
+                              showAlertDialog(context, widget.postId);
                             }
                         },
                       )
@@ -183,16 +190,24 @@ class SinglePost extends StatelessWidget {
                 },
                 child: Container(
                   child: Column(children: [
-                    desc == null
+                    widget.desc == null
                         ? Container()
-                        : Container(
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              desc,
+                        : InkWell(
+                      onTap: (){
+                        setState(() {
+                          isExpanded = !isExpanded;
+                        });
+                      },
+                          child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                widget.desc,
+                                overflow: isExpanded?TextOverflow.ellipsis:TextOverflow.visible,
+                              ),
                             ),
-                          ),
-                    postImage.length < 1
+                        ),
+                    widget.postImage.length < 1
                         ? Container()
                         : Container(
                             //tag: postId.toString(),
@@ -200,7 +215,7 @@ class SinglePost extends StatelessWidget {
                               height: 250,
                               width: double.infinity,
                               child: Carousel(
-                                images: postImage.map((imageUrl) {
+                                images: widget.postImage.map((imageUrl) {
                                   return Image.memory(
                                     base64.decode(imageUrl),
                                     fit: BoxFit.cover,
@@ -213,7 +228,7 @@ class SinglePost extends StatelessWidget {
                                 dotBgColor: Colors.transparent,
                                 autoplay: false,
                                 indicatorBgPadding: 5,
-                                showIndicator: postImage.length == 1 ? false : true,
+                                showIndicator: widget.postImage.length == 1 ? false : true,
                               ),
                             ),
                           ),
@@ -228,13 +243,13 @@ class SinglePost extends StatelessWidget {
                 children: <Widget>[
                   InkWell(
                     onTap: () {
-                      likeFun(postId, !isLiked);
+                      widget.likeFun(widget.postId, !widget.isLiked);
                     },
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: Row(children: [
                         FaIcon(
-                          isLiked==null||isLiked?FontAwesomeIcons.solidHeart:FontAwesomeIcons.heart,
+                          widget.isLiked==null||widget.isLiked?FontAwesomeIcons.solidHeart:FontAwesomeIcons.heart,
                           color: Colors.teal,
                           size: 20.0,
                         ),
@@ -242,7 +257,7 @@ class SinglePost extends StatelessWidget {
                           width: 5,
                         ),
                         Text(
-                          '$likesCount',
+                          '${widget.likesCount}',
                           style: TextStyle(color: Colors.black45),
                         ),
                       ]),
@@ -251,7 +266,7 @@ class SinglePost extends StatelessWidget {
                   InkWell(
                     onTap: () {
                      // Navigator.of(context).pushNamed(AllComments.routeName, arguments: postId);
-                      showComments(context, postId);
+                      SinglePost.showComments(context, widget.postId);
                     },
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -266,7 +281,7 @@ class SinglePost extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            '$commentsCount',
+                            '${widget.commentsCount}',
                             style: TextStyle(color: Colors.black45),
                           ),
                         ],
@@ -288,7 +303,7 @@ class SinglePost extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            '$sharesCount',
+                            '${widget.sharesCount}',
                             style: TextStyle(color: Colors.black45),
                           ),
                         ],

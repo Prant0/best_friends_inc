@@ -5,6 +5,7 @@ import 'package:bestfriends/screens/homepage.dart';
 import 'package:bestfriends/screens/registation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -134,7 +135,7 @@ class _Login_PageState extends State<Login_Page> {
                         //  labelText: "Username",
                         hintText: '01XXXXXXXXX', hintStyle: TextStyle(fontSize: 14.0),
                         labelText: '11 Digits phone',
-                        prefixIcon: Icon(Icons.face, color: Colors.teal),
+                        prefixIcon: Icon(Icons.face, color: Theme.of(context).primaryColor),
                       ),
                     ),
                   ),
@@ -153,7 +154,7 @@ class _Login_PageState extends State<Login_Page> {
                           },
                           child: Icon(
                             _obscureText ? Icons.visibility : Icons.visibility_off,
-                            color: Colors.teal,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                         border: OutlineInputBorder(
@@ -164,7 +165,7 @@ class _Login_PageState extends State<Login_Page> {
                         labelText: 'Password',
                         prefixIcon: Icon(
                           Icons.lock,
-                          color: Colors.teal,
+                          color: Theme.of(context).primaryColor,
                         ),
                         // icon: Icon(Icons.lock,color: Colors.teal,)
                       ),
@@ -177,17 +178,20 @@ class _Login_PageState extends State<Login_Page> {
                         Container(
                           width: 120.0,
                           height: 45.0,
-                          child: RaisedButton(
+                          child: NeumorphicButton(
                               child: Text(
                                 'Login',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20.0,
                                 ),
                               ),
-                              color: Theme.of(context).primaryColor,
-                              elevation: 15.0,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
+                              style: NeumorphicStyle(
+                                color: Theme.of(context).primaryColor,
+//                                elevation: 15.0,
+//                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
+                              ),
                               onPressed: () async {
                                 final response = await _submit();
                                 if (response != null) {

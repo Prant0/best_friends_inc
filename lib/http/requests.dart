@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomHttpRequests {
-  static const String uri = "http://192.168.0.109/bf.demo/public/api";
+  static const String uri = "http://bestfriends.com.bd/api";
   static SharedPreferences sharedPreferences;
 
   static const Map<String, String> defaultHeader = {
