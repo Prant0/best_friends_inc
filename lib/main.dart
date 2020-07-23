@@ -45,8 +45,8 @@ class _MyAppState extends State<MyApp> {
           AllComments.routeName: (BuildContext context) => AllComments(),
         },
         theme: NeumorphicThemeData(
-            accentColor: Colors.green,
-            baseColor: Colors.white,
+            accentColor: Color(0xFF0D1C40),
+            baseColor: Color(0xffF5F6FD),
             textTheme: TextTheme(
               headline: TextStyle(fontSize: 60.0, fontWeight: FontWeight.bold, color: Colors.teal),
               title: TextStyle(

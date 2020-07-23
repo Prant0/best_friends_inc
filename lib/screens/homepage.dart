@@ -90,19 +90,36 @@ class _HomePageState extends State<HomePage>{
       key: _scaffoldKey,
       backgroundColor:Color(0xffE2E4EA) ,
       appBar: NeumorphicAppBar(
-        title: Center(child: NeumorphicText("Best Friends Inc.",style: NeumorphicStyle(color: Theme.of(context).primaryColor), textStyle: NeumorphicTextStyle(fontSize: 25),)),
+        buttonStyle: NeumorphicStyle(
+          boxShape: NeumorphicBoxShape.circle(),
+            shape: NeumorphicShape.concave,
+          depth: 20
+        ),
+        title: Center(child: NeumorphicText("Best Friends Inc.",style: NeumorphicStyle(color: Theme.of(context).primaryColor,), textStyle: NeumorphicTextStyle(fontSize: 25),)),
       ),
       drawer: CustomDrawer(_scaffoldKey),
       endDrawer: CompanyDrawer(_scaffoldKey),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: (){
-          Navigator.pushNamed(context, PostStatus.routeName);
-        },
-        isExtended: true,
-        icon: Icon(Icons.add, color: Theme.of(context).primaryColor,),
-        label: Text('Post', style: TextStyle(color: Theme.of(context).primaryColor),),
-        backgroundColor: Colors.white,
-      ),
+      floatingActionButton:
+          NeumorphicFloatingActionButton(
+            style: NeumorphicStyle(
+              shape: NeumorphicShape.convex
+             // intensity: 20.0,
+             // boxShape: NeumorphicBoxShape.circle(),
+            ),
+            child: Icon(Icons.add, color: Theme.of(context).primaryColor,),
+            onPressed: (){
+              Navigator.pushNamed(context, PostStatus.routeName);
+            },
+          ),
+//      FloatingActionButton.extended(
+//        onPressed: (){
+//          Navigator.pushNamed(context, PostStatus.routeName);
+//        },
+//        isExtended: true,
+//        icon: Icon(Icons.add, color: Theme.of(context).primaryColor,),
+//        label: Text('Post', style: TextStyle(color: Theme.of(context).primaryColor),),
+//        backgroundColor: Colors.white,
+//      ),
       body: isLoading?Container(
         alignment: Alignment.center,
         child: CircularProgressIndicator(),

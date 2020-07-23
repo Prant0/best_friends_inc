@@ -13,7 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:time_formatter/time_formatter.dart';
 
-//TODO: Show Delete Message or Do something after delete
 
 class SinglePost extends StatefulWidget {
   final String posterImage;

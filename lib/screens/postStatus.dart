@@ -11,7 +11,6 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 
-//TODO: Redirect to homepage when post completed or Clear PostStatus Page
 
 
 class PostStatus extends StatefulWidget {

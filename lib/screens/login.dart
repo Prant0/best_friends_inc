@@ -6,8 +6,11 @@ import 'package:bestfriends/screens/registation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:laravel_echo/laravel_echo.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_pusher_client/flutter_pusher.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class Login_Page extends StatefulWidget {
   static const routeName = '/loginPage';
@@ -29,8 +32,29 @@ class _Login_PageState extends State<Login_Page> {
   void initState() {
     checkPhoneNumber();
     checkLoginStatus();
+    //pushData();
     super.initState();
   }
+
+//  void pushData(){
+//    var options = PusherOptions(auth: PusherAuth("endpoint",), host: 'http://110/laravel.test/public', port: 6001, encrypted: false, cluster: 'ap1');
+//    FlutterPusher pusher = FlutterPusher('app', options, enableLogging: true);
+//
+//    Echo echo = new Echo({
+//      'broadcaster': 'pusher',
+//      'client': pusher,
+//      'key': '3b28be7ee30357cd7727',
+//      'cluster': 'ap1',
+//      'PUSHER_APP_ID': '1043039',
+//    });
+//
+//    echo.channel('my-channel').listen('my-event', (e) {
+//      print(e);
+//    });
+//
+////    echo.socket.on('connect', (_) => print('connect'));
+////    echo.socket.on('disconnect', (_) => print('disconnect'));
+//  }
 
   checkLoginStatus() async {
     sharedPreferences = await SharedPreferences.getInstance();
@@ -38,6 +62,8 @@ class _Login_PageState extends State<Login_Page> {
       Navigator.of(context).pushReplacementNamed(HomePage.routeName);
     }
   }
+
+
 
   checkPhoneNumber()async{
     sharedPreferences = await SharedPreferences.getInstance();
@@ -105,7 +131,6 @@ class _Login_PageState extends State<Login_Page> {
       body: ModalProgressHUD(
         inAsyncCall: onProgress,
         child: Container(
-          color: Colors.transparent,
           padding: EdgeInsets.all(25.0),
           child: SingleChildScrollView(
             child: Form(
@@ -118,56 +143,69 @@ class _Login_PageState extends State<Login_Page> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 45.0, vertical: 5.0),
                     child: Image(
-                      image: AssetImage('images/bf.png'),
+                        image: AssetImage('images/bf.png'),
                     ),
+                  ),
+                  NeumorphicText(
+                    'Login',
+                    textStyle: NeumorphicTextStyle(fontSize: 42.0, letterSpacing: 2,),
+                    style: NeumorphicStyle(color: Theme.of(context).primaryColor),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-                    child: TextFormField(
-                      controller: numberController,
-                      readOnly: phoneNum!=null,
-                      onSaved: (val) => _phone = val,
-                      validator: (val) => val.length < 6 ? 'Username Too Short' : null,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(40.0),
+                    child: Neumorphic(
+                      style: NeumorphicStyle(
+                        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
+                        depth: -5,
+                      ),
+                      child: TextFormField(
+                        controller: numberController,
+                        readOnly: phoneNum!=null,
+                        onSaved: (val) => _phone = val,
+                        validator: (val) => val.length < 6 ? 'Username Too Short' : null,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          //  labelText: "Username",
+                          hintText: '01XXXXXXXXX', hintStyle: TextStyle(fontSize: 14.0),
+                          labelText: '11 Digits phone',
+                          prefixIcon: Icon(Icons.face, color: Theme.of(context).primaryColor),
                         ),
-                        //  labelText: "Username",
-                        hintText: '01XXXXXXXXX', hintStyle: TextStyle(fontSize: 14.0),
-                        labelText: '11 Digits phone',
-                        prefixIcon: Icon(Icons.face, color: Theme.of(context).primaryColor),
                       ),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-                    child: TextFormField(
-                      onSaved: (val) => _password = val,
-                      obscureText: _obscureText,
-                      validator: (val) => val.length < 6 ? "Password is too short" : null,
-                      decoration: InputDecoration(
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _obscureText = !_obscureText;
-                            });
-                          },
-                          child: Icon(
-                            _obscureText ? Icons.visibility : Icons.visibility_off,
+                    child: Neumorphic(
+                      style: NeumorphicStyle(
+                        depth: -5,
+                        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
+                      ),
+                      child: TextFormField(
+                        onSaved: (val) => _password = val,
+                        obscureText: _obscureText,
+                        validator: (val) => val.length < 6 ? "Password is too short" : null,
+                        decoration: InputDecoration(
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                            child: Icon(
+                              _obscureText ? Icons.visibility : Icons.visibility_off,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          border: InputBorder.none,
+                          // labelText: "Password",
+                          hintText: 'XXXXXX', hintStyle: TextStyle(fontSize: 15.0),
+                          labelText: 'Password',
+                          prefixIcon: Icon(
+                            Icons.lock,
                             color: Theme.of(context).primaryColor,
                           ),
+                          // icon: Icon(Icons.lock,color: Colors.teal,)
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(40.0),
-                        ),
-                        // labelText: "Password",
-                        hintText: 'XXXXXX', hintStyle: TextStyle(fontSize: 15.0),
-                        labelText: 'Password',
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        // icon: Icon(Icons.lock,color: Colors.teal,)
                       ),
                     ),
                   ),
@@ -183,12 +221,13 @@ class _Login_PageState extends State<Login_Page> {
                                 'Login',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColor,
                                   fontSize: 20.0,
                                 ),
                               ),
                               style: NeumorphicStyle(
-                                color: Theme.of(context).primaryColor,
+                                intensity: 30.0,
+                                //color: Colors.tealAccent,
 //                                elevation: 15.0,
 //                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
                               ),
@@ -213,23 +252,16 @@ class _Login_PageState extends State<Login_Page> {
                                 }
                               }),
                         ),
-                        FlatButton(
+                        SizedBox(
+                          height: 50,
+                        ),
+                        NeumorphicButton(
                           onPressed: () {
                             Navigator.pushReplacementNamed(context, Registation_Page.routeName);
                           },
-                          child: RichText(
-                            text: TextSpan(
-                                text: " New user ?  ",
-                                style: TextStyle(fontSize: 16.0, color: Colors.black87, fontWeight: FontWeight.bold),
-                                children: [
-                                  TextSpan(
-                                      text: 'Registation here',
-                                      style: TextStyle(
-                                        fontSize: 15.0,
-                                        color: Colors.red,
-                                      ))
-                                ]),
-                          ),
+                          child: NeumorphicText("Registration Here", style: NeumorphicStyle(
+                            color: Theme.of(context).primaryColor,
+                          ),),
                         ),
                         SizedBox(
                           height: 30.0,
