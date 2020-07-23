@@ -47,13 +47,7 @@ class _MyAppState extends State<MyApp> {
         theme: NeumorphicThemeData(
             accentColor: Color(0xFF0D1C40),
             baseColor: Color(0xffF5F6FD),
-            textTheme: TextTheme(
-              headline: TextStyle(fontSize: 60.0, fontWeight: FontWeight.bold, color: Colors.teal),
-              title: TextStyle(
-                fontSize: 35,
-              ),
-              // body1: TextStyle(fontSize: 18.0,color: Colors.teal),
-            )),
+            ),
         home: Login_Page(),
       ),
     );

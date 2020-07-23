@@ -5,6 +5,7 @@ import 'package:bestfriends/widgets/companyDrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/post.dart';
 import '../widgets/singlePost.dart';
@@ -89,13 +90,35 @@ class _HomePageState extends State<HomePage>{
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor:Color(0xffE2E4EA) ,
-      appBar: NeumorphicAppBar(
-        buttonStyle: NeumorphicStyle(
-          boxShape: NeumorphicBoxShape.circle(),
+      appBar: AppBar(
+        backgroundColor: Color(0xFFE2E4EA),
+        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          NeumorphicButton(
+            style: NeumorphicStyle(
+              lightSource: LightSource.right,
+              depth: 5,
+              color: Color(0xFFE2E4EA),
+              shape: NeumorphicShape.concave,
+            ),
+            child: Center(child: FaIcon(FontAwesomeIcons.bars, color: Theme.of(context).primaryColor, size: 15,)),
+            onPressed: (){
+              _scaffoldKey.currentState.openEndDrawer();
+            },
+          ),
+        ],
+        leading: NeumorphicButton(
+          style: NeumorphicStyle(
+            color: Color(0xFFE2E4EA),
+            depth: 5,
             shape: NeumorphicShape.concave,
-          depth: 20
+          ),
+          child: Center(child:FaIcon(FontAwesomeIcons.user, color: Theme.of(context).primaryColor, size: 15,),),
+          onPressed: (){
+            _scaffoldKey.currentState.openDrawer();
+          },
         ),
-        title: Center(child: NeumorphicText("Best Friends Inc.",style: NeumorphicStyle(color: Theme.of(context).primaryColor,), textStyle: NeumorphicTextStyle(fontSize: 25),)),
+        title: Center(child: NeumorphicText("Best Friends Inc.",style: NeumorphicStyle(color: Theme.of(context).primaryColor,), textStyle: NeumorphicTextStyle(fontSize: 15),)),
       ),
       drawer: CustomDrawer(_scaffoldKey),
       endDrawer: CompanyDrawer(_scaffoldKey),

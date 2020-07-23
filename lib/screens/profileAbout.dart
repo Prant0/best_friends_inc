@@ -1,5 +1,7 @@
 import 'package:bestfriends/providers/user.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class ProfileAbout extends StatelessWidget {
@@ -12,42 +14,42 @@ ProfileAbout({this.petName, this.phone, this.occupation, this.birthday, this.gen
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> aboutData = [
       {
-        "icon": Icons.perm_identity,
+        "icon": FontAwesomeIcons.user,
         "label": "Known as",
         "data": petName,
       },
       {
-        "icon": Icons.phone_android,
+        "icon": FontAwesomeIcons.phone,
         "label": "Dial at",
         "data": phone,
       },
       {
-        "icon": Icons.business_center,
+        "icon": FontAwesomeIcons.briefcase,
         "label": "Work as",
         "data": occupation,
       },
       {
-        "icon": Icons.calendar_today,
+        "icon": FontAwesomeIcons.birthdayCake,
         "label": "Birthday",
         "data": birthday,
       },
       {
-        "icon": Icons.accessibility,
+        "icon": FontAwesomeIcons.venusMars,
         "label": "Gender",
         "data": gender,
       },
       {
-        "icon": Icons.language,
+        "icon": FontAwesomeIcons.globeAmericas,
         "label": "Follows",
         "data": religion,
       },
       {
-        "icon": Icons.location_city,
+        "icon": FontAwesomeIcons.building,
         "label": "Lives In",
         "data": livesIn,
       },
       {
-        "icon": Icons.home,
+        "icon": FontAwesomeIcons.home,
         "label": "Hometown",
         "data": homeTown,
       },
@@ -62,17 +64,23 @@ ProfileAbout({this.petName, this.phone, this.occupation, this.birthday, this.gen
           crossAxisCount: 2,
         ),
         itemBuilder: (BuildContext context, index) {
-          return Card(
+          return Neumorphic(
+            style: NeumorphicStyle(
+              depth: 5,
+              shape: NeumorphicShape.convex,
+            ),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 5),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Icon(
+                  NeumorphicIcon(
                     aboutData[index]["icon"],
-                    size: 35,
-                    color: Theme.of(context).primaryColor,
+                    size: 30,
+                    style: NeumorphicStyle(
+                      color: Color(0xFF0D1C40),
+                    ),
                   ),
                   Text(
                     aboutData[index]["label"],

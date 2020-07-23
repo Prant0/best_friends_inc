@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
@@ -112,12 +113,12 @@ class _PostStatusState extends State<PostStatus> {
       inAsyncCall: onProgress,
       child: Scaffold(
         key: _scaffoldKey,
-        appBar: AppBar(
+        appBar: NeumorphicAppBar(
           centerTitle: true,
-          title: Text('Post'),
+          title: NeumorphicText('Post', textStyle: NeumorphicTextStyle(fontSize: 15), style: NeumorphicStyle(color: Theme.of(context).primaryColor),),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.camera),
+            NeumorphicButton(
+              child: Icon(Icons.camera),
               tooltip: "Add Media",
               onPressed: () {
                 loadAssets();
@@ -133,16 +134,25 @@ class _PostStatusState extends State<PostStatus> {
             child: Column(children: [
               Expanded(
                 flex: 4,
-                child: TextField(
-                  controller: bodyController,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  autofocus: true,
-                  decoration: InputDecoration(
-                    hintText: 'What\'s Going On...!!!',
-                    border: OutlineInputBorder(),
+                child: Neumorphic(
+                  padding: EdgeInsets.all(15),
+                  style: NeumorphicStyle(
+                    shape: NeumorphicShape.concave,
+                  ),
+                  child: TextField(
+                    controller: bodyController,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: 'What\'s Going On...!!!',
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 20,
               ),
               Expanded(
                 flex: 2,
@@ -154,14 +164,10 @@ class _PostStatusState extends State<PostStatus> {
                         child: Container(
                           alignment: Alignment.center,
                           width: 150,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          child: Icon(
-                            Icons.add,
-                            color: Theme.of(context).primaryColor,
+                          child: NeumorphicIcon(
+                            Icons.add_circle,
+                            size: 40,
+                            //color: Theme.of(context).primaryColor,
                           ),
                         ),
                       )
@@ -185,7 +191,8 @@ class _PostStatusState extends State<PostStatus> {
                                             child: Image.memory(
                                               base64.decode(imagesList["$item"]),
                                               fit: BoxFit.cover,
-                                            )),
+                                            ),
+                                        ),
 //                                  Positioned(
 //                                    top: 2,
 //                                    right: 2,
@@ -207,33 +214,34 @@ class _PostStatusState extends State<PostStatus> {
                       ),
               ),
               SizedBox(
-                height: 20,
+                height: 30,
               ),
               Expanded(
-                flex: 1,
+                flex: 2,
                 child: Container(
                   alignment: Alignment.center,
                   child: Container(
                     width: 200,
                     height: 50,
-                    child: RaisedButton(
+                    child: NeumorphicButton(
+                      style: NeumorphicStyle(
+                        intensity: 20,
+                        depth: 5,
+                      ),
                       onPressed: () {
                         setState(() {
                           onProgress = true;
                         });
                         createPost(context);
                       },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      color: Theme.of(context).primaryColor,
                       child: Text(
                         'Post Now',
                         style: TextStyle(
-                          color: Colors.white,
+                          //color: Colors.white,
                           fontSize: 20,
                           letterSpacing: 1,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),

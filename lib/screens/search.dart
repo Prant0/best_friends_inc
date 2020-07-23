@@ -1,6 +1,7 @@
 import 'package:bestfriends/http/requests.dart';
 import 'package:bestfriends/widgets/searchResults.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class SearchPage extends StatefulWidget {
@@ -24,20 +25,25 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: TextFormField(
-          controller: searchController,
-          cursorColor: Colors.white,
-          autofocus: true,
-          style: TextStyle(
-            color: Colors.white,
+      appBar: NeumorphicAppBar(
+        title: Neumorphic(
+          style: NeumorphicStyle(
+            shape: NeumorphicShape.concave,
           ),
-          decoration: InputDecoration(
-            hintText: "Phone or Name",
-            border: OutlineInputBorder(),
-            hintStyle: TextStyle(
-              color: Colors.grey,
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          child: TextFormField(
+            controller: searchController,
+            cursorColor: Colors.white,
+            autofocus: true,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+            decoration: InputDecoration(
+              hintText: "Phone or Name",
+              border: InputBorder.none,
+              hintStyle: TextStyle(
+                color: Colors.grey,
+              ),
             ),
           ),
         ),

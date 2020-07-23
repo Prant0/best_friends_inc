@@ -6,11 +6,8 @@ import 'package:bestfriends/screens/registation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:laravel_echo/laravel_echo.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_pusher_client/flutter_pusher.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class Login_Page extends StatefulWidget {
   static const routeName = '/loginPage';

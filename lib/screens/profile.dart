@@ -9,6 +9,8 @@ import 'package:bestfriends/screens/updateProfile.dart';
 import 'package:bestfriends/widgets/profilePosts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -91,11 +93,13 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                             SizedBox(
                               width: 10,
                             ),
-                            Text(
+                            NeumorphicText(
                               userData.name,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
+                              style: NeumorphicStyle(
+                                color: Color(0xffF5F6FD),
+                              ),
+                              textStyle: NeumorphicTextStyle(
+                                fontSize: 15,
                               ),
                             ),
                           ],
@@ -119,13 +123,13 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       actions: <Widget>[
                         ModalRoute.of(context).settings.arguments==int.parse(sharedPreferences.getString("userId"))?
                            IconButton(
-                             icon: Icon(Icons.edit),
+                             icon: Icon(FontAwesomeIcons.edit,),
                              tooltip: 'Update Info',
                              onPressed: () {
                                Navigator.of(context).pushNamed(UpdateProfile.routeName);
                              },
                            ): following?IconButton(
-                  icon: Icon(Icons.not_interested),
+                  icon: Icon(FontAwesomeIcons.userTimes),
                   tooltip: 'Un-follow',
                   onPressed: () async{
                   final data = await CustomHttpRequests.followUser(userData.userId);
@@ -136,7 +140,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   }
                   },
                   ) :IconButton(
-                          icon: Icon(Icons.check_circle_outline),
+                          icon: Icon(FontAwesomeIcons.userPlus),
                           tooltip: 'Follow',
                           onPressed: () async{
                               final data = await CustomHttpRequests.followUser(userData.userId);
@@ -164,30 +168,42 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                               tabs: [
                                 Tab(
                                   text: "Posts",
-                                  icon: Icon(
+                                  icon: NeumorphicIcon(
                                     Icons.library_books,
-                                    color: Theme.of(context).primaryColor,
+                                    size: 30,
+                                    style: NeumorphicStyle(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
                                   ),
                                 ),
                                 Tab(
                                   text: "About",
-                                  icon: Icon(
+                                  icon: NeumorphicIcon(
                                     Icons.info,
-                                    color: Theme.of(context).primaryColor,
+                                    size: 30,
+                                    style: NeumorphicStyle(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
                                   ),
                                 ),
                                 Tab(
                                   text: "Followers",
-                                  icon: Icon(
+                                  icon: NeumorphicIcon(
                                     Icons.group_add,
-                                    color: Theme.of(context).primaryColor,
+                                    size: 30,
+                                    style: NeumorphicStyle(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
                                   ),
                                 ),
                                 Tab(
                                   text: "Followings",
-                                  icon: Icon(
+                                  icon: NeumorphicIcon(
                                     Icons.group,
-                                    color: Theme.of(context).primaryColor,
+                                    size: 30,
+                                    style: NeumorphicStyle(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
                                   ),
                                 ),
                               ],

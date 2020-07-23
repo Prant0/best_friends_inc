@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -166,8 +167,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text("Update Information"),
+      appBar: NeumorphicAppBar(
+        centerTitle: true,
+        title: NeumorphicText("Update Information", textStyle: NeumorphicTextStyle(fontSize: 15,), style: NeumorphicStyle(color: Theme.of(context).primaryColor),),
       ),
       body: userData==null?Container(alignment: Alignment.center, child: CircularProgressIndicator(),): _processing==false?SingleChildScrollView(
         child: Container(
@@ -181,14 +183,18 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       onTap: (){
                         loadProfilePic();
                       },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image.memory(
-                          base64.decode(profilePic),
-                          fit: BoxFit.cover,
-                          height: 150,
-                          width: 35,
+                      child: Neumorphic(
+                        style: NeumorphicStyle(
+                          depth: 5,
+                          shape: NeumorphicShape.concave,
+                          boxShape: NeumorphicBoxShape.circle(),
                         ),
+                        child:Image.memory(
+                            base64.decode(profilePic),
+                            fit: BoxFit.cover,
+                            height: 150,
+                            width: 35,
+                          ),
                       ),
                     ),
                   ),
@@ -200,8 +206,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       onTap: (){
                         loadCoverPic();
                       },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                      child: Neumorphic(
+                        style: NeumorphicStyle(
+                          depth: 5,
+                        ),
                         child: Image.memory(
                           base64.decode(coverPic),
                           fit: BoxFit.cover,
@@ -241,7 +249,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   Expanded(
                     flex: 1,
                     child: IconButton(
-                      icon: Icon(Icons.calendar_today),
+                      icon: NeumorphicIcon(Icons.calendar_today, size: 30, style: NeumorphicStyle(color:  Theme.of(context).primaryColor, depth: 5, intensity: 20,),),
                       onPressed: ()async{
                         DateTime bDay = await showRoundedDatePicker(
                           context: context,
@@ -258,59 +266,194 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 ],
               ),
               SizedBox(
-                  height: 15
+                  height: 25
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    child: Center(
-                      child: DropdownButton(
-                        value: _selectedGender,
-                        items: gender.map((String value) {
-                          return DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (val){
-                          setState(() {
-                            _selectedGender = val;
-                          });
-                        },
-                      ),
+              Neumorphic(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: Row(
+                  children: <Widget>[
+                    Text("Gender: "),
+                    SizedBox(
+                      width: 10,
                     ),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: DropdownButton(
-                        value: _selectedReligion,
-                        items: religion.map((String value) {
-                          return DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (val){
-                          setState(() {
-                            _selectedReligion = val;
-                          });
-                        },
+                    NeumorphicRadio(
+                      style: NeumorphicRadioStyle(
+                        intensity: 20,
                       ),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Text("Male"),
+                      value: ("Male"),
+                      groupValue: _selectedGender,
+                      isEnabled: _selectedGender=="Male",
+                      onChanged: (val){
+                        setState(() {
+                          _selectedGender = val;
+                        });
+                      },
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      width: 10,
+                    ),
+                    NeumorphicRadio(
+                      style: NeumorphicRadioStyle(
+                        intensity: 20,
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Text("Female"),
+                      value: "Female",
+                      groupValue: _selectedGender,
+                      isEnabled: _selectedGender=="Female",
+                      onChanged: (val){
+                        setState(() {
+                          _selectedGender = val;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    NeumorphicRadio(
+                      style: NeumorphicRadioStyle(
+                        intensity: 20,
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Text("Other"),
+                      value: "Other",
+                      groupValue: _selectedGender,
+                      isEnabled: _selectedGender=="Other",
+                      onChanged: (val){
+                        setState(() {
+                          _selectedGender = val;
+                        });
+                      },
+                    ),
+
+                  ],
+                ),
               ),
               SizedBox(
                   height: 15
               ),
+              Neumorphic(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text("Religion: "),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    NeumorphicRadio(
+                      style: NeumorphicRadioStyle(
+                        intensity: 20,
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Text("Islam"),
+                      value: ("Islam"),
+                      groupValue: _selectedReligion,
+                      isEnabled: _selectedReligion=="Islam",
+                      onChanged: (val){
+                        setState(() {
+                          _selectedReligion = val;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    NeumorphicRadio(
+                      style: NeumorphicRadioStyle(
+                        intensity: 20,
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Text("Hindu"),
+                      value: "Hindu",
+                      groupValue: _selectedReligion,
+                      isEnabled: _selectedReligion=="Hindu",
+                      onChanged: (val){
+                        setState(() {
+                          _selectedReligion = val;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    NeumorphicRadio(
+                      style: NeumorphicRadioStyle(
+                        intensity: 20,
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Text("Other"),
+                      value: "Other",
+                      groupValue: _selectedReligion,
+                      isEnabled: _selectedReligion=="Other",
+                      onChanged: (val){
+                        setState(() {
+                          _selectedReligion = val;
+                        });
+                      },
+                    ),
+
+                  ],
+                ),
+              ),
+              SizedBox(
+                  height: 25
+              ),
+//              Row(
+//                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                children: <Widget>[
+//                  Expanded(
+//                    child: Center(
+//                      child: DropdownButton(
+//                        value: _selectedGender,
+//                        items: gender.map((String value) {
+//                          return DropdownMenuItem(
+//                            value: value,
+//                            child: Text(value),
+//                          );
+//                        }).toList(),
+//                        onChanged: (val){
+//                          setState(() {
+//                            _selectedGender = val;
+//                          });
+//                        },
+//                      ),
+//                    ),
+//                  ),
+//                  Expanded(
+//                    child: Center(
+//                      child: DropdownButton(
+//                        value: _selectedReligion,
+//                        items: religion.map((String value) {
+//                          return DropdownMenuItem(
+//                            value: value,
+//                            child: Text(value),
+//                          );
+//                        }).toList(),
+//                        onChanged: (val){
+//                          setState(() {
+//                            _selectedReligion = val;
+//                          });
+//                        },
+//                      ),
+//                    ),
+//                  ),
+//                ],
+//              ),
+//              SizedBox(
+//                  height: 15
+//              ),
               Container(
-                width: double.infinity,
-                child: RaisedButton(
-                  color: Theme.of(context).primaryColor,
-                  child: Text("UPDATE", style: TextStyle(
-                    color: Colors.white,
-                  ),),
+                width: 250,
+                child: NeumorphicButton(
+                  style: NeumorphicStyle(
+                    depth: 5,
+                    intensity: 20,
+                    shape: NeumorphicShape.convex,
+                  ),
+                  child: Text("UPDATE", textAlign: TextAlign.center,),
                   onPressed: ()async{
                     setState(() {
                       _processing = true;
@@ -354,17 +497,25 @@ class UpdateTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: cont,
-      readOnly: readOnly,
-      maxLength: maxLength,
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(),
+    return Neumorphic(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      style: NeumorphicStyle(
+        shape: NeumorphicShape.concave,
+        depth: 5,
+        intensity: 20,
       ),
-      onEditingComplete: (){
-        print(cont.text);
-      },
+      child: TextField(
+        controller: cont,
+        readOnly: readOnly,
+        maxLength: maxLength,
+        decoration: InputDecoration(
+          labelText: label,
+          border: InputBorder.none,
+        ),
+        onEditingComplete: (){
+          print(cont.text);
+        },
+      ),
     );
   }
 }
