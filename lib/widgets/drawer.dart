@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:bestfriends/http/requests.dart';
+import 'package:bestfriends/screens/homepage.dart';
 import 'package:bestfriends/screens/login.dart';
 import 'package:bestfriends/screens/profile.dart';
 import 'package:bestfriends/screens/search.dart';
+import 'package:bestfriends/screens/wallet/walletHome.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -107,15 +109,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         },
                       ),
                       PersonalDrawerItem(
-                        iconData: Icons.timeline,
-                        text: 'Timeline',
-                        onTap: () {},
-                      ),
-                      PersonalDrawerItem(
                         iconData: Icons.account_balance_wallet,
                         text: 'E-Wallet',
                         onTap: () {
-                          showSnack();
+                          Navigator.of(context).pushNamed(WalletHome.routeName);
                         },
                       ),
                       PersonalDrawerItem(

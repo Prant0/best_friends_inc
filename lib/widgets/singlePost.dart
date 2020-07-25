@@ -71,13 +71,13 @@ class _SinglePostState extends State<SinglePost> {
   bool isExpanded = true;
   showAlertDialog(BuildContext context, int postId) {
     // set up the buttons
-    Widget cancelButton = FlatButton(
+    Widget cancelButton = NeumorphicButton(
       child: Text("Cancel"),
       onPressed:  () {
         Navigator.of(context).pop();
       },
     );
-    Widget continueButton = FlatButton(
+    Widget continueButton = NeumorphicButton(
       child: Text("DELETE", style: TextStyle(
         color: Colors.red
       ),),
@@ -108,6 +108,10 @@ class _SinglePostState extends State<SinglePost> {
   @override
   Widget build(BuildContext context) {
     return Neumorphic(
+      style: NeumorphicStyle(
+        shape: NeumorphicShape.concave,
+        intensity: 20,
+      ),
       margin: EdgeInsets.symmetric(vertical: 5),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -247,9 +251,12 @@ class _SinglePostState extends State<SinglePost> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: Row(children: [
-                        FaIcon(
+                        NeumorphicIcon(
                           widget.isLiked==null||widget.isLiked?FontAwesomeIcons.solidHeart:FontAwesomeIcons.heart,
-                          color: Colors.teal,
+                          style: NeumorphicStyle(
+                             color: Color(0xFF0D1C40),
+                            intensity: 20,
+                          ),
                           size: 20.0,
                         ),
                         SizedBox(
@@ -271,9 +278,12 @@ class _SinglePostState extends State<SinglePost> {
                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: Row(
                         children: <Widget>[
-                          FaIcon(
+                          NeumorphicIcon(
                             FontAwesomeIcons.comments,
-                            color: Colors.teal,
+                            style: NeumorphicStyle(
+                              color: Color(0xFF0D1C40),
+                              intensity: 20,
+                            ),
                             size: 20.0,
                           ),
                           SizedBox(
@@ -287,28 +297,28 @@ class _SinglePostState extends State<SinglePost> {
                       ),
                     ),
                   ),
-                  InkWell(
-                    onTap: () {},
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.share,
-                            color: Colors.teal,
-                            size: 20.0,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            '${widget.sharesCount}',
-                            style: TextStyle(color: Colors.black45),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+//                  InkWell(
+//                    onTap: () {},
+//                    child: Padding(
+//                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+//                      child: Row(
+//                        children: <Widget>[
+//                          Icon(
+//                            Icons.share,
+//                            color: Colors.teal,
+//                            size: 20.0,
+//                          ),
+//                          SizedBox(
+//                            width: 5,
+//                          ),
+//                          Text(
+//                            '${widget.sharesCount}',
+//                            style: TextStyle(color: Colors.black45),
+//                          ),
+//                        ],
+//                      ),
+//                    ),
+//                  ),
                 ],
               ),
             ),

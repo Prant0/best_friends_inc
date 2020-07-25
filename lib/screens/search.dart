@@ -36,13 +36,13 @@ class _SearchPageState extends State<SearchPage> {
             cursorColor: Colors.white,
             autofocus: true,
             style: TextStyle(
-              color: Colors.white,
+              color: Color(0xFF0D1C40),
             ),
             decoration: InputDecoration(
               hintText: "Phone or Name",
               border: InputBorder.none,
               hintStyle: TextStyle(
-                color: Colors.grey,
+                color: Color(0xA00D1C40),
               ),
             ),
           ),

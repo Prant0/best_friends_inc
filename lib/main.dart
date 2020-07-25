@@ -3,6 +3,7 @@ import 'package:bestfriends/screens/postStatus.dart';
 import 'package:bestfriends/screens/profile.dart';
 import 'package:bestfriends/screens/search.dart';
 import 'package:bestfriends/screens/updateProfile.dart';
+import 'package:bestfriends/screens/wallet/walletHome.dart';
 import 'package:bestfriends/widgets/allComments.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,10 +44,11 @@ class _MyAppState extends State<MyApp> {
           SearchPage.routeName: (BuildContext context) => SearchPage(),
           UpdateProfile.routeName: (BuildContext context) => UpdateProfile(),
           AllComments.routeName: (BuildContext context) => AllComments(),
+          WalletHome.routeName: (BuildContext context) => WalletHome(),
         },
         theme: NeumorphicThemeData(
             accentColor: Color(0xFF0D1C40),
-            baseColor: Color(0xffF5F6FD),
+            baseColor: Color(0xFFF4F6F9),
             ),
         home: Login_Page(),
       ),

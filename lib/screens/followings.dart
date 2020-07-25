@@ -4,6 +4,7 @@ import 'package:bestfriends/http/requests.dart';
 import 'package:bestfriends/screens/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class FollowingScreen extends StatefulWidget {
   final int userId;
@@ -50,20 +51,27 @@ class _FollowingScreenState extends State<FollowingScreen> {
       child: ListView.builder(
         itemCount: followings.length,
         itemBuilder: (context, int i){
-          return ListTile(
-            onTap: (){
-              Navigator.of(context).pushNamed(Profile.routeName, arguments: followings[i]["id"]);
-            },
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(50),
-              child: Image.memory(
-                base64Decode(followings[i]["profile_pic"]),
-                fit: BoxFit.cover,
-                height: 35,
-                width: 35,
-              ),
+          return Neumorphic(
+            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            style: NeumorphicStyle(
+              shape: NeumorphicShape.convex,
+              intensity: 20,
             ),
-            title: Text(followings[i]["name"]),
+            child: ListTile(
+              onTap: (){
+                Navigator.of(context).pushNamed(Profile.routeName, arguments: followings[i]["id"]);
+              },
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: Image.memory(
+                  base64Decode(followings[i]["profile_pic"]),
+                  fit: BoxFit.cover,
+                  height: 35,
+                  width: 35,
+                ),
+              ),
+              title: Text(followings[i]["name"]),
+            ),
           );
         },
       ),

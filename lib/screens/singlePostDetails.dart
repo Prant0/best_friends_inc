@@ -11,6 +11,8 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -134,20 +136,34 @@ class _SinglePostDetailsState extends State<SinglePostDetails> {
       },
       child: Scaffold(
         key: _scaffoldKey,
-        appBar: AppBar(
+        appBar: NeumorphicAppBar(
+          centerTitle: true,
+          title: NeumorphicText("Update Post", style: NeumorphicStyle(color: Theme.of(context).primaryColor),),
           actions: <Widget>[
-            SinglePostDetailsFAB(iconData: Icons.save_alt,press: (){
+            NeumorphicButton(
+              padding: EdgeInsets.all(0),
+              child: Center(
+                child: NeumorphicIcon(
+                  FontAwesomeIcons.cloudUploadAlt,
+                  size: 20,
+                  style: NeumorphicStyle(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+              ),
+              onPressed: (){
               setState(() {
                 onProgress = true;
               });
               createPost(context);
-            }, counts: "Update",),
+            },
+            ),
           ],
         ),
           body: SafeArea(
-          child: onProgress?Container(alignment: Alignment.center,child: CircularProgressIndicator(),):Container(
+          child: onProgress?Container(alignment: Alignment.center,child: CircularProgressIndicator(),):Neumorphic(
             padding: EdgeInsets.symmetric(vertical: 10),
-            color: Colors.white,
+            //color: Colors.white,
             child: SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -156,10 +172,18 @@ class _SinglePostDetailsState extends State<SinglePostDetails> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        TextFormField(
-                          controller: descController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
+                        Neumorphic(
+                          style: NeumorphicStyle(
+                            intensity: 20,
+                            shape: NeumorphicShape.concave,
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          child: TextFormField(
+                            controller: descController,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Whats going on...!!!",
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -197,7 +221,7 @@ class _SinglePostDetailsState extends State<SinglePostDetails> {
                                         top: 1,
                                         right: 1,
                                         child: IconButton(
-                                          icon: Icon(Icons.indeterminate_check_box, color: Colors.white,),
+                                          icon: NeumorphicIcon(Icons.indeterminate_check_box,),
                                           onPressed: (){
                                             setState(() {
                                               media.removeAt(i);
@@ -220,11 +244,8 @@ class _SinglePostDetailsState extends State<SinglePostDetails> {
                           child: Container(
                             height: 150,
                             width: 150,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black),
-                            ),
                             alignment: Alignment.center,
-                            child: Icon(Icons.add),
+                            child: NeumorphicIcon(Icons.add_circle, size: 50,),
                           ),
                         ),
                       ]

@@ -166,7 +166,11 @@ class _PostStatusState extends State<PostStatus> {
                           width: 150,
                           child: NeumorphicIcon(
                             Icons.add_circle,
-                            size: 40,
+                            size: 60,
+                            style: NeumorphicStyle(
+                              intensity: 20,
+                              shape: NeumorphicShape.concave,
+                            ),
                             //color: Theme.of(context).primaryColor,
                           ),
                         ),
