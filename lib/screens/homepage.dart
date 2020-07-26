@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage>{
               color: Color(0xFFE2E4EA),
               shape: NeumorphicShape.concave,
             ),
-            child: Center(child: FaIcon(FontAwesomeIcons.bars, color: Theme.of(context).primaryColor, size: 15,)),
+            child: Center(child: FaIcon(FontAwesomeIcons.bars, color: Theme.of(context).iconTheme.color, size: 15,)),
             onPressed: (){
               _scaffoldKey.currentState.openEndDrawer();
             },
@@ -113,12 +113,21 @@ class _HomePageState extends State<HomePage>{
             depth: 5,
             shape: NeumorphicShape.concave,
           ),
-          child: Center(child:FaIcon(FontAwesomeIcons.user, color: Theme.of(context).primaryColor, size: 15,),),
+          child: Center(child:FaIcon(FontAwesomeIcons.user, color: Theme.of(context).iconTheme.color, size: 15,),),
           onPressed: (){
             _scaffoldKey.currentState.openDrawer();
           },
         ),
-        title: Center(child: NeumorphicText("Best Friends Inc.",style: NeumorphicStyle(color: Theme.of(context).primaryColor,), textStyle: NeumorphicTextStyle(fontSize: 15),)),
+        title: Center(
+          child: FittedBox(
+            child: NeumorphicText("Best Friends Inc.",style: NeumorphicStyle(color: Theme.of(context).primaryColor,),
+            textStyle: NeumorphicTextStyle(
+                fontSize: 15,
+                fontFamily: "Courgette"
+              ),
+            ),
+          ),
+        ),
       ),
       drawer: CustomDrawer(_scaffoldKey),
       endDrawer: CompanyDrawer(_scaffoldKey),

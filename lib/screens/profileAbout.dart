@@ -79,7 +79,7 @@ ProfileAbout({this.petName, this.phone, this.occupation, this.birthday, this.gen
                     aboutData[index]["icon"],
                     size: 30,
                     style: NeumorphicStyle(
-                      color: Color(0xFF0D1C40),
+                      color: Theme.of(context).iconTheme.color,
                     ),
                   ),
                   Text(

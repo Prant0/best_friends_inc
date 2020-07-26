@@ -109,6 +109,7 @@ class _Login_PageState extends State<Login_Page> {
             sharedPreferences.setString("name", userData["name"]);
             sharedPreferences.setString("userPhone", userData["phone"]);
             sharedPreferences.setString("profile_pic", userData["profile_pic"]);
+            sharedPreferences.setString("cover_pic", userData["cover_pic"]);
           });
           return true;
         }
@@ -145,7 +146,7 @@ class _Login_PageState extends State<Login_Page> {
                   ),
                   NeumorphicText(
                     'Login',
-                    textStyle: NeumorphicTextStyle(fontSize: 42.0, letterSpacing: 2,),
+                    textStyle: NeumorphicTextStyle(fontSize: 42.0, letterSpacing: 2, fontFamily: Theme.of(context).textTheme.bodyText1.fontFamily),
                     style: NeumorphicStyle(color: Theme.of(context).primaryColor),
                   ),
                   Padding(
@@ -165,7 +166,7 @@ class _Login_PageState extends State<Login_Page> {
                           //  labelText: "Username",
                           hintText: '01XXXXXXXXX', hintStyle: TextStyle(fontSize: 14.0),
                           labelText: '11 Digits phone',
-                          prefixIcon: Icon(Icons.face, color: Theme.of(context).primaryColor),
+                          prefixIcon: Icon(Icons.face, color: Theme.of(context).iconTheme.color,),
                         ),
                       ),
                     ),
@@ -190,7 +191,7 @@ class _Login_PageState extends State<Login_Page> {
                             },
                             child: Icon(
                               _obscureText ? Icons.visibility : Icons.visibility_off,
-                              color: Theme.of(context).primaryColor,
+                              color: Theme.of(context).iconTheme.color,
                             ),
                           ),
                           border: InputBorder.none,
@@ -199,7 +200,7 @@ class _Login_PageState extends State<Login_Page> {
                           labelText: 'Password',
                           prefixIcon: Icon(
                             Icons.lock,
-                            color: Theme.of(context).primaryColor,
+                            color: Theme.of(context).iconTheme.color,
                           ),
                           // icon: Icon(Icons.lock,color: Colors.teal,)
                         ),

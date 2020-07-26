@@ -21,8 +21,8 @@ class PersonalDrawerItem extends StatelessWidget {
 //      splashColor: Theme.of(context).primaryColor.withOpacity(0.5),
 //      borderRadius: BorderRadius.circular(25),
         child: ListTile(
-        leading: Icon(iconData),
-        title: Text(text),
+          leading: Icon(iconData, color: Theme.of(context).iconTheme.color,),
+          title: Text(text),
       ),
     );
   }

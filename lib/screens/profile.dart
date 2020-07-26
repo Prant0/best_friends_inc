@@ -73,6 +73,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                   return <Widget>[
                     SliverAppBar(
+                      backgroundColor: Theme.of(context).primaryColor,
                       expandedHeight: 200.0,
                       floating: false,
                       pinned: true,
@@ -172,7 +173,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                     Icons.library_books,
                                     size: 30,
                                     style: NeumorphicStyle(
-                                      color: Theme.of(context).primaryColor,
+                                      color: Theme.of(context).iconTheme.color,
                                     ),
                                   ),
                                 ),
@@ -182,7 +183,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                     Icons.info,
                                     size: 30,
                                     style: NeumorphicStyle(
-                                      color: Theme.of(context).primaryColor,
+                                      color: Theme.of(context).iconTheme.color,
                                     ),
                                   ),
                                 ),
@@ -192,7 +193,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                     Icons.group_add,
                                     size: 30,
                                     style: NeumorphicStyle(
-                                      color: Theme.of(context).primaryColor,
+                                      color: Theme.of(context).iconTheme.color,
                                     ),
                                   ),
                                 ),
@@ -202,7 +203,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                     Icons.group,
                                     size: 30,
                                     style: NeumorphicStyle(
-                                      color: Theme.of(context).primaryColor,
+                                      color: Theme.of(context).iconTheme.color,
                                     ),
                                   ),
                                 ),

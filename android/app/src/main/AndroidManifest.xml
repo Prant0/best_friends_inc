@@ -15,7 +15,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="bestfriends"
+        android:label="Best Friends Inc."
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

@@ -7,6 +7,7 @@ import 'package:bestfriends/screens/profile.dart';
 import 'package:bestfriends/screens/search.dart';
 import 'package:bestfriends/screens/wallet/walletHome.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/personalDrwaerItems.dart';
@@ -73,19 +74,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
             padding: EdgeInsets.symmetric(vertical: 50, horizontal: 20),
             child: Column(
               children: <Widget>[
-                Container(
+                sharedPreferences==null?Container():Container(
                   child: Column(
                     children: <Widget>[
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: sharedPreferences==null?Container():Image.memory(base64Decode(sharedPreferences.getString("profile_pic")),width: 100, height: 100, fit: BoxFit.cover,),
+                        borderRadius: BorderRadius.circular(50),
+                          child: Image.memory(base64Decode(sharedPreferences.getString("profile_pic")),width: 100, height: 100, fit: BoxFit.cover,),
                       ),
-                      Text(
-                        sharedPreferences==null?"Best Friends Inc.":sharedPreferences.getString("name"),
-                        style: TextStyle(
-                          fontSize: 25,
-                        ),
-                      ),
+                      FittedBox(child: Text(sharedPreferences.getString("name"), style: TextStyle( fontSize: 25,),)),
                     ],
                   ),
                 ),
@@ -95,7 +91,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   child: ListView(
                     children: <Widget>[
                       PersonalDrawerItem(
-                        iconData: Icons.face,
+                        iconData: FontAwesomeIcons.user,
                         text: 'My Profile',
                         onTap: () async{
                           Navigator.of(context).pushNamed(Profile.routeName, arguments: int.parse(sharedPreferences.getString("userId")));
@@ -116,14 +112,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         },
                       ),
                       PersonalDrawerItem(
-                        iconData: Icons.photo,
+                        iconData: FontAwesomeIcons.images,
                         text: 'My Albums',
                         onTap: () {
                           showSnack();
                         },
                       ),
                       PersonalDrawerItem(
-                        iconData: Icons.book,
+                        iconData: FontAwesomeIcons.fileAlt,
                         text: 'My Pages',
                         onTap: () {
                           showSnack();

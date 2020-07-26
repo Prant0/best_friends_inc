@@ -139,9 +139,11 @@ class _SinglePostState extends State<SinglePost> {
                         SizedBox(
                           width: 15.0,
                         ),
-                        Text(
-                          widget.posterName,
-                          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w800),
+                        FittedBox(
+                          child: Text(
+                            widget.posterName,
+                            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w800),
+                          ),
                         ),
                       ],
                     ),
@@ -224,9 +226,10 @@ class _SinglePostState extends State<SinglePost> {
                                     fit: BoxFit.cover,
                                   );
                                 }).toList(),
-                                dotSize: 2,
+                                dotSize: 6,
                                 dotIncreaseSize: 2,
                                 dotIncreasedColor: Theme.of(context).primaryColor,
+                                dotColor: Theme.of(context).primaryColor,
                                 dotSpacing: 15,
                                 dotBgColor: Colors.transparent,
                                 autoplay: false,

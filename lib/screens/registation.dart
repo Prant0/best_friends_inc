@@ -101,7 +101,7 @@ class _Registation_PageState extends State<Registation_Page> {
               ),
               NeumorphicText(
                 'Register',
-                textStyle: NeumorphicTextStyle(fontSize: 42.0, letterSpacing: 2,),
+                textStyle: NeumorphicTextStyle(fontSize: 42.0, letterSpacing: 2, fontFamily: Theme.of(context).textTheme.bodyText1.fontFamily),
                 style: NeumorphicStyle(color: Theme.of(context).primaryColor),
               ),
               Form(
@@ -121,7 +121,7 @@ class _Registation_PageState extends State<Registation_Page> {
                           //  labelText: "Username",
                           hintText: 'John Doe',
                           labelText: 'Your Name',
-                          prefixIcon: Icon(Icons.face, color: Theme.of(context).primaryColor),
+                          prefixIcon: Icon(Icons.face, color: Theme.of(context).iconTheme.color),
                         ),
                         //maxLength: 30,
                       ),
@@ -140,8 +140,9 @@ class _Registation_PageState extends State<Registation_Page> {
                           border: InputBorder.none,
                           labelText: "11 Digit Phone",
                           hintText: '01XXXXXXXXX',
-                          prefixIcon: Icon(Icons.phone, color: Theme.of(context).primaryColor),
+                          prefixIcon: Icon(Icons.phone, color: Theme.of(context).iconTheme.color),
                         ),
+                        keyboardType: TextInputType.numberWithOptions(),
                         //maxLength: 11,
                       ),
                     ),
@@ -165,7 +166,7 @@ class _Registation_PageState extends State<Registation_Page> {
                             },
                             child: Icon(
                               _obscureText ? Icons.visibility : Icons.visibility_off,
-                              color: Theme.of(context).primaryColor,
+                              color: Theme.of(context).iconTheme.color,
                             ),
                           ),
                           border: InputBorder.none,
@@ -174,7 +175,7 @@ class _Registation_PageState extends State<Registation_Page> {
                           labelText: 'Password',
                           prefixIcon: Icon(
                             Icons.lock,
-                            color: Theme.of(context).primaryColor,
+                            color: Theme.of(context).iconTheme.color,
                           ),
                           // icon: Icon(Icons.lock,color: Colors.teal,)
                         ),
@@ -200,7 +201,7 @@ class _Registation_PageState extends State<Registation_Page> {
                             },
                             child: Icon(
                               _obscureText ? Icons.visibility : Icons.visibility_off,
-                              color: Theme.of(context).primaryColor,
+                              color: Theme.of(context).iconTheme.color,
                             ),
                           ),
                           border: InputBorder.none,
@@ -209,7 +210,7 @@ class _Registation_PageState extends State<Registation_Page> {
                           labelText: 'Retype Password',
                           prefixIcon: Icon(
                             Icons.lock,
-                            color: Theme.of(context).primaryColor,
+                            color: Theme.of(context).iconTheme.color,
                           ),
                           // icon: Icon(Icons.lock,color: Colors.teal,)
                         ),
@@ -228,10 +229,10 @@ class _Registation_PageState extends State<Registation_Page> {
                           border: InputBorder.none,
                           // labelText: "Password",
                           hintText: '0123456789XX',
-                          labelText: 'Referral ID',
+                          labelText: 'Introducer A/C No. (Optional)',
                           prefixIcon: Icon(
                             Icons.attach_money,
-                            color: Theme.of(context).primaryColor,
+                            color: Theme.of(context).iconTheme.color,
                           ),
                           // icon: Icon(Icons.lock,color: Colors.teal,)
                         ),

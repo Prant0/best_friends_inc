@@ -46,9 +46,27 @@ class _MyAppState extends State<MyApp> {
           AllComments.routeName: (BuildContext context) => AllComments(),
           WalletHome.routeName: (BuildContext context) => WalletHome(),
         },
+        //(0xFF0D1C40)
         theme: NeumorphicThemeData(
             accentColor: Color(0xFF0D1C40),
             baseColor: Color(0xFFF4F6F9),
+            textTheme: TextTheme(
+                  bodyText1: TextStyle(
+                    fontFamily: "Varta",
+                  ),
+                  subtitle1: TextStyle(
+                    fontFamily: "Varta",
+                  ),
+                  bodyText2: TextStyle(
+                    fontFamily: "Varta",
+                  ),
+                  subtitle2: TextStyle(
+                    fontFamily: "Varta",
+                  ),
+              ),
+            iconTheme:  IconThemeData(
+                color: Color(0xFF0D1C40),
+              ),
             ),
         home: Login_Page(),
       ),
