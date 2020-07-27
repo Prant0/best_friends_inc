@@ -71,22 +71,25 @@ class _CustomDrawerState extends State<CustomDrawer> {
         child: Container(
           color: Color(0xffF5F6FD),
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             child: Column(
               children: <Widget>[
-                sharedPreferences==null?Container():Container(
-                  child: Column(
-                    children: <Widget>[
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                          child: Image.memory(base64Decode(sharedPreferences.getString("profile_pic")),width: 100, height: 100, fit: BoxFit.cover,),
-                      ),
-                      FittedBox(child: Text(sharedPreferences.getString("name"), style: TextStyle( fontSize: 25,),)),
-                    ],
+                sharedPreferences==null?Container():Expanded(
+                  flex: 2,
+                  child: Container(
+                    child: Column(
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                            child: Image.memory(base64Decode(sharedPreferences.getString("profile_pic")),width: 100, height: 100, fit: BoxFit.cover,),
+                        ),
+                        FittedBox(child: Text(sharedPreferences.getString("name"), style: TextStyle( fontSize: 25,),)),
+                      ],
+                    ),
                   ),
                 ),
-                Divider(),
                 Expanded(
+                  flex: 6,
                   //height: MediaQuery.of(context).size.height*0.7,
                   child: ListView(
                     children: <Widget>[

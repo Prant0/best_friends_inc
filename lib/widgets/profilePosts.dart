@@ -1,6 +1,7 @@
 import 'package:bestfriends/providers/post.dart';
 import 'package:bestfriends/widgets/singlePost.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -115,7 +116,7 @@ class _ProfilePostsState extends State<ProfilePosts> {
                   height: 3,
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.bottomCenter,
-                  child: LinearProgressIndicator(),
+                  child: NeumorphicProgressIndeterminate(),
                 ),
               )
             : Container(),

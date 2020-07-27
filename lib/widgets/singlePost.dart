@@ -229,7 +229,7 @@ class _SinglePostState extends State<SinglePost> {
                                 dotSize: 6,
                                 dotIncreaseSize: 2,
                                 dotIncreasedColor: Theme.of(context).primaryColor,
-                                dotColor: Theme.of(context).primaryColor,
+                                dotColor: Colors.white,
                                 dotSpacing: 15,
                                 dotBgColor: Colors.transparent,
                                 autoplay: false,
@@ -257,7 +257,7 @@ class _SinglePostState extends State<SinglePost> {
                         NeumorphicIcon(
                           widget.isLiked==null||widget.isLiked?FontAwesomeIcons.solidHeart:FontAwesomeIcons.heart,
                           style: NeumorphicStyle(
-                             color: Color(0xFF0D1C40),
+                             color: Theme.of(context).iconTheme.color,
                             intensity: 20,
                           ),
                           size: 20.0,
@@ -284,7 +284,7 @@ class _SinglePostState extends State<SinglePost> {
                           NeumorphicIcon(
                             FontAwesomeIcons.comments,
                             style: NeumorphicStyle(
-                              color: Color(0xFF0D1C40),
+                              color: Theme.of(context).iconTheme.color,
                               intensity: 20,
                             ),
                             size: 20.0,

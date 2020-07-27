@@ -146,6 +146,25 @@ class _WalletHomeState extends State<WalletHome> {
                             ),
                           ],
                         ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Center(
+                          child: Container(
+                            width: 150,
+                            height: 150,
+                            child: NeumorphicButton(
+                              style: NeumorphicStyle(
+                                shape: NeumorphicShape.convex,
+                                boxShape: NeumorphicBoxShape.circle(),
+                                intensity: 1,
+                                surfaceIntensity: 0.7,
+                              ),
+                              onPressed: (){},
+                              child: Center(child: Text("Under Construction", textAlign: TextAlign.center,)),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),

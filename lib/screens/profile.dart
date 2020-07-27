@@ -94,13 +94,13 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                             SizedBox(
                               width: 10,
                             ),
-                            NeumorphicText(
-                              userData.name,
-                              style: NeumorphicStyle(
-                                color: Color(0xffF5F6FD),
-                              ),
-                              textStyle: NeumorphicTextStyle(
-                                fontSize: 15,
+                            FittedBox(
+                              child: Text(
+                                userData.name,
+                                style: TextStyle(
+                                  fontFamily: "Varta",
+                                  fontSize: 18,
+                                ),
                               ),
                             ),
                           ],

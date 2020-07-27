@@ -97,9 +97,9 @@ class _HomePageState extends State<HomePage>{
           NeumorphicButton(
             style: NeumorphicStyle(
               lightSource: LightSource.right,
-              depth: 5,
-              color: Color(0xFFE2E4EA),
-              shape: NeumorphicShape.concave,
+              //depth: 5,
+              //color: Color(0xFFE2E4EA),
+              //shape: NeumorphicShape.concave,
             ),
             child: Center(child: FaIcon(FontAwesomeIcons.bars, color: Theme.of(context).iconTheme.color, size: 15,)),
             onPressed: (){
@@ -109,9 +109,9 @@ class _HomePageState extends State<HomePage>{
         ],
         leading: NeumorphicButton(
           style: NeumorphicStyle(
-            color: Color(0xFFE2E4EA),
-            depth: 5,
-            shape: NeumorphicShape.concave,
+            //color: Color(0xFFE2E4EA),
+            //depth: 5,
+            //shape: NeumorphicShape.concave,
           ),
           child: Center(child:FaIcon(FontAwesomeIcons.user, color: Theme.of(context).iconTheme.color, size: 15,),),
           onPressed: (){
@@ -122,8 +122,9 @@ class _HomePageState extends State<HomePage>{
           child: FittedBox(
             child: NeumorphicText("Best Friends Inc.",style: NeumorphicStyle(color: Theme.of(context).primaryColor,),
             textStyle: NeumorphicTextStyle(
-                fontSize: 15,
-                fontFamily: "Courgette"
+                fontSize: 18,
+                fontFamily: "Courgette",
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),

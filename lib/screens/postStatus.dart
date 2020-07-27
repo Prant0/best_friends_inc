@@ -99,9 +99,9 @@ class _PostStatusState extends State<PostStatus> {
   Future<List<int>> testCompressList(List<int> list) async {
     var result = await FlutterImageCompress.compressWithList(
       list,
-      minHeight: 300,
-      minWidth: 500,
-      quality: 70,
+      minHeight: 600,
+      minWidth: 1000,
+      quality: 100,
       rotate: 0,
     );
     return result;

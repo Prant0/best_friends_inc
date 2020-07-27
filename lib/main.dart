@@ -2,6 +2,9 @@ import 'package:bestfriends/providers/user.dart';
 import 'package:bestfriends/screens/postStatus.dart';
 import 'package:bestfriends/screens/profile.dart';
 import 'package:bestfriends/screens/search.dart';
+import 'package:bestfriends/screens/upcoming/bloodDonate_home.dart';
+import 'package:bestfriends/screens/upcoming/ecommarce_home.dart';
+import 'package:bestfriends/screens/upcoming/ecourire_home.dart';
 import 'package:bestfriends/screens/updateProfile.dart';
 import 'package:bestfriends/screens/wallet/walletHome.dart';
 import 'package:bestfriends/widgets/allComments.dart';
@@ -45,10 +48,13 @@ class _MyAppState extends State<MyApp> {
           UpdateProfile.routeName: (BuildContext context) => UpdateProfile(),
           AllComments.routeName: (BuildContext context) => AllComments(),
           WalletHome.routeName: (BuildContext context) => WalletHome(),
+          EcommarceHome.routeName: (BuildContext context) => EcommarceHome(),
+          BloodDonateHome.routeName: (BuildContext context) => BloodDonateHome(),
+          EcourierHome.routeName: (BuildContext context) => EcourierHome(),
         },
         //(0xFF0D1C40)
         theme: NeumorphicThemeData(
-            accentColor: Color(0xFF0D1C40),
+            accentColor: Color(0xFF004d40),
             baseColor: Color(0xFFF4F6F9),
             textTheme: TextTheme(
                   bodyText1: TextStyle(
@@ -65,7 +71,8 @@ class _MyAppState extends State<MyApp> {
                   ),
               ),
             iconTheme:  IconThemeData(
-                color: Color(0xFF0D1C40),
+                color: Color(0xFF004d40),
+              //0xFF0D1C40
               ),
             ),
         home: Login_Page(),

@@ -1,4 +1,5 @@
 import 'package:bestfriends/providers/user.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -59,9 +60,9 @@ ProfileAbout({this.petName, this.phone, this.occupation, this.birthday, this.gen
       child: GridView.builder(
         itemCount: 8,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          crossAxisCount: 2,
+          mainAxisSpacing: 20,
+          crossAxisSpacing: 20,
+          crossAxisCount: 3,
         ),
         itemBuilder: (BuildContext context, index) {
           return Neumorphic(
@@ -88,7 +89,7 @@ ProfileAbout({this.petName, this.phone, this.occupation, this.birthday, this.gen
                       color: Theme.of(context).primaryColor,
                     ),
                   ),
-                  Text(aboutData[index]["data"]==null?"----":aboutData[index]["data"]),
+                  Text(aboutData[index]["data"]==null||aboutData[index]["data"]=="null"?"----":aboutData[index]["data"], textAlign: TextAlign.center, overflow: TextOverflow.ellipsis,),
                 ],
               ),
             ),

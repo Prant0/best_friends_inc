@@ -207,7 +207,7 @@ class _Registation_PageState extends State<Registation_Page> {
                           border: InputBorder.none,
                           // labelText: "Password",
                           hintText: 'XXXXXX',
-                          labelText: 'Retype Password',
+                          labelText: 'Re-type Password',
                           prefixIcon: Icon(
                             Icons.lock,
                             color: Theme.of(context).iconTheme.color,
@@ -229,7 +229,7 @@ class _Registation_PageState extends State<Registation_Page> {
                           border: InputBorder.none,
                           // labelText: "Password",
                           hintText: '0123456789XX',
-                          labelText: 'Introducer A/C No. (Optional)',
+                          labelText: 'Introducer A/C NO. (Optional)',
                           prefixIcon: Icon(
                             Icons.attach_money,
                             color: Theme.of(context).iconTheme.color,

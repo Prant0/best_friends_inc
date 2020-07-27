@@ -36,7 +36,7 @@ class Users with ChangeNotifier {
         coverPic: user["cover_pic"],
         gender: user["gender"],
         livesIn: user["lives_in"],
-        occupation: user["occupation: "],
+        occupation: user["occupation"],
         nickName: user["nick_name"],
         religion: user["religion"],
         birthday: user["birthday"].toString(),

@@ -139,6 +139,21 @@ class _SinglePostDetailsState extends State<SinglePostDetails> {
         appBar: NeumorphicAppBar(
           centerTitle: true,
           title: NeumorphicText("Update Post", style: NeumorphicStyle(color: Theme.of(context).primaryColor),),
+          leading: NeumorphicButton(
+            padding: EdgeInsets.all(0),
+            child: Center(
+              child: NeumorphicIcon(
+                FontAwesomeIcons.arrowLeft,
+                size: 20,
+                style: NeumorphicStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+          ),
           actions: <Widget>[
             NeumorphicButton(
               padding: EdgeInsets.all(0),

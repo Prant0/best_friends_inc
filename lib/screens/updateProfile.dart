@@ -41,11 +41,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
         setState(() {
           profilePic = userData["profile_pic"];
           coverPic = userData["cover_pic"];
-          userData["nick_name"]==null? nickName.text="Ready to Add": nickName.text = userData["nick_name"];
-          userData["occupation"]==null? occupation.text="Ready to Add":occupation.text = userData["occupation"];
-          userData["lives_in"]==null? livesIn.text="Ready to Add":livesIn.text = userData["lives_in"];
-          userData["hometown"]==null? homeTown.text="Ready to Add":homeTown.text = userData["hometown"];
-          userData["birthday"]==null? birthDay.text="Ready to Add":birthDay.text = userData["birthday"];
+          userData["nick_name"]==null? nickName.text="": nickName.text = userData["nick_name"];
+          userData["occupation"]==null? occupation.text="":occupation.text = userData["occupation"];
+          userData["lives_in"]==null? livesIn.text="":livesIn.text = userData["lives_in"];
+          userData["hometown"]==null? homeTown.text="":homeTown.text = userData["hometown"];
+          userData["birthday"]==null? birthDay.text="":birthDay.text = userData["birthday"];
           userData["religion"]==null? _selectedReligion="Other":_selectedReligion = userData["religion"];
           userData["gender"]==null? _selectedGender="Other":_selectedGender = userData["gender"];
           _init = false;
@@ -230,7 +230,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
               SizedBox(
                 height: 15
               ),
-              UpdateTextField(cont: occupation, label: "Occupation", readOnly: false, maxLength: 20,),
+              UpdateTextField(cont: occupation, label: "Occupation", readOnly: false, maxLength: 30,),
               SizedBox(
                   height: 15
               ),

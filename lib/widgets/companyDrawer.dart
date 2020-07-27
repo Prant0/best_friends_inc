@@ -4,7 +4,11 @@ import 'package:bestfriends/http/requests.dart';
 import 'package:bestfriends/screens/login.dart';
 import 'package:bestfriends/screens/profile.dart';
 import 'package:bestfriends/screens/search.dart';
+import 'package:bestfriends/screens/upcoming/bloodDonate_home.dart';
+import 'package:bestfriends/screens/upcoming/ecommarce_home.dart';
+import 'package:bestfriends/screens/upcoming/ecourire_home.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/personalDrwaerItems.dart';
@@ -93,21 +97,21 @@ class _CompanyDrawerState extends State<CompanyDrawer> {
                         iconData: Icons.shopping_cart,
                         text: 'E-commerce',
                         onTap: (){
-                          showSnack();
+                          Navigator.of(context).pushNamed(EcommarceHome.routeName);
                         },
                       ),
                       PersonalDrawerItem(
                         iconData: Icons.pin_drop,
                         text: 'Blood Bank',
                         onTap: () {
-                         showSnack();
+                          Navigator.of(context).pushNamed(BloodDonateHome.routeName);
                         },
                       ),
                       PersonalDrawerItem(
                         iconData: Icons.card_giftcard,
                         text: 'E-courier',
                         onTap: () {
-                          showSnack();
+                          Navigator.of(context).pushNamed(EcourierHome.routeName);
                         },
                       ),
                       PersonalDrawerItem(
@@ -119,11 +123,133 @@ class _CompanyDrawerState extends State<CompanyDrawer> {
                       ),
                       PersonalDrawerItem(
                         iconData: Icons.laptop_chromebook,
-                        text: 'E-learning',
+                        text: 'E-learning School',
                         onTap: () {
                           showSnack();
                         },
                       ),
+
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.hamburger,
+                        text: 'B-Food',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.gift,
+                        text: 'B-Courier',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.ccVisa,
+                        text: 'B-Pay',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.idCard,
+                        text: 'B-Card Service',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.penSquare,
+                        text: 'Live Tutor / Tuition',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.bell,
+                        text: 'All types of alert',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.moneyCheckAlt,
+                        text: 'Charity',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.stethoscope,
+                        text: 'B-Doctor',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.cube,
+                        text: 'B-Quizzes',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.puzzlePiece,
+                        text: 'B-Puzzle',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.gamepad,
+                        text: 'B-Games',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.users,
+                        text: 'Freelancing Marketplace',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.briefcase,
+                        text: 'Career Finder',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.newspaper,
+                        text: 'B-News Portal',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.shoppingBasket,
+                        text: 'B-Baazar',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.book,
+                        text: 'Reading and Reviews',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+                      PersonalDrawerItem(
+                        iconData: FontAwesomeIcons.ccAmex,
+                        text: 'Earning Opportunities',
+                        onTap: (){
+                          showSnack();
+                        },
+                      ),
+
                     ],
                   ),
                 ),
